@@ -5,7 +5,11 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".StatisticsFragment"
-    android:padding="10dp">
+    android:padding="10dp"
+    android:background="?attr/colorSurface"
+    android:clickable="true"
+    android:focusable="true"
+    >
     <!--TODO replace 10dp with style-->
 
     <com.google.android.material.textview.MaterialTextView
