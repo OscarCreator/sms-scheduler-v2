@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".StatisticsFragment"
+    android:padding="10dp">
+    <!--TODO replace 10dp with style-->
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_total_treatments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/TextAppearance.MaterialComponents.Headline4"
+        tools:text="120"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/TextAppearance.MaterialComponents.Caption"
+        tools:text="treatments"
+        app:layout_constraintStart_toEndOf="@id/tv_total_treatments"
+        app:layout_constraintBottom_toBottomOf="@id/tv_total_treatments"
+        android:layout_marginStart="10dp"
+        />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_procent_treatments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/TextAppearance.MaterialComponents.Caption"
+        tools:text="+15% this month"
+        app:layout_constraintStart_toStartOf="@id/tv_total_treatments"
+        app:layout_constraintTop_toBottomOf="@id/tv_total_treatments"
+        />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_total_earnings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/TextAppearance.MaterialComponents.Headline5"
+        tools:text="4500kr"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_total_earnings_exclusive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/TextAppearance.MaterialComponents.Caption"
+        tools:text="2365kr"
+        app:layout_constraintTop_toBottomOf="@id/tv_total_earnings"
+        app:layout_constraintStart_toStartOf="@id/tv_total_earnings"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
