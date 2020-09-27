@@ -12,6 +12,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
 
+        binding.statisticsView.apply {
+            setTotalTreatments(150)
+            setProcentTreatments(9)
+            setTotalEarnings(4250)
+            setTotalEarningsExclusive(2530)
+        }
+
         setContentView(binding.root)
     }
 }
