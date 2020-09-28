@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">SMS Scheduler V2</string>
 
-    <string formatted="false" name="total_earning">%d kr</string>
-    <string formatted="false" name="total_earning_exclusive">%d kr</string>
-    <string formatted="false" name="increase_procent_treatments">%d %% this month</string>
+    <string formatted="false" name="total_earning">%dkr</string>
+    <string formatted="false" name="total_earning_exclusive">%dkr</string>
+    <string formatted="false" name="increase_procent_treatments">%d%% this month</string>
 
 </resources>
