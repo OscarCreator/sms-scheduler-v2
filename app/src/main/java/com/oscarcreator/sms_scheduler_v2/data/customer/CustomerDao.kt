@@ -17,13 +17,13 @@ interface CustomerDao {
     @Query("SELECT * FROM Customers WHERE id = :customerId")
     fun getCustomer(customerId: Long): Customer
 
-    @Insert(onConflict = OnConflictStrategy.ABORT)
-    suspend fun insert(customer: Customer)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insert(customer: Customer): Long
 
     @Delete
-    suspend fun delete(vararg customer: Customer)
+    suspend fun delete(vararg customer: Customer): Int
 
-    @Update(onConflict = OnConflictStrategy.ABORT)
-    suspend fun update(customer: Customer)
+    @Update(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun update(customer: Customer): Int
 
 }

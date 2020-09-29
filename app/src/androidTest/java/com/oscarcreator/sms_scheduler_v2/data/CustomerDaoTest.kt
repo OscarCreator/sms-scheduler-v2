@@ -27,7 +27,7 @@ class CustomerDaoTest : BaseDaoTest() {
     @Throws(Exception::class)
     fun customer_insertedInDatabase_returnsCustomer() = runBlocking {
         val customer = Customer(id = 1, name = "bengan", phoneNumber = "0754962045")
-        customerDao.insert(customer)
+        assertThat(customerDao.insert(customer), `is`(1))
 
         customerDao.getCustomers().observeOnce {
             assertThat(it, `is`(listOf(customer)))
@@ -38,8 +38,8 @@ class CustomerDaoTest : BaseDaoTest() {
     @Throws(Exception::class)
     fun customer_insertedAndDeleted_returnsEmpty() = runBlocking {
         val customer = Customer(id = 1, name = "bergit", phoneNumber = "0738092735")
-        customerDao.insert(customer)
-        customerDao.delete(customer)
+        assertThat(customerDao.insert(customer), `is`(1))
+        assertThat(customerDao.delete(customer), `is`(1))
 
         customerDao.getCustomers().observeOnce {
             assertThat(it, `is`(emptyList()))
@@ -50,9 +50,9 @@ class CustomerDaoTest : BaseDaoTest() {
     @Throws(Exception::class)
     fun customer_insertedAndUpdated_returnsUpdated() = runBlocking {
         val customer = Customer(id = 100, name = "bergit", phoneNumber = "0738092735")
-        customerDao.insert(customer)
+        assertThat(customerDao.insert(customer), `is`(100))
         val updatedCustomer = Customer(id = 100, name = "Bergit", phoneNumber = "0738092734")
-        customerDao.update(updatedCustomer)
+        assertThat(customerDao.update(updatedCustomer), `is`(1))
 
         customerDao.getCustomers().observeOnce {
             assertThat(it, `is`(listOf(updatedCustomer)))
