@@ -1,10 +1,5 @@
 package com.oscarcreator.sms_scheduler_v2.data
 
-import android.content.Context
-import androidx.arch.core.executor.testing.CountingTaskExecutorRule
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.room.Room
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.oscarcreator.sms_scheduler_v2.data.customer.Customer
 import com.oscarcreator.sms_scheduler_v2.data.customer.CustomerDao
@@ -12,39 +7,20 @@ import com.oscarcreator.sms_scheduler_v2.util.observeOnce
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
-import org.junit.After
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.util.concurrent.TimeUnit
+import kotlin.jvm.Throws
 
 @RunWith(AndroidJUnit4::class)
-class CustomerDaoTest {
+class CustomerDaoTest : BaseDaoTest() {
 
-    @Rule
-    @JvmField
-    val countingTaskExecutorRule = CountingTaskExecutorRule()
-
-    @get:Rule
-    var instantTaskExecutorRule = InstantTaskExecutorRule()
-
-    private lateinit var database: AppDatabase
     private lateinit var customerDao: CustomerDao
 
-
     @Before
-    fun createDb() {
-        val context = ApplicationProvider.getApplicationContext<Context>()
-        database = Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java).build()
+    override fun inititalizeDatabase() {
+        super.inititalizeDatabase()
         customerDao = database.customerDao()
-
-    }
-
-    @After
-    fun closeDb() {
-        countingTaskExecutorRule.drainTasks(10, TimeUnit.SECONDS)
-        database.close()
     }
 
     @Test
