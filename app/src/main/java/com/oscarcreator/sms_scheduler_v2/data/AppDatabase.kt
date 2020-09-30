@@ -9,17 +9,29 @@ import com.oscarcreator.sms_scheduler_v2.data.customer.Customer
 import com.oscarcreator.sms_scheduler_v2.data.customer.CustomerDao
 import com.oscarcreator.sms_scheduler_v2.data.message.Message
 import com.oscarcreator.sms_scheduler_v2.data.message.MessageDao
+import com.oscarcreator.sms_scheduler_v2.data.timetemplate.TimeTemplate
+import com.oscarcreator.sms_scheduler_v2.data.timetemplate.TimeTemplateDao
 import com.oscarcreator.sms_scheduler_v2.data.treatment.Treatment
 import com.oscarcreator.sms_scheduler_v2.data.treatment.TreatmentDao
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@Database(entities = [Customer::class, Treatment::class, Message::class], version = 1, exportSchema = false)
+@Database(
+    entities = [
+        Customer::class,
+        Treatment::class,
+        Message::class,
+        TimeTemplate::class
+    ],
+    version = 1,
+    exportSchema = false
+)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun customerDao(): CustomerDao
     abstract fun treatmentDao(): TreatmentDao
     abstract fun messageDao(): MessageDao
+    abstract fun timeTemplateDao(): TimeTemplateDao
 
     private class TaskDatabaseCallback(
         private val scope: CoroutineScope
