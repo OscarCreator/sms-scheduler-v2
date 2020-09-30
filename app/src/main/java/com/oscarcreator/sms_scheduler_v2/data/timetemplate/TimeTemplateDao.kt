@@ -10,12 +10,12 @@ interface TimeTemplateDao {
     fun getTimeTemplates(): LiveData<List<TimeTemplate>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insert(timeTemplate: TimeTemplate): Long
+    suspend fun insert(timeTemplate: TimeTemplate): Long
 
     @Delete
-    fun delete(timeTemplate: TimeTemplate): Int
+    suspend fun delete(timeTemplate: TimeTemplate): Int
 
     @Update(onConflict = OnConflictStrategy.IGNORE)
-    fun update(timeTemplate: TimeTemplate): Int
+    suspend fun update(timeTemplate: TimeTemplate): Int
 
 }
