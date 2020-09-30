@@ -7,16 +7,19 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.oscarcreator.sms_scheduler_v2.data.customer.Customer
 import com.oscarcreator.sms_scheduler_v2.data.customer.CustomerDao
+import com.oscarcreator.sms_scheduler_v2.data.message.Message
+import com.oscarcreator.sms_scheduler_v2.data.message.MessageDao
 import com.oscarcreator.sms_scheduler_v2.data.treatment.Treatment
 import com.oscarcreator.sms_scheduler_v2.data.treatment.TreatmentDao
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@Database(entities = [Customer::class, Treatment::class], version = 1, exportSchema = false)
+@Database(entities = [Customer::class, Treatment::class, Message::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun customerDao(): CustomerDao
     abstract fun treatmentDao(): TreatmentDao
+    abstract fun messageDao(): MessageDao
 
     private class TaskDatabaseCallback(
         private val scope: CoroutineScope

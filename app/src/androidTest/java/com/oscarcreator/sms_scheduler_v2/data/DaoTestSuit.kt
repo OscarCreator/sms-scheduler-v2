@@ -6,6 +6,7 @@ import org.junit.runners.Suite
 @RunWith(Suite::class)
 @Suite.SuiteClasses(
     CustomerDaoTest::class,
-    TreatmentDaoTest::class
+    TreatmentDaoTest::class,
+    MessageDaoTest::class
 )
 class DaoTestSuit

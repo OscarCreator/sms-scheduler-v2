@@ -6,6 +6,7 @@ import org.junit.runners.Suite
 @RunWith(Suite::class)
 @Suite.SuiteClasses(
     CustomerTest::class,
-    TreatmentTest::class
+    TreatmentTest::class,
+    MessageTest::class
 )
 class EntityTestSuit
