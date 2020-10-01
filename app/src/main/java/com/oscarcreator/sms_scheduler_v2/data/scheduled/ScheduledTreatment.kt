@@ -39,7 +39,7 @@ import java.util.*
 )
 data class ScheduledTreatment(
     /** id of the scheduled treatment */
-    @PrimaryKey @ColumnInfo(name = "scheduled_treatment_id") val id: Long,
+    @PrimaryKey @ColumnInfo(name = "scheduled_treatment_id") val id: Long = 0,
 
     /** id of the associated [Treatment] */
     @ColumnInfo(name = "treatment_id") val treatmentId: Long,
@@ -59,8 +59,6 @@ data class ScheduledTreatment(
     /** cause of canceled treatment */
     val cause: String? = null,
 
-    /** Time of the delivered */
-    @ColumnInfo(name = "delivered_time") val deliveredTime: Calendar? = null
 )
 
 /**
@@ -129,12 +127,20 @@ data class ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers(
         return scheduledTreatment.treatmentTime.timeInMillis + timeTemplate.delay
     }
 
-    fun getFormattedMessage(): String {
-        TODO()
+    /**
+     * Returns the formatted messages
+     */
+    fun getFormattedMessages(): List<String> {
+        val messages = customers.map { message.message }
+        //TODO format
+        return messages
     }
 
+    /**
+     * Returns all the phone numbers
+     */
     fun getPhoneNumbers(): List<String> {
-        TODO()
+        return customers.map { it.phoneNumber  }
     }
 
 }
@@ -165,6 +171,8 @@ data class ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers(
 )
 data class ScheduledTreatmentCustomerCrossRef(
     @ColumnInfo(name = "scheduled_treatment_id") val scheduledTreatmentId: Long,
-    @ColumnInfo(name = "customer_id") val customerId: Long
+    @ColumnInfo(name = "customer_id") val customerId: Long,
+    /** Time of the delivered */
+    @ColumnInfo(name = "delivered_time") val deliveredTime: Calendar? = null
 )
 
