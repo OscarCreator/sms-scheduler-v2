@@ -139,7 +139,7 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
             assertThat(it, `is`(emptyList()))
         }
 
-        database.scheduledTreatmentCrossRefDao().getScheduledTreatmentCustomerCrossRef().observeOnce {
+        database.scheduledTreatmentCrossRefDao().getScheduledTreatmentCustomerCrossRefs().observeOnce {
             assertThat(it, `is`(emptyList()))
         }
 
@@ -171,7 +171,7 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
             assertThat(it, `is`(listOf(scheduledTreatment)))
         }
 
-        database.scheduledTreatmentCrossRefDao().getScheduledTreatmentCustomerCrossRef().observeOnce {
+        database.scheduledTreatmentCrossRefDao().getScheduledTreatmentCustomerCrossRefs().observeOnce {
             assertThat(it, `is`(emptyList()))
         }
 
@@ -210,7 +210,7 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
             assertThat(it, `is`(listOf(scheduledTreatment)))
         }
 
-        database.scheduledTreatmentCrossRefDao().getScheduledTreatmentCustomerCrossRef().observeOnce {
+        database.scheduledTreatmentCrossRefDao().getScheduledTreatmentCustomerCrossRefs().observeOnce {
             assertThat(it, `is`(listOf(scheduledTreatmentCustomerCrossRef)))
         }
 

@@ -7,6 +7,10 @@ import com.oscarcreator.sms_scheduler_v2.data.timetemplate.TimeTemplate
 import com.oscarcreator.sms_scheduler_v2.data.treatment.Treatment
 import java.util.*
 
+/**
+ * A [ScheduledTreatment] is a entity which keeps track on what [TimeTemplate],
+ * [Message] and [Treatment] will be used when sending the message.
+ * */
 @Entity(
     tableName = "scheduled_treatment",
     foreignKeys = [
@@ -43,10 +47,10 @@ data class ScheduledTreatment(
     /** time which the treatment is booked */
     @ColumnInfo(name = "treatment_time") val treatmentTime: Calendar,
 
-    /** time template which modifies the send time */
+    /** [TimeTemplate] which modifies the send time */
     @ColumnInfo(name = "time_template_id") val timeTemplateId: Long,
 
-    /** message id of message to be sent to the customers */
+    /** id of [Message] to be sent to the [Customer]s */
     @ColumnInfo(name = "message_id") val messageId: Long,
 
     /** status of the treatment */
@@ -55,36 +59,60 @@ data class ScheduledTreatment(
     /** cause of canceled treatment */
     val cause: String? = null,
 
+    /** Time of the delivered */
     @ColumnInfo(name = "delivered_time") val deliveredTime: Calendar? = null
 )
 
-
+/**
+ * The status of the scheduled treatment
+ * */
 enum class TreatmentStatus(val code: Int) {
 
+    /** Treatment is scheduled and will be started soon */
     SCHEDULED(-1),
+    /** Treatment is completed */
     DONE(0),
+    /** The customer did not arrive */
     NOT_ARRIVED(1),
+    /** The treatment is canceled */
     CANCELED(2);
-
 }
 
+/**
+ * A data class which combines the relations with the [ScheduledTreatment]
+ * */
 data class ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers(
+    /**
+     * The [ScheduledTreatment]
+     * */
     @Embedded val scheduledTreatment: ScheduledTreatment,
+    /**
+     * The [Message] associated with the [ScheduledTreatment]
+     * */
     @Relation(
         parentColumn = "message_id",
         entityColumn = "id",
     )
     val message: Message,
+    /**
+     * The [TimeTemplate] associated with the [ScheduledTreatment]
+     */
     @Relation(
         parentColumn = "time_template_id",
         entityColumn = "id"
     )
     val timeTemplate: TimeTemplate,
+    /**
+     * The [Treatment] associated with the [ScheduledTreatment]
+     */
     @Relation(
         parentColumn = "treatment_id",
         entityColumn = "id"
     )
     val treatment: Treatment,
+    /**
+     * The [Customer]s which will receive a notification sms
+     */
     @Relation(
         parentColumn = "scheduled_treatment_id",
         entityColumn = "customer_id",
@@ -111,6 +139,9 @@ data class ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers(
 
 }
 
+/**
+ * Relation between [ScheduledTreatment] and [Customer]
+ */
 @Entity(
     tableName = "scheduled_treatment_cross_ref",
     primaryKeys = [

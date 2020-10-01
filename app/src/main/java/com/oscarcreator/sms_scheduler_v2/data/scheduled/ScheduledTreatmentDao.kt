@@ -20,12 +20,30 @@ interface ScheduledTreatmentDao {
     @Query("SELECT * FROM scheduled_treatment")
     fun getScheduledTreatmentsWithMessageAndTimeTemplateAndCustomers(): LiveData<List<ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers>>
 
+    /**
+     * Inserts a [ScheduledTreatment] into the database.
+     *
+     * @param scheduledTreatment the [ScheduledTreatment] to be inserted
+     * @return the id of the inserted [ScheduledTreatment] object
+     */
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(scheduledTreatment: ScheduledTreatment): Long
 
+    /**
+     * Deletes the [ScheduledTreatment]s specified and returns the number of [ScheduledTreatment]s deleted
+     *
+     * @param scheduledTreatment the [ScheduledTreatment]s to delete
+     * @return the number of [ScheduledTreatment]s deleted
+     */
     @Delete
     suspend fun delete(vararg scheduledTreatment: ScheduledTreatment): Int
 
+    /**
+     * Updates the specified [ScheduledTreatment]
+     *
+     * @param scheduledTreatment the [ScheduledTreatment] to be updated
+     * @return the number of [ScheduledTreatment] updated (0 if not updated, 1 if updated)
+     */
     @Update(onConflict = OnConflictStrategy.IGNORE)
     suspend fun update(scheduledTreatment: ScheduledTreatment): Int
 
