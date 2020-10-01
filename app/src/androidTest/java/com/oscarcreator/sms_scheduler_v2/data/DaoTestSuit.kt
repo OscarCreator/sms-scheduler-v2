@@ -8,6 +8,7 @@ import org.junit.runners.Suite
     CustomerDaoTest::class,
     TreatmentDaoTest::class,
     MessageDaoTest::class,
-    TimeTemplateDaoTest::class
+    TimeTemplateDaoTest::class,
+    ScheduledTreatmentDaoTest::class
 )
 class DaoTestSuit

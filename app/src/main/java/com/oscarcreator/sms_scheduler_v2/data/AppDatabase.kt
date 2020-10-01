@@ -4,15 +4,21 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.oscarcreator.sms_scheduler_v2.data.customer.Customer
 import com.oscarcreator.sms_scheduler_v2.data.customer.CustomerDao
 import com.oscarcreator.sms_scheduler_v2.data.message.Message
 import com.oscarcreator.sms_scheduler_v2.data.message.MessageDao
+import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatment
+import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentCustomerCrossRef
+import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentCustomerCrossRefDao
+import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentDao
 import com.oscarcreator.sms_scheduler_v2.data.timetemplate.TimeTemplate
 import com.oscarcreator.sms_scheduler_v2.data.timetemplate.TimeTemplateDao
 import com.oscarcreator.sms_scheduler_v2.data.treatment.Treatment
 import com.oscarcreator.sms_scheduler_v2.data.treatment.TreatmentDao
+import com.oscarcreator.sms_scheduler_v2.util.Converters
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -21,17 +27,22 @@ import kotlinx.coroutines.launch
         Customer::class,
         Treatment::class,
         Message::class,
-        TimeTemplate::class
+        TimeTemplate::class,
+        ScheduledTreatment::class,
+        ScheduledTreatmentCustomerCrossRef::class
     ],
     version = 1,
     exportSchema = false
 )
+@TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun customerDao(): CustomerDao
     abstract fun treatmentDao(): TreatmentDao
     abstract fun messageDao(): MessageDao
     abstract fun timeTemplateDao(): TimeTemplateDao
+    abstract fun scheduledTreatmentDao(): ScheduledTreatmentDao
+    abstract fun scheduledTreatmentCrossRefDao(): ScheduledTreatmentCustomerCrossRefDao
 
     private class TaskDatabaseCallback(
         private val scope: CoroutineScope
@@ -66,8 +77,9 @@ abstract class AppDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: AppDatabase? = null
 
-        fun getDatabase(context: Context,
-                        scope: CoroutineScope
+        fun getDatabase(
+            context: Context,
+            scope: CoroutineScope
         ): AppDatabase {
             // if the INSTANCE is not null, then return it,
             // if it is, then create the database

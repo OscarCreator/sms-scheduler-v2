@@ -8,6 +8,7 @@ import org.junit.runners.Suite
     CustomerTest::class,
     TreatmentTest::class,
     MessageTest::class,
-    TimeTemplateTest::class
+    TimeTemplateTest::class,
+    ScheduledTreatmentTest::class
 )
 class EntityTestSuit

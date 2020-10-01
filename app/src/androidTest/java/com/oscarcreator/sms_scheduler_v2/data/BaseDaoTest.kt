@@ -5,7 +5,6 @@ import androidx.arch.core.executor.testing.CountingTaskExecutorRule
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
-import com.oscarcreator.sms_scheduler_v2.data.customer.CustomerDao
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
