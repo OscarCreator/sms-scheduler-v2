@@ -1,9 +1,9 @@
-package com.oscarcreator.sms_scheduler_v2
+package com.oscarcreator.sms_scheduler_v2.dashboard
 
 import androidx.lifecycle.ViewModel
 import com.oscarcreator.sms_scheduler_v2.data.TreatmentsStatsRepository
 
-class MainActivityViewModel(
+class DashboardViewModel(
     private val treatmentsStatsRepository: TreatmentsStatsRepository
 ) : ViewModel() {
 

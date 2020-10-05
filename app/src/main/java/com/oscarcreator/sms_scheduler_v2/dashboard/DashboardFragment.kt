@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.oscarcreator.sms_scheduler_v2.MainActivityViewModel
 import com.oscarcreator.sms_scheduler_v2.data.TreatmentsStatsRepository
 import com.oscarcreator.sms_scheduler_v2.databinding.FragmentDashboardBinding
 
@@ -27,9 +26,9 @@ class DashboardFragment : Fragment() {
     }
 
     private fun setUpStatisticsView(){
-        val mainActivityViewModel = MainActivityViewModel(TreatmentsStatsRepository.getInstance())
+        val dashboardViewModel = DashboardViewModel(TreatmentsStatsRepository.getInstance())
 
-        mainActivityViewModel.apply {
+        dashboardViewModel.apply {
             setTotalTreatments(140)
             setProcentTreatments(9)
             setTotalEarnings(4250)
