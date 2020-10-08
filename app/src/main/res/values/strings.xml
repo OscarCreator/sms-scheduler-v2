@@ -4,5 +4,8 @@
     <string name="total_earning">%dkr</string>
     <string name="total_earning_exclusive">%dkr</string>
     <string name="increase_procent_treatments">%d%% this month</string>
+    <string name="view_all">View all</string>
+    <string name="upcoming">Upcoming</string>
+    <string name="seperator">●</string>
 
 </resources>

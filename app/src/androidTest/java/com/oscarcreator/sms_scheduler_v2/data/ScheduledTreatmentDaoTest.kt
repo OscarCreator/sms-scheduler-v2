@@ -220,5 +220,71 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
 
     }
 
+    @Test
+    fun scheduledTreatment_insertYear2021_returnsScheduledTreatment() = runBlocking {
+        val scheduledTreatment = ScheduledTreatment(
+            id = 10,
+            treatmentId = treatment.id,
+            timeTemplateId = timeTemplate.id,
+            messageId = message.id,
+            treatmentTime = Calendar.getInstance().apply { set(Calendar.YEAR, 2021) },
+        )
+        val scheduledTreatmentId = scheduledTreatmentDao.insert(scheduledTreatment)
+        val scheduledTreatmentCustomerCrossRef = ScheduledTreatmentCustomerCrossRef(
+            scheduledTreatmentId = scheduledTreatmentId,
+            customerId = customer.id
+        )
+
+        database.scheduledTreatmentCrossRefDao().insert(scheduledTreatmentCustomerCrossRef)
+
+
+        scheduledTreatmentDao.getScheduledTreatments().observeOnce {
+            assertThat(it, `is`(listOf(scheduledTreatment)))
+        }
+
+        database.scheduledTreatmentCrossRefDao().getScheduledTreatmentCustomerCrossRefs().observeOnce {
+            assertThat(it, `is`(listOf(scheduledTreatmentCustomerCrossRef)))
+        }
+
+        val calendarBehind = Calendar.getInstance().apply { set(Calendar.YEAR, 2020) }
+
+        scheduledTreatmentDao.getUpcomingScheduledTreatmentsWithData(calendarBehind).observeOnce {
+            assertThat(it.size, `is`(1))
+        }
+    }
+
+
+    @Test
+    fun scheduledTreatment_insertYear2021_returnsEmpty() = runBlocking {
+        val scheduledTreatment = ScheduledTreatment(
+            id = 10,
+            treatmentId = treatment.id,
+            timeTemplateId = timeTemplate.id,
+            messageId = message.id,
+            treatmentTime = Calendar.getInstance().apply { set(Calendar.YEAR, 2021) },
+        )
+        val scheduledTreatmentId = scheduledTreatmentDao.insert(scheduledTreatment)
+        val scheduledTreatmentCustomerCrossRef = ScheduledTreatmentCustomerCrossRef(
+            scheduledTreatmentId = scheduledTreatmentId,
+            customerId = customer.id
+        )
+
+        database.scheduledTreatmentCrossRefDao().insert(scheduledTreatmentCustomerCrossRef)
+
+
+        scheduledTreatmentDao.getScheduledTreatments().observeOnce {
+            assertThat(it, `is`(listOf(scheduledTreatment)))
+        }
+
+        database.scheduledTreatmentCrossRefDao().getScheduledTreatmentCustomerCrossRefs().observeOnce {
+            assertThat(it, `is`(listOf(scheduledTreatmentCustomerCrossRef)))
+        }
+
+        val calendarInfront = Calendar.getInstance().apply { set(Calendar.YEAR, 2022) }
+
+        scheduledTreatmentDao.getUpcomingScheduledTreatmentsWithData(calendarInfront).observeOnce {
+            assertThat(it.size, `is`(0))
+        }
+    }
 
 }

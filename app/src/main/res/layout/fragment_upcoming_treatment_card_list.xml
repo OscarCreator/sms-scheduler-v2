@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/upcoming_treatment_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constrainedHeight="true"
+        android:minHeight="100dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_view_all"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@layout/upcoming_treatment_list_item"
+        tools:itemCount="6"
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_view_all"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/view_all"
+        style="@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

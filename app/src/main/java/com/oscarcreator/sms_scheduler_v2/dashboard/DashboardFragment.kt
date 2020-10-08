@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.oscarcreator.sms_scheduler_v2.R
 import com.oscarcreator.sms_scheduler_v2.data.TreatmentsStatsRepository
 import com.oscarcreator.sms_scheduler_v2.databinding.FragmentDashboardBinding
 
@@ -51,6 +52,12 @@ class DashboardFragment : Fragment() {
             })
 
         }
+
+        val upcomingTreatmentCardListFragment = UpcomingTreatmentCardListFragment()
+
+        childFragmentManager.beginTransaction()
+            .add(R.id.upcoming_treatment_list_fragment_container, upcomingTreatmentCardListFragment)
+            .commit()
     }
 
 }

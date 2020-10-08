@@ -5,6 +5,7 @@ import androidx.room.*
 import com.oscarcreator.sms_scheduler_v2.data.customer.Customer
 import com.oscarcreator.sms_scheduler_v2.data.message.Message
 import com.oscarcreator.sms_scheduler_v2.data.timetemplate.TimeTemplate
+import java.util.*
 
 @Dao
 interface ScheduledTreatmentDao {
@@ -19,6 +20,10 @@ interface ScheduledTreatmentDao {
     @Transaction
     @Query("SELECT * FROM scheduled_treatment")
     fun getScheduledTreatmentsWithMessageAndTimeTemplateAndCustomers(): LiveData<List<ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers>>
+
+    @Transaction
+    @Query("SELECT * FROM scheduled_treatment WHERE treatment_time > :currentDay")
+    fun getUpcomingScheduledTreatmentsWithData(currentDay: Calendar): LiveData<List<ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers>>
 
     /**
      * Inserts a [ScheduledTreatment] into the database.
