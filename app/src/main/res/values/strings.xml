@@ -1,11 +1,14 @@
 <resources>
-    <string name="app_name">SMS Scheduler V2</string>
+    <string name="app_name" translatable="false">SMS Scheduler V2</string>
 
-    <string name="total_earning">%dkr</string>
-    <string name="total_earning_exclusive">%dkr</string>
+    <string name="total_earning" translatable="false">%dkr</string>
+    <string name="total_earning_exclusive" translatable="false">%dkr</string>
     <string name="increase_procent_treatments">%d%% this month</string>
     <string name="view_all">View all</string>
     <string name="upcoming">Upcoming</string>
-    <string name="seperator">●</string>
+    <string name="seperator" translatable="false">●</string>
+
+    <string name="today">Today</string>
+    <string name="tomorrow">Tomorrow</string>
 
 </resources>

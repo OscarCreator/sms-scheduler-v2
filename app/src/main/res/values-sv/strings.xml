@@ -1,0 +1,9 @@
+<resources>
+
+
+    <string name="increase_procent_treatments">%d%% denna månad</string>
+    <string name="view_all">Se alla</string>
+    <string name="upcoming">Kommande</string>
+    <string name="today">Idag</string>
+    <string name="tomorrow">Imorgon</string>
+</resources>
