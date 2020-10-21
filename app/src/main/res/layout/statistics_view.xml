@@ -18,10 +18,11 @@
             />
 
         <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_treatment_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/TextAppearance.MaterialComponents.Caption"
-            tools:text="treatments"
+            android:text="@string/treatments"
             app:layout_constraintStart_toEndOf="@id/tv_total_treatments"
             app:layout_constraintBottom_toBottomOf="@id/tv_total_treatments"
             android:layout_marginStart="10dp"

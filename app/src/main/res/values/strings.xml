@@ -10,5 +10,6 @@
 
     <string name="today">Today</string>
     <string name="tomorrow">Tomorrow</string>
+    <string name="treatments">treatments</string>
 
 </resources>

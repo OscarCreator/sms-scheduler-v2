@@ -69,4 +69,10 @@ class StatisticsViewTest {
         val text = instrumentationContext.getString(R.string.total_earning_exclusive, earningsExclusive)
         onView(withId(R.id.tv_total_earnings_exclusive)).check(matches(withMaterialText(text)))
     }
+
+    @Test
+    fun treatmentText_isDisplayed(){
+        val text = instrumentationContext.getString(R.string.treatments)
+        onView(withId(R.id.tv_treatment_text)).check(matches(withMaterialText(text)))
+    }
 }
