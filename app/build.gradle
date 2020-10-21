@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'androidx.navigation.safeargs.kotlin'
 
 android {
     compileSdkVersion 30
@@ -42,11 +43,11 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.3.1'
+    implementation 'androidx.core:core-ktx:1.3.2'
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.fragment:fragment-ktx:1.2.5'
+    implementation "androidx.fragment:fragment-ktx:$fragment_version"
     //material design
     api "com.google.android.material:material:$material_version"
     testImplementation 'junit:junit:4.13'
@@ -55,19 +56,31 @@ dependencies {
 
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
 
+    androidTestImplementation "androidx.test:core-ktx:$androidxTest_version"
     androidTestImplementation "androidx.test:runner:$androidxTest_version"
     androidTestImplementation "androidx.test:rules:$androidxTest_version"
-    androidTestImplementation 'org.hamcrest:hamcrest-library:1.3'
+    androidTestImplementation 'org.hamcrest:hamcrest-library:2.2'
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
     //room
     androidTestImplementation "androidx.room:room-testing:$room_version"
     //lifecycle components
     androidTestImplementation "androidx.arch.core:core-testing:2.1.0"
+    // Navigation
+    androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
+    // FragmentScenario
+    debugImplementation ("androidx.fragment:fragment-testing:$fragment_version"){
+        exclude group: "androidx.test", module: "core"
+    }
+
 
     //room
     implementation "androidx.room:room-runtime:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
 
+    //navigation
+    // Kotlin
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
 }

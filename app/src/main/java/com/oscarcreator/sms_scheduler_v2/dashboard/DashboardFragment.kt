@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.observe
+import androidx.navigation.fragment.findNavController
 import com.oscarcreator.sms_scheduler_v2.R
 import com.oscarcreator.sms_scheduler_v2.data.TreatmentsStatsRepository
 import com.oscarcreator.sms_scheduler_v2.databinding.FragmentDashboardBinding
@@ -35,21 +37,26 @@ class DashboardFragment : Fragment() {
             setTotalEarnings(4250)
             setTotalEarningsExclusive(2530)
 
-            totalTreatments.observe(viewLifecycleOwner, {
+            totalTreatments.observe(viewLifecycleOwner) {
                 binding.statisticsView.setTotalTreatments(it)
-            })
+            }
 
-            procentTreatments.observe(viewLifecycleOwner, {
+            procentTreatments.observe(viewLifecycleOwner) {
                 binding.statisticsView.setProcentTreatments(it)
-            })
+            }
 
-            totalEarnings.observe(viewLifecycleOwner, {
+            totalEarnings.observe(viewLifecycleOwner) {
                 binding.statisticsView.setTotalEarnings(it)
-            })
+            }
 
-            totalEarningsExclusive.observe(viewLifecycleOwner, {
+            totalEarningsExclusive.observe(viewLifecycleOwner) {
                 binding.statisticsView.setTotalEarningsExclusive(it)
-            })
+            }
+
+            binding.fabAddTreatment.setOnClickListener{
+                val action = DashboardFragmentDirections.actionDashboardFragmentToAddEditTreatmentFragment()
+                findNavController().navigate(action)
+            }
 
         }
 

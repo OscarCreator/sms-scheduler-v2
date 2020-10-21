@@ -7,7 +7,11 @@ import com.google.android.material.textview.MaterialTextView
 import com.oscarcreator.sms_scheduler_v2.R
 
 
-class StatisticsView(context: Context, attrs: AttributeSet) : MaterialCardView(context, attrs) {
+class StatisticsView : MaterialCardView {
+
+    constructor(context: Context) : super(context)
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     private var tvTotalTreatments: MaterialTextView
     private var tvProcentTreatments: MaterialTextView
