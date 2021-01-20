@@ -6,5 +6,10 @@
     <string name="upcoming">Kommande</string>
     <string name="today">Idag</string>
     <string name="tomorrow">Imorgon</string>
-    <string name="treatments">behandlingar</string>
+    <string name="treatments">Behandlingar</string>
+    <string name="treatment">Behandling</string>
+    <string name="to">Till</string>
+    <string name="time">Tid</string>
+    <string name="time_template">Tidmall</string>
+    <string name="message">Meddelande</string>
 </resources>

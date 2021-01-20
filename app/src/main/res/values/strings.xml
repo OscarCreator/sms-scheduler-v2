@@ -10,6 +10,11 @@
 
     <string name="today">Today</string>
     <string name="tomorrow">Tomorrow</string>
-    <string name="treatments">treatments</string>
+    <string name="treatments">Treatments</string>
+    <string name="treatment">Treatment</string>
+    <string name="to">To</string>
+    <string name="time">Time</string>
+    <string name="time_template">Time template</string>
+    <string name="message">Message</string>
 
 </resources>
