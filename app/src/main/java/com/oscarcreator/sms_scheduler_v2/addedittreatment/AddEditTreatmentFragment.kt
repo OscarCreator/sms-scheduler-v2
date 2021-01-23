@@ -1,13 +1,19 @@
 package com.oscarcreator.sms_scheduler_v2.addedittreatment
 
 import android.os.Bundle
+import android.text.InputFilter
 import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.chip.Chip
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.oscarcreator.sms_scheduler_v2.R
@@ -54,19 +60,19 @@ class AddEditTreatmentFragment : Fragment() {
 
                         Log.d(TAG, "launching date picker")
                         MaterialDatePicker.Builder.datePicker()
-                            //TODO smart selection
-                            .setTitleText("Title")
                             .build().apply {
                                 addOnPositiveButtonClickListener {
                                     //adding date as millisecond to the chosen time
                                     chosenTime += it
 
                                     //TODO move to an observer
-                                    val formater = SimpleDateFormat("HH:mm dd/MM/yyyy", Locale.getDefault())
+                                    val formater =
+                                        SimpleDateFormat("HH:mm dd/MM/yyyy", Locale.getDefault())
                                     binding.btnTime.text = formater.format(chosenTime)
                                 }
 
-                            }.show(this@AddEditTreatmentFragment.childFragmentManager, "date-picker")
+                            }
+                            .show(this@AddEditTreatmentFragment.childFragmentManager, "date-picker")
 
                     }
                 }.show(childFragmentManager, "time-picker")
@@ -74,14 +80,132 @@ class AddEditTreatmentFragment : Fragment() {
 
 
         binding.btnMessage.setOnClickListener {
-            Toast.makeText(requireContext(), "Message button clicked", Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(), "Message button clicked", Toast.LENGTH_LONG)
+                .show()
         }
 
         binding.btnTimetemplate.setOnClickListener {
-            Toast.makeText(requireContext(), "Time template button clicked", Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(), "Time template button clicked", Toast.LENGTH_LONG)
+                .show()
         }
 
+        setUpContactInput()
+        setUpAutocompleteList()
+
         return binding.root
+    }
+
+    private fun setUpAutocompleteList() {
+        //TODO replace with contact on device
+        // this list is updated with a query every time the text changes
+        // so only the matching contacts is shown
+        val tempList = listOf(
+            Pair("Bengt Bengtsson", "074502352"),
+            Pair("Bengt Bengtsson2", "074502352"),
+            Pair("Bengt Bengtsson3", "074502352"),
+            Pair("Bengt Bengtsson4", "074502352"),
+            Pair("Bengt Bengtsson5", "074502352"),
+            Pair("Bengt Bengtsson6", "074502352")
+        )
+
+        val adapter = ContactsListAdapter(
+            ContactsListAdapter.OnContactClickedListener { name: String ->
+                binding.etContactInput.setText("$name ")
+            }
+        ).apply {
+            setContactList(tempList)
+        }
+
+        binding.rvAutocompleteList.apply {
+            this.adapter = adapter
+            layoutManager = LinearLayoutManager(context)
+
+        }
+    }
+
+    //TODO refactor flexboxlayout with editext to a view
+
+    private fun setUpContactInput() {
+        binding.etContactInput.apply {
+            setOnEditorActionListener { textView, keyCode, keyEvent ->
+                // if ime action is clicked
+                if (keyCode == EditorInfo.IME_ACTION_DONE) {
+                    binding.rvAutocompleteList.visibility = View.GONE
+
+                    //and text is greater than 1
+                    if (textView.text.isNotEmpty()) {
+                        addReceiver()
+                        return@setOnEditorActionListener true
+                    }
+
+                }
+                false
+            }
+
+            setOnKeyListener { view, keyCode, keyEvent ->
+                if (keyEvent.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_DEL) {
+                    removeChip()
+                    return@setOnKeyListener true
+                }
+
+                false
+            }
+            addTextChangedListener(onTextChanged = { text, _, _, _ ->
+                if (text != null) {
+                    if (text.length > 1 && text[text.lastIndex] == ' ') {
+
+                        binding.rvAutocompleteList.visibility = View.GONE
+                        addReceiver()
+                    } else if (text.isEmpty()) {
+                        binding.rvAutocompleteList.visibility = View.GONE
+                    } else {
+                        binding.rvAutocompleteList.visibility = View.VISIBLE
+                    }
+                }
+            })
+
+            // Remove the ability to write a space as first character
+            filters = arrayOf(
+                InputFilter { source, _, _, _, dstart, _ ->
+                    if (source == " " && dstart == 0) {
+                        return@InputFilter ""
+                    }
+                    null
+                })
+        }
+
+    }
+
+    private fun addReceiver(
+        name: String = binding.etContactInput.text.toString().trim()
+    ) {
+        binding.etContactInput.text.clear()
+        addNewChip(name)
+    }
+
+    private fun addNewChip(person: String) {
+        //TODO add ... at end if not able display everyting
+        val chip = Chip(context).apply {
+            text = person
+            isCloseIconVisible = true
+            isClickable = true
+            isCheckable = false
+            setOnCloseIconClickListener {
+                binding.flContacts.removeView(this)
+            }
+        }
+        //TODO add icon to chip?
+        //chip.chipIcon = ContextCompat.getDrawable(requireContext(), R.mipmap.ic_launcher_round)
+
+        binding.flContacts.addView(chip, binding.flContacts.childCount - 1)
+    }
+
+    private fun removeChip() {
+        binding.flContacts.run {
+            if (childCount > 1) {
+                removeViewAt(childCount - 2)
+            }
+        }
     }
 
 }
