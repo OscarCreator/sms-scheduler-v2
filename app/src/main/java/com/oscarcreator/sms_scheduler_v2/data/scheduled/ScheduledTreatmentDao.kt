@@ -52,4 +52,8 @@ interface ScheduledTreatmentDao {
     @Update(onConflict = OnConflictStrategy.IGNORE)
     suspend fun update(scheduledTreatment: ScheduledTreatment): Int
 
+    @Transaction
+    @Query("SELECT * FROM scheduled_treatment WHERE scheduled_treatment_id == :scheduledTreatmentId")
+    suspend fun getScheduledTreatmentWithData(scheduledTreatmentId: Long): ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers?
+
 }

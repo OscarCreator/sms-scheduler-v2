@@ -1,26 +1,25 @@
 package com.oscarcreator.sms_scheduler_v2.data.scheduled
 
+import androidx.lifecycle.LiveData
 import java.util.*
 
-class ScheduledTreatmentRepository private constructor(val scheduledTreatmentDao: ScheduledTreatmentDao){
+interface ScheduledTreatmentRepository {
+    fun getScheduledTreatments(): LiveData<List<ScheduledTreatment>>
 
-    fun getScheduledTreatments() = scheduledTreatmentDao.getScheduledTreatments()
+    fun getScheduledTreatmentsWithMessageAndTimeTemplateAndCustomers(): LiveData<List<ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers>>
 
-    fun getScheduledTreatmentsWithMessageAndTimeTemplateAndCustomers()
-            = scheduledTreatmentDao.getScheduledTreatmentsWithMessageAndTimeTemplateAndCustomers()
+    fun getUpcomingScheduledTreatments(currentDay: Calendar): LiveData<List<ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers>>
 
-    fun getUpcomingScheduledTreatments(currentDay: Calendar) = scheduledTreatmentDao.getUpcomingScheduledTreatmentsWithData(currentDay)
+    suspend fun getScheduledTreatmentWithData(scheduledTreatmentId: Long): ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers?
 
-    suspend fun insert(scheduledTreatment: ScheduledTreatment) = scheduledTreatmentDao.insert(scheduledTreatment)
+    suspend fun insert(scheduledTreatment: ScheduledTreatment): Long
 
-    companion object {
+    suspend fun update(scheduledTreatment: ScheduledTreatment): Int
 
-        // For Singleton instantiation
-        @Volatile private var instance: ScheduledTreatmentRepository? = null
+    suspend fun insertCrossRef(scheduledTreatmentCustomerCrossRef: ScheduledTreatmentCustomerCrossRef)
 
-        fun getInstance(scheduledTreatmentDao: ScheduledTreatmentDao) =
-            instance ?: synchronized(this) {
-                instance ?: ScheduledTreatmentRepository(scheduledTreatmentDao).also { instance = it }
-            }
-    }
+    suspend fun updateCrossRef(scheduledTreatmentCustomerCrossRef: ScheduledTreatmentCustomerCrossRef): Int
+
+    suspend fun deleteCrossRefs(scheduledTreatmentId: Long)
+
 }

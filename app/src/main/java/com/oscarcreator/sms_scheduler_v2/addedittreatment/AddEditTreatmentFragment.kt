@@ -12,11 +12,14 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.chip.Chip
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.oscarcreator.sms_scheduler_v2.R
+import com.oscarcreator.sms_scheduler_v2.data.AppDatabase
+import com.oscarcreator.sms_scheduler_v2.data.scheduled.DefaultScheduledTreatmentRepository
 import com.oscarcreator.sms_scheduler_v2.databinding.FragmentAddeditTreatmentBinding
 import java.text.SimpleDateFormat
 import java.util.*
@@ -32,8 +35,7 @@ class AddEditTreatmentFragment : Fragment() {
     val binding: FragmentAddeditTreatmentBinding
         get() = _binding!!
 
-    //TODO move to viewmodel
-    var chosenTime: Long = 0
+    lateinit var addEditTreatmentViewModel: AddEditTreatmentViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,9 +45,27 @@ class AddEditTreatmentFragment : Fragment() {
 
         _binding = FragmentAddeditTreatmentBinding.inflate(inflater, container, false)
 
+        val database = AppDatabase.getDatabase(requireContext(), lifecycleScope)
+        addEditTreatmentViewModel = AddEditTreatmentViewModel(
+            DefaultScheduledTreatmentRepository.getInstance(
+                database.scheduledTreatmentDao(),
+                database.scheduledTreatmentCrossRefDao()
+            )
+        )
+
+        addEditTreatmentViewModel.start()
+
+        //TODO replace with a custom adapter
         val tempItems = listOf("Behandling 1", "Behandling 2", "Behandling 3")
         val adapter = ArrayAdapter(requireContext(), R.layout.dropdown_menu_list_item, tempItems)
         binding.tvTreatments.setAdapter(adapter)
+
+
+        val formatter = SimpleDateFormat("HH:mm dd/MM/yyyy", Locale.getDefault())
+        addEditTreatmentViewModel.time.observe(viewLifecycleOwner, {
+                binding.btnTime.text = formatter.format(it)
+            }
+        )
 
         //TODO move to functions
         binding.btnTime.setOnClickListener {
@@ -56,7 +76,7 @@ class AddEditTreatmentFragment : Fragment() {
                         val parser = SimpleDateFormat("HH:mm", Locale.getDefault())
                         val timeString = "$hour:$minute"
                         val date = parser.parse(timeString)
-                        chosenTime = date!!.time
+                        var chosenTime = date!!.time
 
                         Log.d(TAG, "launching date picker")
                         MaterialDatePicker.Builder.datePicker()
@@ -64,16 +84,11 @@ class AddEditTreatmentFragment : Fragment() {
                                 addOnPositiveButtonClickListener {
                                     //adding date as millisecond to the chosen time
                                     chosenTime += it
+                                    addEditTreatmentViewModel.time.value = chosenTime
 
-                                    //TODO move to an observer
-                                    val formater =
-                                        SimpleDateFormat("HH:mm dd/MM/yyyy", Locale.getDefault())
-                                    binding.btnTime.text = formater.format(chosenTime)
                                 }
-
                             }
                             .show(this@AddEditTreatmentFragment.childFragmentManager, "date-picker")
-
                     }
                 }.show(childFragmentManager, "time-picker")
         }
@@ -124,10 +139,10 @@ class AddEditTreatmentFragment : Fragment() {
     }
 
     //TODO refactor flexboxlayout with editext to a view
-
+    //TODO make only recyclerview able to add receiver and not space or ime action
     private fun setUpContactInput() {
         binding.etContactInput.apply {
-            setOnEditorActionListener { textView, keyCode, keyEvent ->
+            setOnEditorActionListener { textView, keyCode, _ ->
                 // if ime action is clicked
                 if (keyCode == EditorInfo.IME_ACTION_DONE) {
                     binding.rvAutocompleteList.visibility = View.GONE
@@ -194,8 +209,6 @@ class AddEditTreatmentFragment : Fragment() {
                 binding.flContacts.removeView(this)
             }
         }
-        //TODO add icon to chip?
-        //chip.chipIcon = ContextCompat.getDrawable(requireContext(), R.mipmap.ic_launcher_round)
 
         binding.flContacts.addView(chip, binding.flContacts.childCount - 1)
     }

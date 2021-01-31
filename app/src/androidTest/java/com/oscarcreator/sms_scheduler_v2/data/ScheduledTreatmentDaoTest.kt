@@ -78,7 +78,7 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
     }
 
     @Test
-    fun scheduledTreatment_insertAndUpdated_returnsUpdated() = runBlocking {
+    fun scheduledTreatment_insertAndUpdated_returnsUpdated(): Unit = runBlocking {
 
         val scheduledTreatment = ScheduledTreatment(
             id = 10,
@@ -106,13 +106,13 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
         val updatedTreatment = Treatment(id = 105, name = "Treatment Two", price = 604, duration = 55)
         assertThat(database.treatmentDao().update(updatedTreatment), `is`(1))
 
-        scheduledTreatmentDao.getScheduledTreatmentsWithMessageAndTimeTemplateAndCustomers().observeOnce {
-            assertThat(it.size, `is`(1))
-            assertThat(it[0].scheduledTreatment, `is`(scheduledTreatment))
-            assertThat(it[0].customers, `is`(listOf(updatedCustomer)))
-            assertThat(it[0].message, `is`(updatedMessage))
-            assertThat(it[0].timeTemplate, `is`(updatedTimeTemplate))
-            assertThat(it[0].treatment, `is`(updatedTreatment))
+        scheduledTreatmentDao.getScheduledTreatmentWithData(scheduledTreatmentId).let {
+            assertThat(it!!.scheduledTreatment, `is`(scheduledTreatment))
+            assertThat(it!!.customers, `is`(listOf(updatedCustomer)))
+            assertThat(it!!.message, `is`(updatedMessage))
+            assertThat(it!!.timeTemplate, `is`(updatedTimeTemplate))
+            assertThat(it!!.treatment, `is`(updatedTreatment))
+
         }
 
     }

@@ -77,24 +77,24 @@ abstract class AppDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: AppDatabase? = null
 
+        // if the INSTANCE is not null, then return it,
+        // if it is, then create the database
+
         fun getDatabase(
             context: Context,
-            scope: CoroutineScope
-        ): AppDatabase {
-            // if the INSTANCE is not null, then return it,
-            // if it is, then create the database
-
-            val tempInstance = INSTANCE
-            return tempInstance ?: synchronized(this) {
-                tempInstance ?: Room.databaseBuilder(
-                    context.applicationContext,
-                    AppDatabase::class.java,
-                    "app_database"
-                ).addCallback(TaskDatabaseCallback(scope))
-                    .fallbackToDestructiveMigration()
-                    .build()
-            }
+            scope: CoroutineScope,
+        ): AppDatabase = INSTANCE ?: synchronized(this) {
+            INSTANCE ?: Room.databaseBuilder(
+                context.applicationContext,
+                AppDatabase::class.java,
+                "app_database"
+            )
+                .addCallback(TaskDatabaseCallback(scope))
+                .fallbackToDestructiveMigration()
+                .build()
+                .also {
+                    INSTANCE = it
+                }
         }
     }
-
 }

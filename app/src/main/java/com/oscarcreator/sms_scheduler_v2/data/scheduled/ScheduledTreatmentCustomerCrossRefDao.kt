@@ -15,6 +15,9 @@ interface ScheduledTreatmentCustomerCrossRefDao {
     @Query("SELECT * FROM scheduled_treatment_cross_ref")
     fun getScheduledTreatmentCustomerCrossRefs(): LiveData<List<ScheduledTreatmentCustomerCrossRef>>
 
+    @Query("SELECT * FROM scheduled_treatment_cross_ref WHERE scheduled_treatment_id == :scheduledTreatmentId")
+    fun getScheduledTreatmentCustomerCrossRefs(scheduledTreatmentId: Long): List<ScheduledTreatmentCustomerCrossRef>
+
     /**
      * Inserts a [ScheduledTreatmentCustomerCrossRef] into the database.
      *
@@ -22,7 +25,7 @@ interface ScheduledTreatmentCustomerCrossRefDao {
      * @return the id of the inserted [ScheduledTreatmentCustomerCrossRef] object
      */
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(scheduledTreatmentCustomerCrossRef: ScheduledTreatmentCustomerCrossRef): Long
+    suspend fun insert(scheduledTreatmentCustomerCrossRef: ScheduledTreatmentCustomerCrossRef)
 
     /**
      * Deletes the [ScheduledTreatmentCustomerCrossRef]s specified and returns the number of [ScheduledTreatmentCustomerCrossRef]s deleted
@@ -32,6 +35,9 @@ interface ScheduledTreatmentCustomerCrossRefDao {
      */
     @Delete
     suspend fun delete(vararg scheduledTreatmentCustomerCrossRef: ScheduledTreatmentCustomerCrossRef): Int
+
+    @Query("DELETE FROM scheduled_treatment_cross_ref where scheduled_treatment_id == :scheduledTreatmentId")
+    suspend fun delete(scheduledTreatmentId: Long)
 
     /**
      * Updates the specified [ScheduledTreatmentCustomerCrossRef]
