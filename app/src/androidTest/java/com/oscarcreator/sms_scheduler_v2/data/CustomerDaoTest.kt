@@ -10,7 +10,6 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import kotlin.jvm.Throws
 
 @RunWith(AndroidJUnit4::class)
 class CustomerDaoTest : BaseDaoTest() {
@@ -57,6 +56,21 @@ class CustomerDaoTest : BaseDaoTest() {
         customerDao.getCustomers().observeOnce {
             assertThat(it, `is`(listOf(updatedCustomer)))
         }
+    }
+
+    @Test
+    fun customer_getMatching_returnsOnlyMatching() = runBlocking {
+        val customer1 = Customer(300, "bergit hansson", "18305238940")
+        assertThat(customerDao.insert(customer1), `is`(customer1.id))
+        val customer2 = Customer(301, "ulf hansson", "053243945")
+        assertThat(customerDao.insert(customer2), `is`(customer2.id))
+        val customer3 = Customer(302, "sten", "053058425")
+        assertThat(customerDao.insert(customer3), `is`(customer3.id))
+
+        assertThat(customerDao.getCustomersLike("%hansson%"), `is`(listOf(customer1, customer2)))
+
+        assertThat(customerDao.getCustomersLike("%53%"), `is`(listOf(customer3, customer2)))
+
     }
 
 }

@@ -6,13 +6,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textview.MaterialTextView
 import com.oscarcreator.sms_scheduler_v2.R
+import com.oscarcreator.sms_scheduler_v2.data.customer.Customer
 
 class ContactsListAdapter(private val onContactClickedListener: OnContactClickedListener? = null)
     : RecyclerView.Adapter<ContactsListAdapter.ContactsListViewHolder>(){
 
-    var list: List<Pair<String, String>> = emptyList()
+    var list: List<Customer> = emptyList()
 
-    class ContactsListViewHolder(
+    inner class ContactsListViewHolder(
         itemView: View,
         private val listener: OnContactClickedListener?
     ) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
@@ -22,21 +23,22 @@ class ContactsListAdapter(private val onContactClickedListener: OnContactClicked
 
         init {
             itemView.setOnClickListener(this)
+
         }
 
         override fun onClick(v: View?) {
-            listener?.onEntryClicked(tvName.text.toString())
+            listener?.onEntryClicked(list[adapterPosition])
         }
 
     }
 
     interface OnContactClickedListener {
-        fun onEntryClicked(name: String)
+        fun onEntryClicked(customer: Customer)
 
         companion object {
-            inline operator fun invoke(crossinline function: (String) -> Unit) =
+            inline operator fun invoke(crossinline function: (Customer) -> Unit) =
                 object : OnContactClickedListener {
-                    override fun onEntryClicked(name: String) = function(name)
+                    override fun onEntryClicked(customer: Customer) = function(customer)
                 }
         }
     }
@@ -48,13 +50,13 @@ class ContactsListAdapter(private val onContactClickedListener: OnContactClicked
     }
 
     override fun onBindViewHolder(holder: ContactsListViewHolder, position: Int) {
-        holder.tvName.text = list[position].first
-        holder.tvPhoneNum.text = list[position].second
+        holder.tvName.text = list[position].name
+        holder.tvPhoneNum.text = list[position].phoneNumber
     }
 
     override fun getItemCount(): Int = list.size
 
-    fun setContactList(list: List<Pair<String, String>>){
+    fun setContacts(list: List<Customer>){
         this.list = list
         notifyDataSetChanged()
     }

@@ -10,7 +10,7 @@ import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentCustom
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentDao
 import com.oscarcreator.sms_scheduler_v2.data.timetemplate.TimeTemplate
 import com.oscarcreator.sms_scheduler_v2.data.treatment.Treatment
-import com.oscarcreator.sms_scheduler_v2.util.observeOnce
+import com.oscarcreator.sms_scheduler_v2.util.getOrAwaitValue
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.`is`
@@ -65,8 +65,7 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
         )
         database.scheduledTreatmentCrossRefDao().insert(scheduledTreatmentCustomerCrossRef)
 
-
-        scheduledTreatmentDao.getScheduledTreatmentsWithMessageAndTimeTemplateAndCustomers().observeOnce {
+        scheduledTreatmentDao.getScheduledTreatmentsWithMessageAndTimeTemplateAndCustomers().getOrAwaitValue().let {
             assertThat(it.size, `is`(1))
             assertThat(it[0].scheduledTreatment, `is`(scheduledTreatment))
             assertThat(it[0].customers, `is`(listOf(customer)))
@@ -108,10 +107,10 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
 
         scheduledTreatmentDao.getScheduledTreatmentWithData(scheduledTreatmentId).let {
             assertThat(it!!.scheduledTreatment, `is`(scheduledTreatment))
-            assertThat(it!!.customers, `is`(listOf(updatedCustomer)))
-            assertThat(it!!.message, `is`(updatedMessage))
-            assertThat(it!!.timeTemplate, `is`(updatedTimeTemplate))
-            assertThat(it!!.treatment, `is`(updatedTreatment))
+            assertThat(it.customers, `is`(listOf(updatedCustomer)))
+            assertThat(it.message, `is`(updatedMessage))
+            assertThat(it.timeTemplate, `is`(updatedTimeTemplate))
+            assertThat(it.treatment, `is`(updatedTreatment))
 
         }
 
@@ -135,15 +134,15 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
 
         scheduledTreatmentDao.delete(scheduledTreatment)
 
-        scheduledTreatmentDao.getScheduledTreatments().observeOnce {
+        scheduledTreatmentDao.getScheduledTreatments().getOrAwaitValue().let {
             assertThat(it, `is`(emptyList()))
         }
 
-        database.scheduledTreatmentCrossRefDao().getScheduledTreatmentCustomerCrossRefs().observeOnce {
+        database.scheduledTreatmentCrossRefDao().getScheduledTreatmentCustomerCrossRefs().getOrAwaitValue().let {
             assertThat(it, `is`(emptyList()))
         }
 
-        database.customerDao().getCustomers().observeOnce {
+        database.customerDao().getCustomers().getOrAwaitValue().let {
             assertThat(it, `is`(listOf(customer)))
         }
 
@@ -167,15 +166,15 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
         database.scheduledTreatmentCrossRefDao().insert(scheduledTreatmentCustomerCrossRef)
         database.scheduledTreatmentCrossRefDao().delete(scheduledTreatmentCustomerCrossRef)
 
-        scheduledTreatmentDao.getScheduledTreatments().observeOnce {
+        scheduledTreatmentDao.getScheduledTreatments().getOrAwaitValue().let {
             assertThat(it, `is`(listOf(scheduledTreatment)))
         }
 
-        database.scheduledTreatmentCrossRefDao().getScheduledTreatmentCustomerCrossRefs().observeOnce {
+        database.scheduledTreatmentCrossRefDao().getScheduledTreatmentCustomerCrossRefs().getOrAwaitValue().let {
             assertThat(it, `is`(emptyList()))
         }
 
-        database.customerDao().getCustomers().observeOnce {
+        database.customerDao().getCustomers().getOrAwaitValue().let {
             assertThat(it, `is`(listOf(customer)))
         }
 
@@ -206,15 +205,15 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
             //TODO ask delete cross reference and scheduled treatment if they have passed
         }
 
-        scheduledTreatmentDao.getScheduledTreatments().observeOnce {
+        scheduledTreatmentDao.getScheduledTreatments().getOrAwaitValue().let {
             assertThat(it, `is`(listOf(scheduledTreatment)))
         }
 
-        database.scheduledTreatmentCrossRefDao().getScheduledTreatmentCustomerCrossRefs().observeOnce {
+        database.scheduledTreatmentCrossRefDao().getScheduledTreatmentCustomerCrossRefs().getOrAwaitValue().let {
             assertThat(it, `is`(listOf(scheduledTreatmentCustomerCrossRef)))
         }
 
-        database.customerDao().getCustomers().observeOnce {
+        database.customerDao().getCustomers().getOrAwaitValue().let {
             assertThat(it, `is`(listOf(customer)))
         }
 
@@ -238,17 +237,17 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
         database.scheduledTreatmentCrossRefDao().insert(scheduledTreatmentCustomerCrossRef)
 
 
-        scheduledTreatmentDao.getScheduledTreatments().observeOnce {
+        scheduledTreatmentDao.getScheduledTreatments().getOrAwaitValue().let {
             assertThat(it, `is`(listOf(scheduledTreatment)))
         }
 
-        database.scheduledTreatmentCrossRefDao().getScheduledTreatmentCustomerCrossRefs().observeOnce {
+        database.scheduledTreatmentCrossRefDao().getScheduledTreatmentCustomerCrossRefs().getOrAwaitValue().let {
             assertThat(it, `is`(listOf(scheduledTreatmentCustomerCrossRef)))
         }
 
         val calendarBehind = Calendar.getInstance().apply { set(Calendar.YEAR, 2020) }
 
-        scheduledTreatmentDao.getUpcomingScheduledTreatmentsWithData(calendarBehind).observeOnce {
+        scheduledTreatmentDao.getUpcomingScheduledTreatmentsWithData(calendarBehind).getOrAwaitValue().let {
             assertThat(it.size, `is`(1))
         }
     }
@@ -272,17 +271,17 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
         database.scheduledTreatmentCrossRefDao().insert(scheduledTreatmentCustomerCrossRef)
 
 
-        scheduledTreatmentDao.getScheduledTreatments().observeOnce {
+        scheduledTreatmentDao.getScheduledTreatments().getOrAwaitValue().let {
             assertThat(it, `is`(listOf(scheduledTreatment)))
         }
 
-        database.scheduledTreatmentCrossRefDao().getScheduledTreatmentCustomerCrossRefs().observeOnce {
+        database.scheduledTreatmentCrossRefDao().getScheduledTreatmentCustomerCrossRefs().getOrAwaitValue().let {
             assertThat(it, `is`(listOf(scheduledTreatmentCustomerCrossRef)))
         }
 
         val calendarInfront = Calendar.getInstance().apply { set(Calendar.YEAR, 2022) }
 
-        scheduledTreatmentDao.getUpcomingScheduledTreatmentsWithData(calendarInfront).observeOnce {
+        scheduledTreatmentDao.getUpcomingScheduledTreatmentsWithData(calendarInfront).getOrAwaitValue().let {
             assertThat(it.size, `is`(0))
         }
     }

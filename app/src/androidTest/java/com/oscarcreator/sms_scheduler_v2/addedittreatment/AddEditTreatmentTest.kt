@@ -15,7 +15,11 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.android.material.chip.Chip
 import com.oscarcreator.sms_scheduler_v2.R
+import com.oscarcreator.sms_scheduler_v2.data.AppDatabase
+import com.oscarcreator.sms_scheduler_v2.data.customer.Customer
+import kotlinx.coroutines.runBlocking
 import org.hamcrest.Matchers
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -26,12 +30,17 @@ class AddEditTreatmentTest {
     lateinit var addEditTreatmentScenario: FragmentScenario<AddEditTreatmentFragment>
     private lateinit var context: Context
 
+    private lateinit var database: AppDatabase
+
+    private val customer = Customer(14, "Bengt Bengtsson", "903849047839")
+
     @Before
-    fun setup() {
+    fun setup(): Unit = runBlocking {
         context = InstrumentationRegistry.getInstrumentation().targetContext
         val navController = TestNavHostController(
             ApplicationProvider.getApplicationContext())
         navController.setGraph(R.navigation.nav_graph)
+        database = AppDatabase.getDatabase(context, scope = this)
 
         addEditTreatmentScenario = launchFragmentInContainer<AddEditTreatmentFragment>(themeResId = R.style.AppTheme)
 
@@ -40,6 +49,16 @@ class AddEditTreatmentTest {
             Navigation.setViewNavController(fragment.requireView(), navController)
         }
 
+
+        database.customerDao().insert(customer)
+
+
+    }
+
+    //TODO not sure if this is really good or not to manipulate the database in the application
+    @After
+    fun removeData(): Unit = runBlocking {
+        database.customerDao().delete(customer)
     }
 
     @Test
@@ -78,7 +97,7 @@ class AddEditTreatmentTest {
     fun autocompleteRecyclerView_isDisplayed(){
 
         Espresso.onView(ViewMatchers.withId(R.id.et_contact_input))
-            .perform(ViewActions.typeText("erere"))
+            .perform(ViewActions.typeText("Bengt"))
 
         Espresso.onView(ViewMatchers.withId(R.id.rv_autocomplete_list))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
@@ -109,35 +128,23 @@ class AddEditTreatmentTest {
             .check(ViewAssertions.matches(ViewMatchers.withText("")))
     }
 
-
-    @Test
-    fun contactList_writeContactName_isChip(){
-        Espresso.onView(ViewMatchers.withId(R.id.fl_contacts))
-            .check(ViewAssertions.matches(ViewMatchers.hasChildCount(1)))
-
-        val contactName = "Bengt"
-
-        Espresso.onView(ViewMatchers.withId(R.id.et_contact_input))
-            .perform(ViewActions.typeText("$contactName "))
-
-        Espresso.onView(ViewMatchers.withId(R.id.fl_contacts))
-            .check(ViewAssertions.matches(ViewMatchers.hasChildCount(2)))
-
-        Espresso.onView(ViewMatchers.withText(contactName))
-            .check(ViewAssertions.matches(Matchers.isA(Chip::class.java)))
-    }
-
     @Test
     fun contactList_deleteContactWithBackspace(){
 
-        val contactName = "Bengt"
+        val contactName = "Bengt Bengtsson"
 
-        //write to edittext
+        // write text
         Espresso.onView(ViewMatchers.withId(R.id.et_contact_input))
-            .perform(ViewActions.typeText("$contactName "))
+            .perform(ViewActions.typeText("Bengt"))
+
+        // click the autocompleted item
+        Espresso.onView(ViewMatchers.withText("Bengt Bengtsson"))
+            .perform(ViewActions.click())
 
         // check if added view is of type chip
-        Espresso.onView(ViewMatchers.withText(contactName))
+        Espresso.onView(Matchers.allOf(
+            ViewMatchers.withText(contactName),
+            ViewMatchers.withParent(ViewMatchers.isDisplayed())))
             .check(ViewAssertions.matches(Matchers.isA(Chip::class.java)))
 
         // write delete to edittext
@@ -148,27 +155,6 @@ class AddEditTreatmentTest {
         Espresso.onView(ViewMatchers.withId(R.id.fl_contacts))
             .check(ViewAssertions.matches(ViewMatchers.hasChildCount(1)))
 
-    }
-
-    @Test
-    fun contactList_writeContactThenClickImeAction_isChip(){
-
-        val contactName = "Bengt"
-
-        // write contact name then click imeaction
-        // also check if text in edittext is cleared
-        Espresso.onView(ViewMatchers.withId(R.id.et_contact_input))
-            .perform(ViewActions.typeText(contactName))
-            .perform(ViewActions.pressImeActionButton())
-            .check(ViewAssertions.matches(ViewMatchers.withText("")))
-
-        // Check if chip has been added
-        Espresso.onView(ViewMatchers.withId(R.id.fl_contacts))
-            .check(ViewAssertions.matches(ViewMatchers.hasChildCount(2)))
-
-        // check if view added is of type chip
-        Espresso.onView(ViewMatchers.withText(contactName))
-            .check(ViewAssertions.matches(Matchers.isA(Chip::class.java)))
     }
 
     @Test

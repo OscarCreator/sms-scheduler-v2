@@ -7,6 +7,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import com.oscarcreator.sms_scheduler_v2.data.AppDatabase
 import com.oscarcreator.sms_scheduler_v2.data.customer.Customer
+import com.oscarcreator.sms_scheduler_v2.data.customer.CustomerRepository
 import com.oscarcreator.sms_scheduler_v2.data.message.Message
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.DefaultScheduledTreatmentRepository
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatment
@@ -44,28 +45,26 @@ class AddEditTreatmentViewModelTest {
     private val receiver2 = Customer(2, "Bergit", "0720934592", 4000)
     private val treatment = Treatment(9, "Treatment 4", 400, 90)
 
-    private lateinit var repository: ScheduledTreatmentRepository
+    private lateinit var scheduledTreatmentRepository: ScheduledTreatmentRepository
 
     @Test
     @Before
     fun initializeDatabase() = runBlocking {
         val context = ApplicationProvider.getApplicationContext<Context>()
-        database = Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java).allowMainThreadQueries().build()
-        repository = DefaultScheduledTreatmentRepository.getInstance(
+        database = Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java).build()
+        scheduledTreatmentRepository = DefaultScheduledTreatmentRepository.getInstance(
             database.scheduledTreatmentDao(),
             database.scheduledTreatmentCrossRefDao()
         )
-        viewModel = AddEditTreatmentViewModel(repository)
+        val customerRepository = CustomerRepository.getInstance(database.customerDao())
+
+        viewModel = AddEditTreatmentViewModel(customerRepository, scheduledTreatmentRepository)
 
         assertThat(database.timeTemplateDao().insert(timeTemplate), `is`(timeTemplate.id))
         assertThat(database.messageDao().insert(message), `is`(message.id))
         assertThat(database.customerDao().insert(receiver1), `is`(receiver1.id))
         assertThat(database.customerDao().insert(receiver2), `is`(receiver2.id))
         assertThat(database.treatmentDao().insert(treatment), `is`(treatment.id))
-
-
-
-
     }
 
     @After
@@ -79,7 +78,7 @@ class AddEditTreatmentViewModelTest {
         Assert.assertEquals(viewModel.message.value, null)
         Assert.assertEquals(viewModel.timeModifier.value, null)
         Assert.assertEquals(viewModel.treatment.value, null)
-        Assert.assertEquals(viewModel.receivers.value, mutableListOf<Customer>())
+        Assert.assertEquals(viewModel.customers.value, mutableListOf<Customer>())
     }
 
     @Test
@@ -88,11 +87,11 @@ class AddEditTreatmentViewModelTest {
         val expected = listOf(receiver)
 
         viewModel.addReceiver(receiver)
-        assertThat(viewModel.receivers.getOrAwaitValue(), `is`(expected))
+        assertThat(viewModel.customers.getOrAwaitValue(), `is`(expected))
 
         viewModel.removeReceiver(receiver)
 
-        assertThat(viewModel.receivers.getOrAwaitValue(), `is`(emptyList<Customer>()))
+        assertThat(viewModel.customers.getOrAwaitValue(), `is`(emptyList<Customer>()))
     }
 
     @Test
@@ -119,19 +118,29 @@ class AddEditTreatmentViewModelTest {
             timeTemplateId = timeTemplate.id,
             messageId = message.id
         )
-        database.scheduledTreatmentDao().insert(scheduledTreatment)
+        assertThat(database.scheduledTreatmentDao().insert(scheduledTreatment), `is`(11))
         val scheduledTreatmentCustomerCrossRef =
             ScheduledTreatmentCustomerCrossRef(11, receiver1.id)
         database.scheduledTreatmentCrossRefDao().insert(scheduledTreatmentCustomerCrossRef)
 
+        val customerRetrieved = database.customerDao().getCustomer(receiver1.id)
+        assertThat(customerRetrieved, `is`(receiver1))
+        val treatmentRetrieved = database.treatmentDao().getTreatment(treatment.id)
+        assertThat(treatmentRetrieved, `is`(treatment))
+        val timeTemplates = database.timeTemplateDao().getTimeTemplates()
+        assertThat(timeTemplates.getOrAwaitValue(), `is`(listOf(timeTemplate)))
+        val messages = database.messageDao().getMessages()
+        assertThat(messages.getOrAwaitValue(), `is`(listOf(message)))
+        val crossRef = database.scheduledTreatmentCrossRefDao().getScheduledTreatmentCustomerCrossRefs(11)
+        assertThat(crossRef, `is`(listOf(scheduledTreatmentCustomerCrossRef)))
 
         viewModel.start(11)
 
         //TODO find out why the query to database returns null
         // when the objects clearly is in database
-        assertThat(viewModel.receivers.getOrAwaitValue(), `is`(mutableListOf()))
+        assertThat(viewModel.customers.getOrAwaitValue(), `is`(mutableListOf(receiver1)))
 
-        assertThat(viewModel.message.getOrAwaitValue(), `is`(message))
+        assertThat(viewModel.message.getOrAwaitValue(), `is`(messages))
     }
 
 }

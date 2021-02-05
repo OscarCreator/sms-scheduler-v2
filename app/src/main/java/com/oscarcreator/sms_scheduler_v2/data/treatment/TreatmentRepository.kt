@@ -12,4 +12,18 @@ class TreatmentRepository private constructor(private val treatmentDao: Treatmen
 
     suspend fun delete(vararg treatments: Treatment) = treatmentDao.delete(*treatments)
 
+    companion object {
+
+        // For Singleton instantiation
+        @Volatile
+        private var instance: TreatmentRepository? = null
+
+        fun getInstance(
+            treatmentDao: TreatmentDao
+        ) = instance ?: synchronized(this) {
+            instance ?: TreatmentRepository(treatmentDao)
+                .also { instance = it }
+        }
+    }
+
 }

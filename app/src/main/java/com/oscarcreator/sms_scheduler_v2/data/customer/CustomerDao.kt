@@ -57,4 +57,15 @@ interface CustomerDao {
     @Update(onConflict = OnConflictStrategy.IGNORE)
     suspend fun update(customer: Customer): Int
 
+
+    /** TODO test
+     * Returns the first five customers which is matched by name or
+     *  phone number with the passed text.
+     *
+     *  @param text the text which is used to search through customers
+     *  @return the matched customers
+     * */
+    @Query("SELECT * FROM customers WHERE name LIKE :text OR phone_number LIKE :text ORDER BY name, phone_number LIMIT 5")
+    suspend fun getCustomersLike(text: String): List<Customer>
+
 }

@@ -3,10 +3,7 @@ package com.oscarcreator.sms_scheduler_v2.addedittreatment
 import android.os.Bundle
 import android.text.InputFilter
 import android.util.Log
-import android.view.KeyEvent
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
 import android.widget.Toast
@@ -19,8 +16,12 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.oscarcreator.sms_scheduler_v2.R
 import com.oscarcreator.sms_scheduler_v2.data.AppDatabase
+import com.oscarcreator.sms_scheduler_v2.data.customer.Customer
+import com.oscarcreator.sms_scheduler_v2.data.customer.CustomerRepository
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.DefaultScheduledTreatmentRepository
+import com.oscarcreator.sms_scheduler_v2.data.treatment.TreatmentRepository
 import com.oscarcreator.sms_scheduler_v2.databinding.FragmentAddeditTreatmentBinding
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -30,12 +31,24 @@ class AddEditTreatmentFragment : Fragment() {
         const val TAG = "AddEditTreatmentFragment"
     }
 
-    var _binding: FragmentAddeditTreatmentBinding? = null
+    private var _binding: FragmentAddeditTreatmentBinding? = null
 
-    val binding: FragmentAddeditTreatmentBinding
+    private val binding: FragmentAddeditTreatmentBinding
         get() = _binding!!
 
-    lateinit var addEditTreatmentViewModel: AddEditTreatmentViewModel
+    private lateinit var addEditTreatmentViewModel: AddEditTreatmentViewModel
+
+    private lateinit var database: AppDatabase
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.addedit_fragment_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,19 +58,27 @@ class AddEditTreatmentFragment : Fragment() {
 
         _binding = FragmentAddeditTreatmentBinding.inflate(inflater, container, false)
 
-        val database = AppDatabase.getDatabase(requireContext(), lifecycleScope)
+        database = AppDatabase.getDatabase(requireContext(), lifecycleScope)
+        //TODO move to injectorUtils?
         addEditTreatmentViewModel = AddEditTreatmentViewModel(
+            CustomerRepository.getInstance(database.customerDao()),
             DefaultScheduledTreatmentRepository.getInstance(
                 database.scheduledTreatmentDao(),
                 database.scheduledTreatmentCrossRefDao()
             )
         )
 
+        val treatmentRepository = TreatmentRepository.getInstance(database.treatmentDao())
+
         addEditTreatmentViewModel.start()
 
         //TODO replace with a custom adapter
-        val tempItems = listOf("Behandling 1", "Behandling 2", "Behandling 3")
-        val adapter = ArrayAdapter(requireContext(), R.layout.dropdown_menu_list_item, tempItems)
+        val adapter = ArrayAdapter(requireContext(), R.layout.dropdown_menu_list_item, mutableListOf<String>())
+        treatmentRepository.getTreatments().observe(viewLifecycleOwner, {
+            for (treatment in it){
+                adapter.add(treatment.name)
+            }
+        })
         binding.tvTreatments.setAdapter(adapter)
 
 
@@ -105,79 +126,62 @@ class AddEditTreatmentFragment : Fragment() {
         }
 
         setUpContactInput()
-        setUpAutocompleteList()
 
         return binding.root
     }
 
-    private fun setUpAutocompleteList() {
-        //TODO replace with contact on device
-        // this list is updated with a query every time the text changes
-        // so only the matching contacts is shown
-        val tempList = listOf(
-            Pair("Bengt Bengtsson", "074502352"),
-            Pair("Bengt Bengtsson2", "074502352"),
-            Pair("Bengt Bengtsson3", "074502352"),
-            Pair("Bengt Bengtsson4", "074502352"),
-            Pair("Bengt Bengtsson5", "074502352"),
-            Pair("Bengt Bengtsson6", "074502352")
-        )
+    //TODO refactor flexboxlayout with editext to a view
+    private fun setUpContactInput() {
 
         val adapter = ContactsListAdapter(
-            ContactsListAdapter.OnContactClickedListener { name: String ->
-                binding.etContactInput.setText("$name ")
+            ContactsListAdapter.OnContactClickedListener { customer: Customer ->
+                addReceiver(customer)
             }
-        ).apply {
-            setContactList(tempList)
-        }
+        )
 
         binding.rvAutocompleteList.apply {
             this.adapter = adapter
             layoutManager = LinearLayoutManager(context)
 
         }
-    }
 
-    //TODO refactor flexboxlayout with editext to a view
-    //TODO make only recyclerview able to add receiver and not space or ime action
-    private fun setUpContactInput() {
         binding.etContactInput.apply {
-            setOnEditorActionListener { textView, keyCode, _ ->
+            setOnEditorActionListener { _, keyCode, _ ->
                 // if ime action is clicked
                 if (keyCode == EditorInfo.IME_ACTION_DONE) {
-                    binding.rvAutocompleteList.visibility = View.GONE
 
-                    //and text is greater than 1
-                    if (textView.text.isNotEmpty()) {
-                        addReceiver()
+                    //If only one item left in recyclerview add the customer
+                    if (binding.rvAutocompleteList.visibility == View.VISIBLE &&
+                        adapter.itemCount == 1) {
+                        addReceiver(adapter.list[0])
                         return@setOnEditorActionListener true
                     }
-
                 }
                 false
             }
+            addTextChangedListener(
+                afterTextChanged = { text ->
+                    // hide if there is no text, otherwise show and replace adapter list
+                    if (text != null && text.isEmpty()) {
+                        binding.rvAutocompleteList.visibility = View.GONE
+                    } else {
+                        lifecycleScope.launch {
+                            adapter.setContacts(
+                                addEditTreatmentViewModel.getCustomersLike(text.toString()))
+                            binding.rvAutocompleteList.visibility = View.VISIBLE
+                        }
+                    }
+                })
 
-            setOnKeyListener { view, keyCode, keyEvent ->
+            //remove chip if hitting del
+            setOnKeyListener { _, keyCode, keyEvent ->
                 if (keyEvent.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_DEL) {
-                    removeChip()
+                    removeReceiver()
                     return@setOnKeyListener true
                 }
 
                 false
             }
-            addTextChangedListener(onTextChanged = { text, _, _, _ ->
-                if (text != null) {
-                    if (text.length > 1 && text[text.lastIndex] == ' ') {
-
-                        binding.rvAutocompleteList.visibility = View.GONE
-                        addReceiver()
-                    } else if (text.isEmpty()) {
-                        binding.rvAutocompleteList.visibility = View.GONE
-                    } else {
-                        binding.rvAutocompleteList.visibility = View.VISIBLE
-                    }
-                }
-            })
 
             // Remove the ability to write a space as first character
             filters = arrayOf(
@@ -188,37 +192,38 @@ class AddEditTreatmentFragment : Fragment() {
                     null
                 })
         }
-
     }
 
-    private fun addReceiver(
-        name: String = binding.etContactInput.text.toString().trim()
-    ) {
+    private fun addReceiver(customer: Customer) {
         binding.etContactInput.text.clear()
-        addNewChip(name)
+        addNewChip(customer)
+        addEditTreatmentViewModel.addReceiver(customer)
     }
 
-    private fun addNewChip(person: String) {
-        //TODO add ... at end if not able display everyting
+    private fun removeReceiver(){
+        binding.flContacts.run {
+            if (childCount > 1) {
+                addEditTreatmentViewModel.removeReceiver(childCount - 2)
+                removeViewAt(childCount - 2)
+            }
+        }
+    }
+
+    private fun addNewChip(customer: Customer) {
         val chip = Chip(context).apply {
-            text = person
+            text = customer.name
             isCloseIconVisible = true
             isClickable = true
             isCheckable = false
             setOnCloseIconClickListener {
                 binding.flContacts.removeView(this)
+                //better to delete with index
+                addEditTreatmentViewModel.removeReceiver(customer)
             }
         }
 
         binding.flContacts.addView(chip, binding.flContacts.childCount - 1)
     }
 
-    private fun removeChip() {
-        binding.flContacts.run {
-            if (childCount > 1) {
-                removeViewAt(childCount - 2)
-            }
-        }
-    }
 
 }

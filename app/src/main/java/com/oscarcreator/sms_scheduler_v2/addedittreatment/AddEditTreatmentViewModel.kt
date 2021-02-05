@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.oscarcreator.sms_scheduler_v2.data.customer.Customer
+import com.oscarcreator.sms_scheduler_v2.data.customer.CustomerRepository
 import com.oscarcreator.sms_scheduler_v2.data.message.Message
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatment
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentCustomerCrossRef
@@ -17,6 +18,7 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 class AddEditTreatmentViewModel(
+    private val customerRepository: CustomerRepository,
     private val scheduledTreatmentRepository: ScheduledTreatmentRepository
 ) : ViewModel() {
 
@@ -24,9 +26,9 @@ class AddEditTreatmentViewModel(
         private const val TAG = "AddEditTreatmentViewModel"
     }
 
-    private val _receivers = MutableLiveData<MutableList<Customer>>(mutableListOf())
+    private val _customers = MutableLiveData<MutableList<Customer>>(mutableListOf())
     //TODO change to list so they can't be changed
-    val receivers: LiveData<MutableList<Customer>> = _receivers
+    val customers: LiveData<MutableList<Customer>> = _customers
 
     val time = MutableLiveData<Long>()
     val treatment = MutableLiveData<Treatment>()
@@ -40,12 +42,20 @@ class AddEditTreatmentViewModel(
     private var isNewScheduledTreatment = false
     private var isDataLoaded = false
 
-    fun addReceiver(receiver: Customer) {
-        _receivers.value!!.add(receiver)
+    suspend fun getCustomersLike(text: String): List<Customer> {
+        return customerRepository.getCustomersLike(text)
     }
 
-    fun removeReceiver(receiver: Customer) {
-        _receivers.value!!.remove(receiver)
+    fun addReceiver(receiver: Customer) {
+        _customers.value!!.add(receiver)
+    }
+
+    fun removeReceiver(index: Int) {
+        _customers.value!!.removeAt(index)
+    }
+
+    fun removeReceiver(customer: Customer){
+        _customers.value!!.remove(customer)
     }
 
     fun start(scheduledTreatmentId: Long? = null) {
@@ -79,14 +89,14 @@ class AddEditTreatmentViewModel(
         timeModifier.value = scheduledTreatmentWithData.timeTemplate
         message.value = scheduledTreatmentWithData.message
 
-        _receivers.value = scheduledTreatmentWithData.customers.toMutableList()
+        _customers.value = scheduledTreatmentWithData.customers.toMutableList()
 
         isDataLoaded = true
         Log.d("HELLO", "loaded values!!!")
     }
 
     fun saveScheduledTreatment() {
-        val currentReceivers = _receivers.value
+        val currentReceivers = _customers.value
         val currentTime = time.value
         val currentTreatment = treatment.value
         val currentTimeTemplate = timeModifier.value
