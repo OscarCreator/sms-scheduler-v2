@@ -10,6 +10,8 @@ import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.chip.Chip
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -48,6 +50,19 @@ class AddEditTreatmentFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.addedit_fragment_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId){
+            R.id.menu_check_done -> {
+                //addEditTreatmentViewModel.saveScheduledTreatment()
+            }
+            R.id.menu_clear -> {
+                //clear
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onCreateView(
@@ -114,11 +129,20 @@ class AddEditTreatmentFragment : Fragment() {
                 }.show(childFragmentManager, "time-picker")
         }
 
+        //TODO action not working with navigation test
+        binding.btnMessage.setOnClickListener(
+            Navigation.createNavigateOnClickListener(R.id.messageListFragment))
 
-        binding.btnMessage.setOnClickListener {
-            Toast.makeText(requireContext(), "Message button clicked", Toast.LENGTH_LONG)
-                .show()
-        }
+        //TODO exception in test "does not have a NavController set"
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Long>("key")?.observe(viewLifecycleOwner, {
+            viewLifecycleOwner.lifecycleScope.launch {
+                addEditTreatmentViewModel.message.value = database.messageDao().getMessage(it)
+            }
+        })
+
+        addEditTreatmentViewModel.message.observe(viewLifecycleOwner, {
+            binding.btnMessage.text = it.message
+        })
 
         binding.btnTimetemplate.setOnClickListener {
             Toast.makeText(requireContext(), "Time template button clicked", Toast.LENGTH_LONG)

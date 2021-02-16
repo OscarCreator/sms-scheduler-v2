@@ -20,5 +20,24 @@
         android:name="com.oscarcreator.sms_scheduler_v2.addedittreatment.AddEditTreatmentFragment"
         android:label="AddEdit"
         tools:layout="@layout/fragment_addedit_treatment"
+        >
+        <action
+            android:id="@+id/action_addEditTreatmentFragment_to_messageListFragment"
+            app:destination="@id/messageListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/messageListFragment"
+        android:name="com.oscarcreator.sms_scheduler_v2.messagelist.MessageListFragment"
+        android:label=""
+        tools:layout="@layout/fragment_message_list" >
+        <action
+            android:id="@+id/action_messageListFragment_to_addEditMessageFragment"
+            app:destination="@id/addEditMessageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addEditMessageFragment"
+        android:name="com.oscarcreator.sms_scheduler_v2.addeditmessage.AddEditMessageFragment"
+        android:label="AddEditMessageFragment"
+        tools:layout="@layout/fragment_addedit_message"
         />
 </navigation>

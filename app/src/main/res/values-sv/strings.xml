@@ -12,4 +12,6 @@
     <string name="time">Tid</string>
     <string name="time_template">Tidmall</string>
     <string name="message">Meddelande</string>
+    <string name="clear_fields">Töm fält</string>
+    <string name="complete">Färdigställ</string>
 </resources>

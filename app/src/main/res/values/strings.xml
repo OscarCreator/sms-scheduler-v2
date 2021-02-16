@@ -16,5 +16,7 @@
     <string name="time">Time</string>
     <string name="time_template">Time template</string>
     <string name="message">Message</string>
+    <string name="clear_fields">Clear fields</string>
+    <string name="complete">Complete</string>
 
 </resources>

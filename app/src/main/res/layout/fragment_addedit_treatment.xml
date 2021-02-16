@@ -126,6 +126,7 @@
         android:layout_height="60dp"
         android:hint="@string/message"
         android:padding="12dp"
+        android:maxLines="1"
         android:textAlignment="textStart"
         android:textAppearance="?attr/textAppearanceSubtitle1" />
 
@@ -133,11 +134,11 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_autocomplete_list"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:background="@color/colorAccent"
         android:visibility="gone"
         app:layout_constraintVertical_bias="0"
-        app:layout_constraintHeight_default="wrap"
+        app:layout_constrainedHeight="true"
         app:layout_constraintTop_toBottomOf="@id/ll_contacts_list"
         app:layout_constraintBottom_toBottomOf="parent"
         />

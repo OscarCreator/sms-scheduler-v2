@@ -18,6 +18,23 @@ interface MessageDao {
     fun getMessages(): LiveData<List<Message>>
 
     /**
+     * Returns messages which is templates.
+     *
+     * @return all messages with [Message.isTemplate] to true
+     * */
+    @Query("SELECT * FROM message WHERE isTemplate = 1")
+    fun getMessageTemplates(): LiveData<List<Message>>
+
+    /**
+     * Returns message with the passed id.
+     *
+     * @param id the id of the message.
+     * @return the message with the passed id
+     * */
+    @Query("SELECT * FROM message WHERE id = :id")
+    suspend fun getMessage(id: Long): Message
+
+    /**
      * Inserts a [Message] into the database.
      *
      * @param message the [Message] to be inserted
