@@ -24,5 +24,7 @@
     <string name="before_time">Before chosen time</string>
     <string name="after_time">After chosen time</string>
     <string name="time_template_missing_data">Time template must be at least one minute.</string>
+    <string name="view_contacts">Contacts</string>
+    <string name="view_treatments">Treatments</string>
 
 </resources>

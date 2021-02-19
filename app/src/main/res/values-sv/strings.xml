@@ -20,4 +20,6 @@
     <string name="before_time">Före vald tid</string>
     <string name="after_time">Efter vald tid</string>
     <string name="time_template_missing_data">Tidsmall måste vara åtminstonde en minut.</string>
+    <string name="view_contacts">Kontakter</string>
+    <string name="view_treatments">Behandlingar</string>
 </resources>

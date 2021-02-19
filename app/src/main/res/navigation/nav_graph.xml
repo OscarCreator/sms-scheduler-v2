@@ -14,6 +14,9 @@
         <action
             android:id="@+id/action_dashboardFragment_to_addEditTreatmentFragment"
             app:destination="@id/addEditTreatmentFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_contactListFragment"
+            app:destination="@id/contactListFragment" />
     </fragment>
     <fragment
         android:id="@+id/addEditTreatmentFragment"
@@ -58,5 +61,11 @@
         android:name="com.oscarcreator.sms_scheduler_v2.addedittimetemplate.AddEditTimeTemplateFragment"
         android:label="@string/timetemplate_title"
         tools:layout="@layout/fragment_addedit_timetemplate"
+        />
+    <fragment
+        android:id="@+id/contactListFragment"
+        android:name="com.oscarcreator.sms_scheduler_v2.contactlist.ContactListFragment"
+        android:label="ContactListFragment"
+        tools:layout="@layout/fragment_contact_list"
         />
 </navigation>
