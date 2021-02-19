@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.oscarcreator.sms_scheduler_v2.addedittreatment.ContactsListAdapter
 import com.oscarcreator.sms_scheduler_v2.data.AppDatabase
@@ -43,7 +44,8 @@ class ContactListFragment : Fragment() {
         }
 
         binding.fabAddContact.setOnClickListener {
-            Toast.makeText(requireContext(), "Add contact", Toast.LENGTH_LONG).show()
+            val action = ContactListFragmentDirections.actionContactListFragmentToAddEditContactFragment()
+            findNavController().navigate(action)
         }
 
         return binding.root

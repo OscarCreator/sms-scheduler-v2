@@ -26,5 +26,8 @@
     <string name="time_template_missing_data">Time template must be at least one minute.</string>
     <string name="view_contacts">Contacts</string>
     <string name="view_treatments">Treatments</string>
+    <string name="money">Money</string>
+    <string name="phone_number">Phone number</string>
+    <string name="name">Name</string>
 
 </resources>

@@ -22,4 +22,7 @@
     <string name="time_template_missing_data">Tidsmall måste vara åtminstonde en minut.</string>
     <string name="view_contacts">Kontakter</string>
     <string name="view_treatments">Behandlingar</string>
+    <string name="money">Pengar</string>
+    <string name="phone_number">Telefonnummer</string>
+    <string name="name">Namn</string>
 </resources>

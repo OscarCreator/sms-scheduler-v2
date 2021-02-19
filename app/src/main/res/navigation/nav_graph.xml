@@ -67,5 +67,15 @@
         android:name="com.oscarcreator.sms_scheduler_v2.contactlist.ContactListFragment"
         android:label="ContactListFragment"
         tools:layout="@layout/fragment_contact_list"
+        >
+        <action
+            android:id="@+id/action_contactListFragment_to_addEditContactFragment"
+            app:destination="@id/addEditContactFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addEditContactFragment"
+        android:name="com.oscarcreator.sms_scheduler_v2.addeditcontact.AddEditContactFragment"
+        android:label="AddEditContactFragment"
+        tools:layout="@layout/fragment_addedit_contact"
         />
 </navigation>
