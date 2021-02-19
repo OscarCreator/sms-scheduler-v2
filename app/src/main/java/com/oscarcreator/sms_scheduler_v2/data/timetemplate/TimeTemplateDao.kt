@@ -16,6 +16,12 @@ interface TimeTemplateDao {
     fun getTimeTemplates(): LiveData<List<TimeTemplate>>
 
     /**
+     * Returns the matching timetemplate
+     * */
+    @Query("SELECT * FROM time_template WHERE id == :id")
+    suspend fun getTimeTemplate(id: Long): TimeTemplate
+
+    /**
      * Inserts a [TimeTemplate] into the database.
      *
      * @param timeTemplate the [TimeTemplate] to be inserted

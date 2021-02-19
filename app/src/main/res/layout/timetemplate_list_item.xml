@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cv_timetemplate"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    android:clickable="true"
+    android:focusable="true"
+    android:layout_margin="8dp"
+    >
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_timetemplate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="This is a sample text and \nit got multiple lines"
+        style="?attr/textAppearanceBody1"
+        android:lines="1"
+        android:padding="12dp"
+        />
+
+</com.google.android.material.card.MaterialCardView>

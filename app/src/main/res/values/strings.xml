@@ -18,5 +18,11 @@
     <string name="message">Message</string>
     <string name="clear_fields">Clear fields</string>
     <string name="complete">Complete</string>
+    <string name="timetemplate_title">TimeTemplate</string>
+    <string name="message_title">Message</string>
+    <string name="addedit_treatment_title">AddEdit</string>
+    <string name="before_time">Before chosen time</string>
+    <string name="after_time">After chosen time</string>
+    <string name="time_template_missing_data">Time template must be at least one minute.</string>
 
 </resources>

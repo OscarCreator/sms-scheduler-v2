@@ -14,4 +14,10 @@
     <string name="message">Meddelande</string>
     <string name="clear_fields">Töm fält</string>
     <string name="complete">Färdigställ</string>
+    <string name="timetemplate_title">Tidsmall</string>
+    <string name="message_title">Meddelande</string>
+    <string name="addedit_treatment_title">Skapa/Redigera</string>
+    <string name="before_time">Före vald tid</string>
+    <string name="after_time">Efter vald tid</string>
+    <string name="time_template_missing_data">Tidsmall måste vara åtminstonde en minut.</string>
 </resources>

@@ -24,3 +24,34 @@ fun Calendar.dateToText(context: Context, currentTime: Calendar, locale: Locale 
 
     return dateFormat.format(this.time)
 }
+
+fun Long.toTimeTemplateText(): String {
+    val isNegative = this < 0
+    //remove sign of millis
+    var tempMillis = maxOf(this, -this)
+    val days = tempMillis / 86_400_000
+    //remove days as millis
+    tempMillis -= days * 86_400_000
+    val hours = tempMillis / 3_600_000
+    //remove hours as millis
+    tempMillis -= hours * 3_600_000
+    val minutes = tempMillis / 60_000
+
+    val stringBuilder = StringBuilder()
+
+    if(isNegative){
+        stringBuilder.append("-")
+    }
+    if (days > 0){
+        stringBuilder.append(days).append("d").append(" ")
+    }
+    if (hours > 0){
+        stringBuilder.append(hours).append("h").append(" ")
+    }
+
+    if (minutes > 0){
+        stringBuilder.append(minutes).append("m")
+    }
+
+    return stringBuilder.toString().trim()
+}

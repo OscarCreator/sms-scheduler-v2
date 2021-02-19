@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switch_beforeafter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textOn="@string/before_time"
+        android:textOff="@string/after_time"
+        android:checked="true"
+        android:text="@string/before_time"
+
+        app:layout_constraintTop_toBottomOf="@id/ll_time_picker"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+
+    <LinearLayout
+        android:id="@+id/ll_time_picker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:orientation="horizontal"
+        android:layout_marginTop="32dp"
+        >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="8dp"
+            >
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_days"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Days"
+                style="?attr/textAppearanceSubtitle1"
+                android:layout_gravity="center_horizontal"
+                />
+
+            <NumberPicker
+                android:id="@+id/np_days"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="8dp"
+            >
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_hours"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hours"
+                style="?attr/textAppearanceSubtitle1"
+                android:layout_gravity="center_horizontal"
+                />
+
+            <NumberPicker
+                android:id="@+id/np_hours"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="8dp"
+            >
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_minutes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Minutes"
+                style="?attr/textAppearanceSubtitle1"
+                android:layout_gravity="center_horizontal"
+                />
+
+            <NumberPicker
+                android:id="@+id/np_minutes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -23,6 +22,7 @@ import com.oscarcreator.sms_scheduler_v2.data.customer.CustomerRepository
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.DefaultScheduledTreatmentRepository
 import com.oscarcreator.sms_scheduler_v2.data.treatment.TreatmentRepository
 import com.oscarcreator.sms_scheduler_v2.databinding.FragmentAddeditTreatmentBinding
+import com.oscarcreator.sms_scheduler_v2.util.toTimeTemplateText
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
@@ -140,14 +140,23 @@ class AddEditTreatmentFragment : Fragment() {
             }
         })
 
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Long>("timetemplate-id-key")?.observe(viewLifecycleOwner, {
+            viewLifecycleOwner.lifecycleScope.launch {
+                addEditTreatmentViewModel.timeModifier.value = database.timeTemplateDao().getTimeTemplate(it)
+            }
+        })
+
         addEditTreatmentViewModel.message.observe(viewLifecycleOwner, {
             binding.btnMessage.text = it.message
         })
 
-        binding.btnTimetemplate.setOnClickListener {
-            Toast.makeText(requireContext(), "Time template button clicked", Toast.LENGTH_LONG)
-                .show()
-        }
+        addEditTreatmentViewModel.timeModifier.observe(viewLifecycleOwner, {
+            binding.btnTimetemplate.text = it.delay.toTimeTemplateText()
+
+        })
+
+        binding.btnTimetemplate.setOnClickListener(
+            Navigation.createNavigateOnClickListener(R.id.timeTemplateListFragment))
 
         setUpContactInput()
 
