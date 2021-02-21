@@ -1,4 +1,4 @@
-package com.oscarcreator.sms_scheduler_v2.timetemplatelist
+package com.oscarcreator.sms_scheduler_v2.timetemplates
 
 import android.view.LayoutInflater
 import android.view.View

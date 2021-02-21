@@ -1,4 +1,4 @@
-package com.oscarcreator.sms_scheduler_v2.addedittreatment
+package com.oscarcreator.sms_scheduler_v2.addeditscheduledtreatment
 
 import android.content.Context
 import android.view.KeyEvent
@@ -27,7 +27,7 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class AddEditTreatmentTest {
 
-    lateinit var addEditTreatmentScenario: FragmentScenario<AddEditTreatmentFragment>
+    lateinit var addEditScheduledTreatmentScenario: FragmentScenario<AddEditScheduledTreatmentFragment>
     private lateinit var context: Context
 
     private lateinit var database: AppDatabase
@@ -42,10 +42,10 @@ class AddEditTreatmentTest {
         navController.setGraph(R.navigation.nav_graph)
         database = AppDatabase.getDatabase(context, scope = this)
 
-        addEditTreatmentScenario = launchFragmentInContainer<AddEditTreatmentFragment>(themeResId = R.style.AppTheme)
+        addEditScheduledTreatmentScenario = launchFragmentInContainer<AddEditScheduledTreatmentFragment>(themeResId = R.style.AppTheme)
 
         // Set the NavController property on the fragment
-        addEditTreatmentScenario.onFragment { fragment ->
+        addEditScheduledTreatmentScenario.onFragment { fragment ->
             Navigation.setViewNavController(fragment.requireView(), navController)
         }
 

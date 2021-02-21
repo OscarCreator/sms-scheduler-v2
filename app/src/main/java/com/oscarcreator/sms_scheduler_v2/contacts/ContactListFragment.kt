@@ -1,4 +1,4 @@
-package com.oscarcreator.sms_scheduler_v2.contactlist
+package com.oscarcreator.sms_scheduler_v2.contacts
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.oscarcreator.sms_scheduler_v2.addedittreatment.ContactsListAdapter
+import com.oscarcreator.sms_scheduler_v2.addeditscheduledtreatment.ContactsListAdapter
 import com.oscarcreator.sms_scheduler_v2.data.AppDatabase
 import com.oscarcreator.sms_scheduler_v2.databinding.FragmentContactListBinding
 

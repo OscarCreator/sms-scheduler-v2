@@ -1,4 +1,4 @@
-package com.oscarcreator.sms_scheduler_v2.messagelist
+package com.oscarcreator.sms_scheduler_v2.messages
 
 import android.os.Bundle
 import android.view.*

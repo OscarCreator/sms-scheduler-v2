@@ -12,7 +12,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.oscarcreator.sms_scheduler_v2.MainActivity
 import com.oscarcreator.sms_scheduler_v2.R
-import com.oscarcreator.sms_scheduler_v2.addedittreatment.AddEditTreatmentFragment
+import com.oscarcreator.sms_scheduler_v2.addeditscheduledtreatment.AddEditScheduledTreatmentFragment
 import org.hamcrest.CoreMatchers
 import org.hamcrest.MatcherAssert
 import org.junit.Rule
@@ -64,7 +64,7 @@ class AddEditMessageNavigationTest {
 
 
         // Create a graphical FragmentScenario for the AddEditTreatment
-        val addEditTreatmentScenario = launchFragmentInContainer<AddEditTreatmentFragment>(themeResId = R.style.AppTheme)
+        val addEditTreatmentScenario = launchFragmentInContainer<AddEditScheduledTreatmentFragment>(themeResId = R.style.AppTheme)
 
         // Set the NavController property on the fragment
         addEditTreatmentScenario.onFragment { fragment ->

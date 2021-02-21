@@ -1,20 +1,19 @@
-package com.oscarcreator.sms_scheduler_v2.timetemplatelist
+package com.oscarcreator.sms_scheduler_v2.messages
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.oscarcreator.sms_scheduler_v2.databinding.FragmentDialogTimetemplateBinding
-import com.oscarcreator.sms_scheduler_v2.util.toTimeTemplateText
+import com.oscarcreator.sms_scheduler_v2.databinding.FragmentDialogMessageBinding
 
-class TimeTemplateBottomSheetDialogFragment : BottomSheetDialogFragment() {
+class MessageBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
     private var listener: OnCompleteButtonClicked? = null
 
-    private var _binding: FragmentDialogTimetemplateBinding? = null
+    private var _binding: FragmentDialogMessageBinding? = null
 
-    private val binding: FragmentDialogTimetemplateBinding
+    private val binding: FragmentDialogMessageBinding
         get() = _binding!!
 
     override fun onCreateView(
@@ -22,12 +21,12 @@ class TimeTemplateBottomSheetDialogFragment : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentDialogTimetemplateBinding.inflate(inflater, container, false)
 
 
-        val millis = requireArguments().getLong("timetemplate-key")
+        _binding = FragmentDialogMessageBinding.inflate(inflater, container, false)
 
-        binding.tvTimetemplate.text = millis.toTimeTemplateText()
+
+        binding.tvMessage.text = arguments?.getString("message-key")
 
         binding.btnUse.setOnClickListener {
             listener?.onCompleteButtonClicked()
@@ -35,7 +34,6 @@ class TimeTemplateBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
         return binding.root
     }
-
 
     fun setOnCompleteButtonClicked(listener: () -> Unit){
         this.listener = object : OnCompleteButtonClicked {
@@ -48,5 +46,4 @@ class TimeTemplateBottomSheetDialogFragment : BottomSheetDialogFragment() {
     interface OnCompleteButtonClicked {
         fun onCompleteButtonClicked()
     }
-
 }

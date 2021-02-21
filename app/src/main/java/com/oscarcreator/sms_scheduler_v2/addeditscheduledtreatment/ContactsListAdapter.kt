@@ -1,4 +1,4 @@
-package com.oscarcreator.sms_scheduler_v2.addedittreatment
+package com.oscarcreator.sms_scheduler_v2.addeditscheduledtreatment
 
 import android.view.LayoutInflater
 import android.view.View

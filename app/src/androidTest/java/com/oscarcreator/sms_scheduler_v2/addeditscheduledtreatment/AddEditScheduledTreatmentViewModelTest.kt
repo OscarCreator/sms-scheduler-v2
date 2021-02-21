@@ -1,4 +1,4 @@
-package com.oscarcreator.sms_scheduler_v2.addedittreatment
+package com.oscarcreator.sms_scheduler_v2.addeditscheduledtreatment
 
 import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
@@ -25,7 +25,7 @@ import java.util.*
 
 
 @ExperimentalCoroutinesApi
-class AddEditTreatmentViewModelTest {
+class AddEditScheduledTreatmentViewModelTest {
 
 
     @get:Rule
@@ -37,7 +37,7 @@ class AddEditTreatmentViewModelTest {
     var mainCoroutineRule = MainCoroutineRule()
 
     lateinit var database: AppDatabase
-    private lateinit var viewModel: AddEditTreatmentViewModel
+    private lateinit var viewModelScheduled: AddEditScheduledTreatmentViewModel
 
     private val timeTemplate = TimeTemplate(6, 100)
     private val message = Message(8, "some old text", true)
@@ -58,7 +58,7 @@ class AddEditTreatmentViewModelTest {
         )
         val customerRepository = CustomerRepository.getInstance(database.customerDao())
 
-        viewModel = AddEditTreatmentViewModel(customerRepository, scheduledTreatmentRepository)
+        viewModelScheduled = AddEditScheduledTreatmentViewModel(customerRepository, scheduledTreatmentRepository)
 
         assertThat(database.timeTemplateDao().insert(timeTemplate), `is`(timeTemplate.id))
         assertThat(database.messageDao().insert(message), `is`(message.id))
@@ -74,11 +74,11 @@ class AddEditTreatmentViewModelTest {
 
     @Test
     fun testDefaultValues() {
-        Assert.assertEquals(viewModel.time.value, null)
-        Assert.assertEquals(viewModel.message.value, null)
-        Assert.assertEquals(viewModel.timeModifier.value, null)
-        Assert.assertEquals(viewModel.treatment.value, null)
-        Assert.assertEquals(viewModel.customers.value, mutableListOf<Customer>())
+        Assert.assertEquals(viewModelScheduled.time.value, null)
+        Assert.assertEquals(viewModelScheduled.message.value, null)
+        Assert.assertEquals(viewModelScheduled.timeModifier.value, null)
+        Assert.assertEquals(viewModelScheduled.treatment.value, null)
+        Assert.assertEquals(viewModelScheduled.customers.value, mutableListOf<Customer>())
     }
 
     @Test
@@ -86,17 +86,17 @@ class AddEditTreatmentViewModelTest {
         val receiver = Customer(name = "Bengt", phoneNumber = "0740203052")
         val expected = listOf(receiver)
 
-        viewModel.addReceiver(receiver)
-        assertThat(viewModel.customers.getOrAwaitValue(), `is`(expected))
+        viewModelScheduled.addReceiver(receiver)
+        assertThat(viewModelScheduled.customers.getOrAwaitValue(), `is`(expected))
 
-        viewModel.removeReceiver(receiver)
+        viewModelScheduled.removeReceiver(receiver)
 
-        assertThat(viewModel.customers.getOrAwaitValue(), `is`(emptyList<Customer>()))
+        assertThat(viewModelScheduled.customers.getOrAwaitValue(), `is`(emptyList<Customer>()))
     }
 
     @Test
     fun start_noId_keepsDefaultValues() = runBlocking {
-        viewModel.start()
+        viewModelScheduled.start()
         testDefaultValues()
     }
 
@@ -134,13 +134,13 @@ class AddEditTreatmentViewModelTest {
         val crossRef = database.scheduledTreatmentCrossRefDao().getScheduledTreatmentCustomerCrossRefs(11)
         assertThat(crossRef, `is`(listOf(scheduledTreatmentCustomerCrossRef)))
 
-        viewModel.start(11)
+        viewModelScheduled.start(11)
 
         //TODO find out why the query to database returns null
         // when the objects clearly is in database
-        assertThat(viewModel.customers.getOrAwaitValue(), `is`(mutableListOf(receiver1)))
+        assertThat(viewModelScheduled.customers.getOrAwaitValue(), `is`(mutableListOf(receiver1)))
 
-        assertThat(viewModel.message.getOrAwaitValue(), `is`(messages))
+        assertThat(viewModelScheduled.message.getOrAwaitValue(), `is`(messages))
     }
 
 }

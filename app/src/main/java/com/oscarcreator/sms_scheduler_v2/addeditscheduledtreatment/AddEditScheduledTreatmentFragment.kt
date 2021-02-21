@@ -1,4 +1,4 @@
-package com.oscarcreator.sms_scheduler_v2.addedittreatment
+package com.oscarcreator.sms_scheduler_v2.addeditscheduledtreatment
 
 import android.os.Bundle
 import android.text.InputFilter
@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
-class AddEditTreatmentFragment : Fragment() {
+class AddEditScheduledTreatmentFragment : Fragment() {
 
     companion object {
         const val TAG = "AddEditTreatmentFragment"
@@ -38,7 +38,7 @@ class AddEditTreatmentFragment : Fragment() {
     private val binding: FragmentAddeditTreatmentBinding
         get() = _binding!!
 
-    private lateinit var addEditTreatmentViewModel: AddEditTreatmentViewModel
+    private lateinit var addEditScheduledTreatmentViewModel: AddEditScheduledTreatmentViewModel
 
     private lateinit var database: AppDatabase
 
@@ -75,7 +75,7 @@ class AddEditTreatmentFragment : Fragment() {
 
         database = AppDatabase.getDatabase(requireContext(), lifecycleScope)
         //TODO move to injectorUtils?
-        addEditTreatmentViewModel = AddEditTreatmentViewModel(
+        addEditScheduledTreatmentViewModel = AddEditScheduledTreatmentViewModel(
             CustomerRepository.getInstance(database.customerDao()),
             DefaultScheduledTreatmentRepository.getInstance(
                 database.scheduledTreatmentDao(),
@@ -85,7 +85,7 @@ class AddEditTreatmentFragment : Fragment() {
 
         val treatmentRepository = TreatmentRepository.getInstance(database.treatmentDao())
 
-        addEditTreatmentViewModel.start()
+        addEditScheduledTreatmentViewModel.start()
 
         //TODO replace with a custom adapter
         val adapter = ArrayAdapter(requireContext(), R.layout.dropdown_menu_list_item, mutableListOf<String>())
@@ -98,7 +98,7 @@ class AddEditTreatmentFragment : Fragment() {
 
 
         val formatter = SimpleDateFormat("HH:mm dd/MM/yyyy", Locale.getDefault())
-        addEditTreatmentViewModel.time.observe(viewLifecycleOwner, {
+        addEditScheduledTreatmentViewModel.time.observe(viewLifecycleOwner, {
                 binding.btnTime.text = formatter.format(it)
             }
         )
@@ -120,11 +120,11 @@ class AddEditTreatmentFragment : Fragment() {
                                 addOnPositiveButtonClickListener {
                                     //adding date as millisecond to the chosen time
                                     chosenTime += it
-                                    addEditTreatmentViewModel.time.value = chosenTime
+                                    addEditScheduledTreatmentViewModel.time.value = chosenTime
 
                                 }
                             }
-                            .show(this@AddEditTreatmentFragment.childFragmentManager, "date-picker")
+                            .show(this@AddEditScheduledTreatmentFragment.childFragmentManager, "date-picker")
                     }
                 }.show(childFragmentManager, "time-picker")
         }
@@ -136,21 +136,21 @@ class AddEditTreatmentFragment : Fragment() {
         //TODO exception in test "does not have a NavController set"
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Long>("key")?.observe(viewLifecycleOwner, {
             viewLifecycleOwner.lifecycleScope.launch {
-                addEditTreatmentViewModel.message.value = database.messageDao().getMessage(it)
+                addEditScheduledTreatmentViewModel.message.value = database.messageDao().getMessage(it)
             }
         })
 
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Long>("timetemplate-id-key")?.observe(viewLifecycleOwner, {
             viewLifecycleOwner.lifecycleScope.launch {
-                addEditTreatmentViewModel.timeModifier.value = database.timeTemplateDao().getTimeTemplate(it)
+                addEditScheduledTreatmentViewModel.timeModifier.value = database.timeTemplateDao().getTimeTemplate(it)
             }
         })
 
-        addEditTreatmentViewModel.message.observe(viewLifecycleOwner, {
+        addEditScheduledTreatmentViewModel.message.observe(viewLifecycleOwner, {
             binding.btnMessage.text = it.message
         })
 
-        addEditTreatmentViewModel.timeModifier.observe(viewLifecycleOwner, {
+        addEditScheduledTreatmentViewModel.timeModifier.observe(viewLifecycleOwner, {
             binding.btnTimetemplate.text = it.delay.toTimeTemplateText()
 
         })
@@ -200,7 +200,7 @@ class AddEditTreatmentFragment : Fragment() {
                     } else {
                         lifecycleScope.launch {
                             adapter.setContacts(
-                                addEditTreatmentViewModel.getCustomersLike(text.toString()))
+                                addEditScheduledTreatmentViewModel.getCustomersLike(text.toString()))
                             binding.rvAutocompleteList.visibility = View.VISIBLE
                         }
                     }
@@ -230,13 +230,13 @@ class AddEditTreatmentFragment : Fragment() {
     private fun addReceiver(customer: Customer) {
         binding.etContactInput.text.clear()
         addNewChip(customer)
-        addEditTreatmentViewModel.addReceiver(customer)
+        addEditScheduledTreatmentViewModel.addReceiver(customer)
     }
 
     private fun removeReceiver(){
         binding.flContacts.run {
             if (childCount > 1) {
-                addEditTreatmentViewModel.removeReceiver(childCount - 2)
+                addEditScheduledTreatmentViewModel.removeReceiver(childCount - 2)
                 removeViewAt(childCount - 2)
             }
         }
@@ -251,7 +251,7 @@ class AddEditTreatmentFragment : Fragment() {
             setOnCloseIconClickListener {
                 binding.flContacts.removeView(this)
                 //better to delete with index
-                addEditTreatmentViewModel.removeReceiver(customer)
+                addEditScheduledTreatmentViewModel.removeReceiver(customer)
             }
         }
 

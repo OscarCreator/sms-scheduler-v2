@@ -1,4 +1,4 @@
-package com.oscarcreator.sms_scheduler_v2.addedittreatment
+package com.oscarcreator.sms_scheduler_v2.addeditscheduledtreatment
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -17,7 +17,7 @@ import com.oscarcreator.sms_scheduler_v2.data.treatment.Treatment
 import kotlinx.coroutines.launch
 import java.util.*
 
-class AddEditTreatmentViewModel(
+class AddEditScheduledTreatmentViewModel(
     private val customerRepository: CustomerRepository,
     private val scheduledTreatmentRepository: ScheduledTreatmentRepository
 ) : ViewModel() {
