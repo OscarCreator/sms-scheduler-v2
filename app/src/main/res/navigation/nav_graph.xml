@@ -17,6 +17,9 @@
         <action
             android:id="@+id/action_dashboardFragment_to_contactListFragment"
             app:destination="@id/contactListFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
     <fragment
         android:id="@+id/addEditTreatmentFragment"
@@ -65,7 +68,7 @@
     <fragment
         android:id="@+id/contactListFragment"
         android:name="com.oscarcreator.sms_scheduler_v2.contactlist.ContactListFragment"
-        android:label="ContactListFragment"
+        android:label="Contacts"
         tools:layout="@layout/fragment_contact_list"
         >
         <action
@@ -75,7 +78,21 @@
     <fragment
         android:id="@+id/addEditContactFragment"
         android:name="com.oscarcreator.sms_scheduler_v2.addeditcontact.AddEditContactFragment"
-        android:label="AddEditContactFragment"
+        android:label="@string/addedit_contact_title"
         tools:layout="@layout/fragment_addedit_contact"
+        />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.oscarcreator.sms_scheduler_v2.settings.SettingsFragment"
+        android:label="@string/settings_title" >
+        <action
+            android:id="@+id/action_settingsFragment_to_loadContactsFragment"
+            app:destination="@id/loadContactsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loadContactsFragment"
+        android:name="com.oscarcreator.sms_scheduler_v2.settings.LoadContactsFragment"
+        android:label="@string/import_contacts_title"
+        tools:layout="@layout/fragment_load_contacts"
         />
 </navigation>

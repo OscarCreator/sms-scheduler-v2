@@ -25,4 +25,10 @@
     <string name="money">Pengar</string>
     <string name="phone_number">Telefonnummer</string>
     <string name="name">Namn</string>
+    <string name="settings">Inställningar</string>
+    <string name="import_contacts">Importera kontakter</string>
+    <string name="permission_denied">Tillåtelse nekad</string>
+    <string name="addedit_contact_title">Skapa/Redigera</string>
+    <string name="settings_title">Inställningar</string>
+    <string name="import_contacts_title">Importera kontakter</string>
 </resources>

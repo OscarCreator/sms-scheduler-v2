@@ -89,4 +89,10 @@ dependencies {
     //flexbox
     implementation 'com.google.android:flexbox:2.0.1'
 
+    //preference fragment
+    implementation "androidx.preference:preference-ktx:$preference_version"
+
+    //permissions
+    implementation "androidx.activity:activity-ktx:$activity_version"
+
 }

@@ -35,6 +35,12 @@ class DashboardFragment : Fragment() {
 
                 return true
             }
+
+            R.id.settings -> {
+                val action = DashboardFragmentDirections.actionDashboardFragmentToSettingsFragment()
+                findNavController().navigate(action)
+                return true
+            }
         }
 
         return super.onOptionsItemSelected(item)
