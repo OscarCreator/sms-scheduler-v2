@@ -31,4 +31,6 @@
     <string name="addedit_contact_title">Skapa/Redigera</string>
     <string name="settings_title">Inställningar</string>
     <string name="import_contacts_title">Importera kontakter</string>
+    <string name="price">Pris</string>
+    <string name="duration">Längd</string>
 </resources>

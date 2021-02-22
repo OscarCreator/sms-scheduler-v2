@@ -32,7 +32,8 @@ class DashboardFragment : Fragment() {
             }
 
             R.id.view_treatments -> {
-
+                val action = DashboardFragmentDirections.actionDashboardFragmentToTreatmentsFragment()
+                findNavController().navigate(action)
                 return true
             }
 

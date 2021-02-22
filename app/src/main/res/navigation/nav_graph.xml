@@ -20,12 +20,15 @@
         <action
             android:id="@+id/action_dashboardFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_treatmentsFragment"
+            app:destination="@id/treatmentsFragment" />
     </fragment>
     <fragment
         android:id="@+id/addEditTreatmentFragment"
         android:name="com.oscarcreator.sms_scheduler_v2.addeditscheduledtreatment.AddEditScheduledTreatmentFragment"
         android:label="@string/addedit_treatment_title"
-        tools:layout="@layout/fragment_addedit_treatment"
+        tools:layout="@layout/fragment_addedit_scheduled_treatment"
         >
         <action
             android:id="@+id/action_addEditTreatmentFragment_to_messageListFragment"
@@ -94,5 +97,21 @@
         android:name="com.oscarcreator.sms_scheduler_v2.settings.LoadContactsFragment"
         android:label="@string/import_contacts_title"
         tools:layout="@layout/fragment_load_contacts"
+        />
+    <fragment
+        android:id="@+id/treatmentsFragment"
+        android:name="com.oscarcreator.sms_scheduler_v2.treatments.TreatmentsFragment"
+        android:label="TreatmentsFragment"
+        tools:layout="@layout/fragment_treatments"
+        >
+        <action
+            android:id="@+id/action_treatmentsFragment_to_addEditTreatment"
+            app:destination="@id/addEditTreatment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addEditTreatment"
+        android:name="com.oscarcreator.sms_scheduler_v2.addedittreatment.AddEditTreatmentFragment"
+        android:label="AddEditTreatment"
+        tools:layout="@layout/fragment_addedit_treatment"
         />
 </navigation>

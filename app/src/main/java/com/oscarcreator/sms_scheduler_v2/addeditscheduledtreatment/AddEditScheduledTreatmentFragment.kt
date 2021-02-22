@@ -21,7 +21,7 @@ import com.oscarcreator.sms_scheduler_v2.data.customer.Customer
 import com.oscarcreator.sms_scheduler_v2.data.customer.CustomerRepository
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.DefaultScheduledTreatmentRepository
 import com.oscarcreator.sms_scheduler_v2.data.treatment.TreatmentRepository
-import com.oscarcreator.sms_scheduler_v2.databinding.FragmentAddeditTreatmentBinding
+import com.oscarcreator.sms_scheduler_v2.databinding.FragmentAddeditScheduledTreatmentBinding
 import com.oscarcreator.sms_scheduler_v2.util.toTimeTemplateText
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -33,9 +33,9 @@ class AddEditScheduledTreatmentFragment : Fragment() {
         const val TAG = "AddEditTreatmentFragment"
     }
 
-    private var _binding: FragmentAddeditTreatmentBinding? = null
+    private var _binding: FragmentAddeditScheduledTreatmentBinding? = null
 
-    private val binding: FragmentAddeditTreatmentBinding
+    private val binding: FragmentAddeditScheduledTreatmentBinding
         get() = _binding!!
 
     private lateinit var addEditScheduledTreatmentViewModel: AddEditScheduledTreatmentViewModel
@@ -71,7 +71,7 @@ class AddEditScheduledTreatmentFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = FragmentAddeditTreatmentBinding.inflate(inflater, container, false)
+        _binding = FragmentAddeditScheduledTreatmentBinding.inflate(inflater, container, false)
 
         database = AppDatabase.getDatabase(requireContext(), lifecycleScope)
         //TODO move to injectorUtils?

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <!--    https://stackoverflow.com/questions/50574943/how-to-add-chips-from-material-components-library-to-input-field-in-android-->
+
+    <LinearLayout
+        android:id="@+id/ll_contacts_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="60dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingStart="12dp"
+            android:paddingEnd="18dp"
+            android:text="@string/to"
+            android:textAlignment="gravity"
+            android:textSize="16dp" />
+
+        <com.google.android.flexbox.FlexboxLayout
+            android:id="@+id/fl_contacts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="8dp"
+            app:alignContent="space_around"
+            app:alignItems="stretch"
+            app:dividerDrawable="@drawable/divider"
+            app:flexWrap="wrap"
+            app:showDivider="beginning|middle|end">
+
+            <EditText
+                android:id="@+id/et_contact_input"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:background="@android:color/transparent"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                app:layout_flexGrow="1"
+                />
+
+        </com.google.android.flexbox.FlexboxLayout>
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:id="@+id/ll_time"
+        app:layout_constraintTop_toBottomOf="@id/ll_contacts_list"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="12dp"
+            android:text="@string/time"
+            android:textAlignment="gravity"
+            android:textSize="16dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_time"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="12dp"
+            android:textAlignment="textStart"
+            android:textAppearance="?attr/textAppearanceSubtitle1" />
+
+    </LinearLayout>
+
+    <!--    TODO remove hint after selection-->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_treatments"
+        app:layout_constraintTop_toBottomOf="@id/ll_time"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:hint="@string/treatment"
+        app:expandedHintEnabled="true"
+        app:hintAnimationEnabled="false"
+        app:hintEnabled="true"
+        app:hintTextAppearance="?attr/textAppearanceSubtitle1">
+
+        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+            android:id="@+id/tv_treatments"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="none"
+            android:textAppearance="?attr/textAppearanceSubtitle1" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_timetemplate"
+        app:layout_constraintTop_toBottomOf="@id/til_treatments"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:hint="@string/time_template"
+        android:padding="12dp"
+        android:textAlignment="textStart"
+        android:textAppearance="?attr/textAppearanceSubtitle1" />
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_message"
+        app:layout_constraintTop_toBottomOf="@id/btn_timetemplate"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:hint="@string/message"
+        android:padding="12dp"
+        android:maxLines="1"
+        android:textAlignment="textStart"
+        android:textAppearance="?attr/textAppearanceSubtitle1" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_autocomplete_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent"
+        android:visibility="gone"
+        app:layout_constraintVertical_bias="0"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintTop_toBottomOf="@id/ll_contacts_list"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
