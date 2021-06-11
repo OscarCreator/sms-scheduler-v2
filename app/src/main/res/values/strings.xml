@@ -37,5 +37,9 @@
     <string name="import_contacts_title">Import contacts</string>
     <string name="price">Price</string>
     <string name="duration">Duration</string>
+    <string name="new_message">New message</string>
+    <string name="choose">Choose</string>
+    <string name="edit">Edit</string>
+    <string name="empty_message">Message cannot be empty</string>
 
 </resources>

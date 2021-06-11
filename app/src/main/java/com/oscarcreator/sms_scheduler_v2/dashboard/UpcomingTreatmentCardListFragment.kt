@@ -8,7 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.oscarcreator.sms_scheduler_v2.data.AppDatabase
-import com.oscarcreator.sms_scheduler_v2.data.scheduled.DefaultScheduledTreatmentRepository
+import com.oscarcreator.sms_scheduler_v2.data.scheduled.DefaultScheduledTreatmentsRepository
+import com.oscarcreator.sms_scheduler_v2.data.scheduled.local.ScheduledTreatmentsLocalDataSource
 import com.oscarcreator.sms_scheduler_v2.databinding.FragmentUpcomingTreatmentCardListBinding
 
 class UpcomingTreatmentCardListFragment : Fragment() {
@@ -34,9 +35,11 @@ class UpcomingTreatmentCardListFragment : Fragment() {
         }
         val database = AppDatabase.getDatabase(requireContext(), lifecycleScope)
         val upcomingTreatmentCardListViewModel = UpcomingTreatmentCardListViewModel(
-                DefaultScheduledTreatmentRepository.getInstance(
+                DefaultScheduledTreatmentsRepository(
+                    ScheduledTreatmentsLocalDataSource(
                     database.scheduledTreatmentDao(),
                     database.scheduledTreatmentCrossRefDao()
+                    )
                 )
             )
 

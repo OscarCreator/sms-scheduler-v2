@@ -13,7 +13,7 @@
         >
         <action
             android:id="@+id/action_dashboardFragment_to_addEditTreatmentFragment"
-            app:destination="@id/addEditTreatmentFragment" />
+            app:destination="@id/addEditScheduledTreatmentFragment" />
         <action
             android:id="@+id/action_dashboardFragment_to_contactListFragment"
             app:destination="@id/contactListFragment" />
@@ -25,7 +25,7 @@
             app:destination="@id/treatmentsFragment" />
     </fragment>
     <fragment
-        android:id="@+id/addEditTreatmentFragment"
+        android:id="@+id/addEditScheduledTreatmentFragment"
         android:name="com.oscarcreator.sms_scheduler_v2.addeditscheduledtreatment.AddEditScheduledTreatmentFragment"
         android:label="@string/addedit_treatment_title"
         tools:layout="@layout/fragment_addedit_scheduled_treatment"
@@ -39,9 +39,12 @@
     </fragment>
     <fragment
         android:id="@+id/messageListFragment"
-        android:name="com.oscarcreator.sms_scheduler_v2.messages.MessageListFragment"
-        android:label=""
-        tools:layout="@layout/fragment_message_list" >
+        android:name="com.oscarcreator.sms_scheduler_v2.messages.MessagesFragment"
+        android:label="Messages"
+        tools:layout="@layout/fragment_messages" >
+        <action
+            android:id="@+id/action_messageListFragment_to_messageDetailFragment"
+            app:destination="@id/messageDetailFragment" />
         <action
             android:id="@+id/action_messageListFragment_to_addEditMessageFragment"
             app:destination="@id/addEditMessageFragment" />
@@ -51,7 +54,12 @@
         android:name="com.oscarcreator.sms_scheduler_v2.addeditmessage.AddEditMessageFragment"
         android:label="@string/message_title"
         tools:layout="@layout/fragment_addedit_message"
-        />
+        >
+        <argument
+            android:name="message_id"
+            app:argType="long"
+            android:defaultValue="-1L" />
+    </fragment>
     <fragment
         android:id="@+id/timeTemplateListFragment"
         android:name="com.oscarcreator.sms_scheduler_v2.timetemplates.TimeTemplateListFragment"
@@ -114,4 +122,18 @@
         android:label="AddEditTreatment"
         tools:layout="@layout/fragment_addedit_treatment"
         />
+    <fragment
+        android:id="@+id/messageDetailFragment"
+        android:name="com.oscarcreator.sms_scheduler_v2.messagedetail.MessageDetailFragment"
+        android:label="MessageDetailFragment" >
+        <action
+            android:id="@+id/action_messageDetailFragment_to_addEditMessageFragment"
+            app:destination="@id/addEditMessageFragment" />
+        <action
+            android:id="@+id/action_messageDetailFragment_to_addEditTreatmentFragment"
+            app:destination="@id/addEditScheduledTreatmentFragment" />
+        <argument
+            android:name="message_id"
+            app:argType="long" />
+    </fragment>
 </navigation>

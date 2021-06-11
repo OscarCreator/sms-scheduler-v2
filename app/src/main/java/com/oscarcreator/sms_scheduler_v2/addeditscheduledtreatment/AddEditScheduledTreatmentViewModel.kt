@@ -6,20 +6,26 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.oscarcreator.sms_scheduler_v2.data.customer.Customer
-import com.oscarcreator.sms_scheduler_v2.data.customer.CustomerRepository
+import com.oscarcreator.sms_scheduler_v2.data.customer.CustomersRepository
 import com.oscarcreator.sms_scheduler_v2.data.message.Message
+import com.oscarcreator.sms_scheduler_v2.data.message.MessagesRepository
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatment
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentCustomerCrossRef
-import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentRepository
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers
+import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentsRepository
 import com.oscarcreator.sms_scheduler_v2.data.timetemplate.TimeTemplate
+import com.oscarcreator.sms_scheduler_v2.data.timetemplate.TimeTemplatesRepository
 import com.oscarcreator.sms_scheduler_v2.data.treatment.Treatment
+import com.oscarcreator.sms_scheduler_v2.data.treatment.TreatmentsRepository
 import kotlinx.coroutines.launch
 import java.util.*
 
 class AddEditScheduledTreatmentViewModel(
-    private val customerRepository: CustomerRepository,
-    private val scheduledTreatmentRepository: ScheduledTreatmentRepository
+    private val customersRepository: CustomersRepository,
+    private val treatmentsRepository: TreatmentsRepository,
+    private val timeTemplatesRepository: TimeTemplatesRepository,
+    private val messagesRepository: MessagesRepository,
+    private val scheduledTreatmentsRepository: ScheduledTreatmentsRepository
 ) : ViewModel() {
 
     companion object {
@@ -35,6 +41,9 @@ class AddEditScheduledTreatmentViewModel(
     val timeModifier = MutableLiveData<TimeTemplate>()
     val message = MutableLiveData<Message>()
 
+    private val _allTreatments = treatmentsRepository.getTreatments()
+    val allTreatment = _allTreatments
+
     // Further implementation
     // https://github.com/android/architecture-samples/blob/main/app/src/main/java/com/example/android/architecture/blueprints/todoapp/addedittask/AddEditTaskViewModel.kt
 
@@ -43,8 +52,17 @@ class AddEditScheduledTreatmentViewModel(
     private var isDataLoaded = false
 
     suspend fun getCustomersLike(text: String): List<Customer> {
-        return customerRepository.getCustomersLike(text)
+        return customersRepository.getCustomersLike(text)
     }
+
+    suspend fun setMessageById(id: Long) {
+        message.value = messagesRepository.getMessage(id)
+    }
+
+    suspend fun setTimeTemplateById(id: Long) {
+        timeModifier.value = timeTemplatesRepository.getTimeTemplate(id)
+    }
+
 
     fun addReceiver(receiver: Customer) {
         _customers.value!!.add(receiver)
@@ -68,7 +86,7 @@ class AddEditScheduledTreatmentViewModel(
 
 
         viewModelScope.launch {
-            scheduledTreatmentRepository.getScheduledTreatmentWithData(scheduledTreatmentId).let {
+            scheduledTreatmentsRepository.getScheduledTreatmentWithData(scheduledTreatmentId).let {
                 if (it != null){
                     onScheduledTreatmentLoaded(it)
                 }else{
@@ -149,7 +167,7 @@ class AddEditScheduledTreatmentViewModel(
     ) =
         viewModelScope.launch {
             // launch is used to run it in a coroutine for communicating with database through repository
-            val newId = scheduledTreatmentRepository.insert(newScheduledTreatment)
+            val newId = scheduledTreatmentsRepository.insert(newScheduledTreatment)
 
             createScheduledTreatmentCustomerCrossRef(newId, receivers)
         }
@@ -162,14 +180,14 @@ class AddEditScheduledTreatmentViewModel(
             throw RuntimeException("update() was callled but scheduledTreatment is new")
         }
         viewModelScope.launch {
-            scheduledTreatmentRepository.update(scheduledTreatment)
+            scheduledTreatmentsRepository.update(scheduledTreatment)
             updateScheduledTreatmentCustomerCrossRef(scheduledTreatment.id, receivers)
         }
     }
 
     private suspend fun createScheduledTreatmentCustomerCrossRef(scheduledTreatmentId: Long, receivers: List<Customer>){
         for (receiver in receivers) {
-            scheduledTreatmentRepository.insertCrossRef(
+            scheduledTreatmentsRepository.insertCrossRef(
                 ScheduledTreatmentCustomerCrossRef(scheduledTreatmentId, receiver.id))
         }
     }
@@ -179,9 +197,10 @@ class AddEditScheduledTreatmentViewModel(
         receivers: List<Customer>
     ) {
         // Delete all old receivers
-        scheduledTreatmentRepository.deleteCrossRefs(scheduledTreatmentId)
+        scheduledTreatmentsRepository.deleteCrossRefs(scheduledTreatmentId)
         // Insert all new recievers
         createScheduledTreatmentCustomerCrossRef(scheduledTreatmentId, receivers)
     }
 
 }
+

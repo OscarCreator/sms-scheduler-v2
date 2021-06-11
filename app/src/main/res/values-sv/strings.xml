@@ -33,4 +33,8 @@
     <string name="import_contacts_title">Importera kontakter</string>
     <string name="price">Pris</string>
     <string name="duration">Längd</string>
+    <string name="new_message">Nytt meddelande</string>
+    <string name="choose">Välj</string>
+    <string name="edit">Redigera</string>
+    <string name="empty_message">Meddelandet kan inte vara tomt</string>
 </resources>

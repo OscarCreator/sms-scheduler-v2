@@ -7,17 +7,17 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.oscarcreator.sms_scheduler_v2.data.customer.Customer
-import com.oscarcreator.sms_scheduler_v2.data.customer.CustomerDao
+import com.oscarcreator.sms_scheduler_v2.data.customer.local.CustomerDao
 import com.oscarcreator.sms_scheduler_v2.data.message.Message
-import com.oscarcreator.sms_scheduler_v2.data.message.MessageDao
+import com.oscarcreator.sms_scheduler_v2.data.message.local.MessagesDao
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatment
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentCustomerCrossRef
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentCustomerCrossRefDao
-import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentDao
+import com.oscarcreator.sms_scheduler_v2.data.scheduled.local.ScheduledTreatmentDao
 import com.oscarcreator.sms_scheduler_v2.data.timetemplate.TimeTemplate
-import com.oscarcreator.sms_scheduler_v2.data.timetemplate.TimeTemplateDao
+import com.oscarcreator.sms_scheduler_v2.data.timetemplate.local.TimeTemplateDao
 import com.oscarcreator.sms_scheduler_v2.data.treatment.Treatment
-import com.oscarcreator.sms_scheduler_v2.data.treatment.TreatmentDao
+import com.oscarcreator.sms_scheduler_v2.data.treatment.local.TreatmentDao
 import com.oscarcreator.sms_scheduler_v2.util.Converters
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -39,7 +39,7 @@ abstract class AppDatabase : RoomDatabase() {
 
     abstract fun customerDao(): CustomerDao
     abstract fun treatmentDao(): TreatmentDao
-    abstract fun messageDao(): MessageDao
+    abstract fun messageDao(): MessagesDao
     abstract fun timeTemplateDao(): TimeTemplateDao
     abstract fun scheduledTreatmentDao(): ScheduledTreatmentDao
     abstract fun scheduledTreatmentCrossRefDao(): ScheduledTreatmentCustomerCrossRefDao
@@ -67,7 +67,8 @@ abstract class AppDatabase : RoomDatabase() {
         }
 
         suspend fun populateDatabase(database: AppDatabase) {
-
+            database.customerDao().insert(Customer(1, "Bengt", "04053824"))
+            database.customerDao().insert(Customer(2, "Jerry", "3759324567"))
         }
     }
 

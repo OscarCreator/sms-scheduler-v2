@@ -56,13 +56,21 @@ dependencies {
     testImplementation "androidx.test:runner:$androidxTest_version"
 
 
+
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
 
     androidTestImplementation "androidx.test:core-ktx:$androidxTest_version"
     androidTestImplementation "androidx.test:runner:$androidxTest_version"
     androidTestImplementation "androidx.test:rules:$androidxTest_version"
     androidTestImplementation 'org.hamcrest:hamcrest-library:2.2'
+
+    //Espresso
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
+    // recyclerview actions
+    androidTestImplementation "com.android.support.test.espresso:espresso-contrib:3.0.2"
+    implementation "androidx.test.espresso:espresso-idling-resource:$espresso_version"
+
+
     //room
     androidTestImplementation "androidx.room:room-testing:$room_version"
     //lifecycle components
@@ -94,5 +102,10 @@ dependencies {
 
     //permissions
     implementation "androidx.activity:activity-ktx:$activity_version"
+
+    // Architecture Components
+    implementation "androidx.lifecycle:lifecycle-extensions:$archLifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$archLifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$archLifecycle_version"
 
 }

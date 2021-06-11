@@ -82,7 +82,7 @@ class DashboardNavigationTest {
 
         // Verify that performing a click changes the NavController’s state
         onView(withId(R.id.fab_add_treatment)).perform(click())
-        assertThat(navController.currentDestination?.id, `is`(R.id.addEditTreatmentFragment))
+        assertThat(navController.currentDestination?.id, `is`(R.id.addEditScheduledTreatmentFragment))
 
     }
 

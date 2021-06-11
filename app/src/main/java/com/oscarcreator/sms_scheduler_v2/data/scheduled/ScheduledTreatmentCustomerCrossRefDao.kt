@@ -25,7 +25,7 @@ interface ScheduledTreatmentCustomerCrossRefDao {
      * @return the id of the inserted [ScheduledTreatmentCustomerCrossRef] object
      */
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(scheduledTreatmentCustomerCrossRef: ScheduledTreatmentCustomerCrossRef)
+    suspend fun insert(scheduledTreatmentCustomerCrossRef: ScheduledTreatmentCustomerCrossRef): Long
 
     /**
      * Deletes the [ScheduledTreatmentCustomerCrossRef]s specified and returns the number of [ScheduledTreatmentCustomerCrossRef]s deleted

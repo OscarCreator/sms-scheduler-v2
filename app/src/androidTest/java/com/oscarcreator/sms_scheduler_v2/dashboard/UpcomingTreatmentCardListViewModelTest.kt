@@ -7,7 +7,8 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.oscarcreator.sms_scheduler_v2.data.AppDatabase
-import com.oscarcreator.sms_scheduler_v2.data.scheduled.DefaultScheduledTreatmentRepository
+import com.oscarcreator.sms_scheduler_v2.data.scheduled.DefaultScheduledTreatmentsRepository
+import com.oscarcreator.sms_scheduler_v2.data.scheduled.local.ScheduledTreatmentsLocalDataSource
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -31,8 +32,9 @@ class UpcomingTreatmentCardListViewModelTest {
         val context = ApplicationProvider.getApplicationContext<Context>()
         database = Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java).build()
         viewModel = UpcomingTreatmentCardListViewModel(
-            DefaultScheduledTreatmentRepository.getInstance(database.scheduledTreatmentDao(),
-                database.scheduledTreatmentCrossRefDao()))
+            DefaultScheduledTreatmentsRepository(ScheduledTreatmentsLocalDataSource(
+                database.scheduledTreatmentDao(),
+                database.scheduledTreatmentCrossRefDao())))
     }
 
     @After
