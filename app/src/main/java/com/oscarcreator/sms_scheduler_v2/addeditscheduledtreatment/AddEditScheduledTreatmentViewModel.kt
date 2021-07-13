@@ -1,7 +1,6 @@
 package com.oscarcreator.sms_scheduler_v2.addeditscheduledtreatment
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -32,9 +31,9 @@ class AddEditScheduledTreatmentViewModel(
         private const val TAG = "AddEditTreatmentViewModel"
     }
 
-    private val _customers = MutableLiveData<MutableList<Customer>>(mutableListOf())
+    private var _customers: MutableList<Customer> = mutableListOf()
     //TODO change to list so they can't be changed
-    val customers: LiveData<MutableList<Customer>> = _customers
+    val customers: List<Customer> = _customers
 
     val time = MutableLiveData<Long>()
     val treatment = MutableLiveData<Treatment>()
@@ -65,15 +64,15 @@ class AddEditScheduledTreatmentViewModel(
 
 
     fun addReceiver(receiver: Customer) {
-        _customers.value!!.add(receiver)
+        _customers.add(receiver)
     }
 
     fun removeReceiver(index: Int) {
-        _customers.value!!.removeAt(index)
+        _customers.removeAt(index)
     }
 
     fun removeReceiver(customer: Customer){
-        _customers.value!!.remove(customer)
+        _customers.remove(customer)
     }
 
     fun start(scheduledTreatmentId: Long? = null) {
@@ -107,19 +106,19 @@ class AddEditScheduledTreatmentViewModel(
         timeModifier.value = scheduledTreatmentWithData.timeTemplate
         message.value = scheduledTreatmentWithData.message
 
-        _customers.value = scheduledTreatmentWithData.customers.toMutableList()
+        _customers = scheduledTreatmentWithData.customers.toMutableList()
 
         isDataLoaded = true
         Log.d("HELLO", "loaded values!!!")
     }
 
     fun saveScheduledTreatment() {
-        val currentReceivers = _customers.value
+        val currentReceivers = _customers
         val currentTime = time.value
         val currentTreatment = treatment.value
         val currentTimeTemplate = timeModifier.value
         val currentMessage = message.value
-        if (currentReceivers != null && currentReceivers.isEmpty()
+        if (currentReceivers.isEmpty()
             && currentTime != null && currentTime != 0L
             && currentTreatment != null
             && currentTimeTemplate != null

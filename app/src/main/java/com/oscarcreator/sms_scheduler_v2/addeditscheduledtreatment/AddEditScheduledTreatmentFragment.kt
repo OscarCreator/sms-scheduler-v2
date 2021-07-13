@@ -68,6 +68,15 @@ class AddEditScheduledTreatmentFragment : Fragment() {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        for (receiver in viewModel.customers) {
+            addNewChip(receiver)
+        }
+
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
