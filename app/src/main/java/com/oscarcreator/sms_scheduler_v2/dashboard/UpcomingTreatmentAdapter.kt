@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textview.MaterialTextView
 import com.oscarcreator.sms_scheduler_v2.R
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers
+import com.oscarcreator.sms_scheduler_v2.util.dateToText
+import java.util.*
 
 class UpcomingTreatmentAdapter() : RecyclerView.Adapter<UpcomingTreatmentAdapter.UpcomingTreatmentViewHolder>() {
 
@@ -30,20 +32,14 @@ class UpcomingTreatmentAdapter() : RecyclerView.Adapter<UpcomingTreatmentAdapter
     }
 
     override fun onBindViewHolder(holder: UpcomingTreatmentViewHolder, position: Int) {
-
-        if (position >= list.size){
-            //TODO remove
-            // temp data
-            holder.tvLabel.text = "Delivered"
-            holder.tvName.text = "Sid Ronny"
-            holder.tvTime.text = "14:00"
-        }else{
-            val current = list[position]
-            holder.tvLabel.text = current.scheduledTreatment.label.name
-            //TODO change to allow more than one customer
-            holder.tvName.text = current.customers[0].name
-            holder.tvTime.text = current.scheduledTreatment.treatmentTime.timeInMillis.toString()
-        }
+        val current = list[position]
+        holder.tvLabel.text = current.scheduledTreatment.label.name
+        holder.tvName.text = current.customers.stream().map{it.name}.toArray().joinToString(", ")
+        val c = Calendar.getInstance()
+        c.timeInMillis = current.scheduledTreatment.treatmentTime.timeInMillis + current.timeTemplate.delay
+        //TODO use this text as a title for grouping the scheduled treatments
+        // the time of sending the scheduled treatment should only be displayed per scheduled treatment
+        holder.tvTime.text = c.dateToText(holder.itemView.context, Calendar.getInstance())
 
     }
 

@@ -39,7 +39,7 @@ import java.util.*
 )
 data class ScheduledTreatment(
     /** id of the scheduled treatment */
-    @PrimaryKey @ColumnInfo(name = "scheduled_treatment_id") val id: Long = 0,
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "scheduled_treatment_id") val id: Long = 0,
 
     /** id of the associated [Treatment] */
     @ColumnInfo(name = "treatment_id") val treatmentId: Long,

@@ -60,6 +60,7 @@ class AddEditScheduledTreatmentFragment : Fragment() {
             R.id.menu_check_done -> {
                 viewModel.saveScheduledTreatment()
             }
+            //TODO remove?
             R.id.menu_clear -> {
                 //viewModel.clearData()
             }
@@ -75,6 +76,8 @@ class AddEditScheduledTreatmentFragment : Fragment() {
             addNewChip(receiver)
         }
 
+        binding.tvTreatments.setText(viewModel.treatment.value?.name, false)
+
     }
 
     override fun onCreateView(
@@ -85,6 +88,9 @@ class AddEditScheduledTreatmentFragment : Fragment() {
 
         _binding = FragmentAddeditScheduledTreatmentBinding.inflate(inflater, container, false)
 
+        viewModel.scheduledTreatmentUpdatedEvent.observe(viewLifecycleOwner, {
+            findNavController().navigateUp()
+        })
 
         //TODO arguments
         viewModel.start()
@@ -97,7 +103,11 @@ class AddEditScheduledTreatmentFragment : Fragment() {
             }
         })
         binding.tvTreatments.setAdapter(adapter)
+        binding.tvTreatments.setOnItemClickListener { _, _, position, _ ->
+            viewModel.treatment.value = viewModel.allTreatment.value?.get(position)
+        }
 
+        adapter.getPosition(binding.tvTreatments.text.toString())
 
         val formatter = SimpleDateFormat("HH:mm dd/MM/yyyy", Locale.getDefault())
         viewModel.time.observe(viewLifecycleOwner, {
