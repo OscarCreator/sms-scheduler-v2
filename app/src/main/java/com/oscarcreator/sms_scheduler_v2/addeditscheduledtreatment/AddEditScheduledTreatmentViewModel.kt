@@ -1,5 +1,6 @@
 package com.oscarcreator.sms_scheduler_v2.addeditscheduledtreatment
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -18,6 +19,7 @@ import com.oscarcreator.sms_scheduler_v2.data.timetemplate.TimeTemplatesReposito
 import com.oscarcreator.sms_scheduler_v2.data.treatment.Treatment
 import com.oscarcreator.sms_scheduler_v2.data.treatment.TreatmentsRepository
 import com.oscarcreator.sms_scheduler_v2.util.Event
+import com.oscarcreator.sms_scheduler_v2.util.scheduleAlarm
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -116,7 +118,7 @@ class AddEditScheduledTreatmentViewModel(
         Log.d("HELLO", "loaded values!!!")
     }
 
-    fun saveScheduledTreatment() {
+    fun saveScheduledTreatment(context: Context) {
         val currentReceivers = _customers
         val currentTime = time.value
         val currentTreatment = treatment.value
@@ -135,7 +137,7 @@ class AddEditScheduledTreatmentViewModel(
             && currentMessage != null
         ) {
             if (isNewScheduledTreatment || scheduledTreatmentId == null) {
-                createScheduledTreatment(
+                createScheduledTreatment(context,
                     ScheduledTreatment(
                         treatmentId = currentTreatment.id,
                         treatmentTime = Calendar.getInstance(Locale.getDefault())
@@ -171,6 +173,7 @@ class AddEditScheduledTreatmentViewModel(
      * Call this when about to create a new scheduledTreatment
      * */
     private fun createScheduledTreatment(
+        context: Context,
         newScheduledTreatment: ScheduledTreatment,
         receivers: List<Customer>
     ) =
@@ -179,6 +182,8 @@ class AddEditScheduledTreatmentViewModel(
             val newId = scheduledTreatmentsRepository.insert(newScheduledTreatment)
 
             createScheduledTreatmentCustomerCrossRef(newId, receivers)
+            scheduleAlarm(context, scheduledTreatmentsRepository.getScheduledTreatmentWithData(newId)!!)
+
             _scheduledTreatmentUpdatedEvent.value = Event(Unit)
         }
 

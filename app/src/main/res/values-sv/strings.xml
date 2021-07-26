@@ -37,4 +37,6 @@
     <string name="choose">Välj</string>
     <string name="edit">Redigera</string>
     <string name="empty_message">Meddelandet kan inte vara tomt</string>
+    <string name="sms_error_channel">Sms error</string>
+    <string name="sms_error_description">När ett schemalagt sms inte kunde bli skickat eller mottagit</string>
 </resources>

@@ -25,7 +25,7 @@ class ScheduledTreatmentTest {
         )
 
         assertThat(scheduledTreatment.id, `is`(0))
-        assertThat(scheduledTreatment.label, `is`(TreatmentStatus.SCHEDULED))
+        assertThat(scheduledTreatment.treatmentStatus, `is`(TreatmentStatus.SCHEDULED))
         assertThat(scheduledTreatment.cause, `is`(nullValue()))
 
     }

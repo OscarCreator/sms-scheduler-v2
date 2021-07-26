@@ -33,7 +33,7 @@ class UpcomingTreatmentAdapter() : RecyclerView.Adapter<UpcomingTreatmentAdapter
 
     override fun onBindViewHolder(holder: UpcomingTreatmentViewHolder, position: Int) {
         val current = list[position]
-        holder.tvLabel.text = current.scheduledTreatment.label.name
+        holder.tvLabel.text = current.scheduledTreatment.treatmentStatus.name
         holder.tvName.text = current.customers.stream().map{it.name}.toArray().joinToString(", ")
         val c = Calendar.getInstance()
         c.timeInMillis = current.scheduledTreatment.treatmentTime.timeInMillis + current.timeTemplate.delay

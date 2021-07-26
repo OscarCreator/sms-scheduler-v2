@@ -1,11 +1,16 @@
 package com.oscarcreator.sms_scheduler_v2.addeditscheduledtreatment
 
+import android.Manifest
+import android.app.AlertDialog
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.InputFilter
 import android.util.Log
 import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -25,6 +30,8 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
+//TODO only be able to send one customer at a time. Maybe split them up to multiple scheduled treatments instead.
+// Otherwise it will be difficult to keep track of status of the sms
 class AddEditScheduledTreatmentFragment : Fragment() {
 
     companion object {
@@ -58,7 +65,7 @@ class AddEditScheduledTreatmentFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId){
             R.id.menu_check_done -> {
-                viewModel.saveScheduledTreatment()
+                viewModel.saveScheduledTreatment(requireActivity())
             }
             //TODO remove?
             R.id.menu_clear -> {
@@ -179,7 +186,63 @@ class AddEditScheduledTreatmentFragment : Fragment() {
 
         setUpContactInput()
 
+
+        setUpSendSmsPermission()
+
         return binding.root
+    }
+
+    private fun setUpSendSmsPermission() {
+        val requestPermissionLauncher =
+            registerForActivityResult(ActivityResultContracts.RequestPermission()
+            ) { isGranted: Boolean ->
+                if (isGranted) {
+                    // Permission is granted. Continue the action or workflow in your
+                    // app.
+                } else {
+                    // Explain to the user that the feature is unavailable because the
+                    // features requires a permission that the user has denied. At the
+                    // same time, respect the user's decision. Don't link to system
+                    // settings in an effort to convince the user to change their
+                    // decision.
+                    AlertDialog.Builder(context)
+                        .setTitle("Send Sms Permission required")
+                        .setMessage("Send sms permission is required to scheduled sms to be sent automatically")
+                        .setPositiveButton("Ok") { _, _ ->
+                            findNavController().navigateUp()
+                        }
+                        .create().show()
+                    Log.d(TAG, "explain feature will be unavailable")
+
+                }
+            }
+
+
+        when {
+            ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED -> {
+                // Permission is granted
+            }
+            //TODO extract text to strings.xml
+            shouldShowRequestPermissionRationale(Manifest.permission.SEND_SMS) -> {
+                // In an educational UI, explain to the user why your app requires this
+                // permission for a specific feature to behave as expected. In this UI,
+                // include a "cancel" or "no thanks" button that allows the user to
+                // continue using your app without granting the permission.
+                AlertDialog.Builder(context)
+                    .setTitle("Sms permission required")
+                    .setMessage("Send sms permission is required to scheduled sms to be sent automatically. Do you want to allow Send SMS permission?")
+                    .setPositiveButton("Yes") {_, _ ->
+                        requestPermissionLauncher.launch(Manifest.permission.SEND_SMS)
+                    }
+                    .setNegativeButton("No") { _, _ ->
+                        findNavController().navigateUp()
+                    }.create().show()
+                Log.d(TAG, "show in context UI")
+            }
+            else -> {
+                requestPermissionLauncher.launch(Manifest.permission.SEND_SMS)
+            }
+        }
     }
 
     //TODO refactor flexboxlayout with editext to a view

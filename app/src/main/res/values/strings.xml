@@ -41,5 +41,7 @@
     <string name="choose">Choose</string>
     <string name="edit">Edit</string>
     <string name="empty_message">Message cannot be empty</string>
+    <string name="sms_error_channel">Sms error</string>
+    <string name="sms_error_description">When a scheduled sms failed to be delivered or sent</string>
 
 </resources>

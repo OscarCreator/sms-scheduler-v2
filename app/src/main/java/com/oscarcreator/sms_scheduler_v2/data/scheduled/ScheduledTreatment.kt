@@ -53,13 +53,15 @@ data class ScheduledTreatment(
     /** id of [Message] to be sent to the [Customer]s */
     @ColumnInfo(name = "message_id") val messageId: Long,
 
+    @ColumnInfo(name = "sms_status") var smsStatus: SmsStatus = SmsStatus.SCHEDULED,
+
     /** status of the treatment */
-    val label: TreatmentStatus = TreatmentStatus.SCHEDULED,
+    @ColumnInfo(name = "treatment_status") var treatmentStatus: TreatmentStatus = TreatmentStatus.SCHEDULED,
 
     /** cause of canceled treatment */
-    val cause: String? = null,
+    var cause: String? = null,
 
-)
+    )
 
 /**
  * The status of the scheduled treatment
@@ -75,6 +77,22 @@ enum class TreatmentStatus(val code: Int) {
     /** The treatment is canceled */
     CANCELED(2);
 }
+
+/**
+ * Status of the sms
+ * */
+enum class SmsStatus(val code: Int) {
+    /** SMS was not sent because of error */
+    ERROR(-1),
+    /** SMS is scheduled */
+    SCHEDULED(0),
+    /** SMS is sent to receiver */
+    SENT(1),
+    /** SMS is received by the receiver */
+    RECEIVED(2),
+
+}
+
 
 /**
  * A data class which combines the relations with the [ScheduledTreatment]
