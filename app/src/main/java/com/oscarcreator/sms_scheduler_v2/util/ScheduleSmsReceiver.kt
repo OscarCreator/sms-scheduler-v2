@@ -37,7 +37,7 @@ class ScheduleSmsReceiver() : BroadcastReceiver() {
                 val deliveredPendingIntent = PendingIntent.getBroadcast(
                     context,
                     id.toInt() * 4 + 2,
-                    Intent(context, DeliveredSmsReceiver::class.java),
+                    Intent(context, DeliveredSmsReceiver::class.java).apply { putExtras(intent.extras!!) },
                     PendingIntent.FLAG_UPDATE_CURRENT
                 )
 
