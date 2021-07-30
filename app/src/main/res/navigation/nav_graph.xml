@@ -23,6 +23,9 @@
         <action
             android:id="@+id/action_dashboardFragment_to_treatmentsFragment"
             app:destination="@id/treatmentsFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_scheduledTreatmentsFragment"
+            app:destination="@id/scheduledTreatmentsFragment" />
     </fragment>
     <fragment
         android:id="@+id/addEditScheduledTreatmentFragment"
@@ -36,6 +39,10 @@
         <action
             android:id="@+id/action_addEditTreatmentFragment_to_timeTemplateListFragment"
             app:destination="@id/timeTemplateListFragment" />
+        <argument
+            android:name="scheduledTreatmentId"
+            app:argType="long"
+            android:defaultValue="-1L" />
     </fragment>
     <fragment
         android:id="@+id/messageListFragment"
@@ -135,5 +142,15 @@
         <argument
             android:name="message_id"
             app:argType="long" />
+    </fragment>
+    <fragment
+        android:id="@+id/scheduledTreatmentsFragment"
+        android:name="com.oscarcreator.sms_scheduler_v2.scheduledtreatments.ScheduledTreatmentsFragment"
+        android:label="ScheduledTreatmentsFragment"
+        tools:layout="@layout/fragment_scheduledtreatments"
+        >
+        <action
+            android:id="@+id/action_scheduledTreatmentsFragment_to_addEditScheduledTreatmentFragment"
+            app:destination="@id/addEditScheduledTreatmentFragment" />
     </fragment>
 </navigation>

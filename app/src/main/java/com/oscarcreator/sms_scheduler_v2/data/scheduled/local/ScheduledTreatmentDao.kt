@@ -28,6 +28,17 @@ interface ScheduledTreatmentDao {
     fun getUpcomingScheduledTreatmentsWithData(currentDay: Calendar): LiveData<List<ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers>>
 
     /**
+     * Returns the [ScheduledTreatment]s which the time of the treatment has been passed.
+     * Only old treatments will be returned
+     *
+     * @param currentDay current day in [Calendar] object
+     * @return all scheduledTreatments where [ScheduledTreatment.treatmentTime] is less than passed time
+     * */
+    @Transaction
+    @Query("SELECT * FROM scheduled_treatment WHERE treatment_time < :currentDay")
+    fun getOldScheduledTreatmentsWithData(currentDay: Calendar): LiveData<List<ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers>>
+
+    /**
      * Inserts a [ScheduledTreatment] into the database.
      *
      * @param scheduledTreatment the [ScheduledTreatment] to be inserted

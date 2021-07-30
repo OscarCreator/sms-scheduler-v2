@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.oscarcreator.sms_scheduler_v2.data.AppDatabase
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.DefaultScheduledTreatmentsRepository
@@ -46,6 +47,10 @@ class UpcomingTreatmentCardListFragment : Fragment() {
         upcomingTreatmentCardListViewModel.upcomingTreatments.observe(viewLifecycleOwner, {
             adapter.setScheduledTreatments(it)
         })
+
+        binding.btnViewAll.setOnClickListener {
+            findNavController().navigate(DashboardFragmentDirections.actionDashboardFragmentToScheduledTreatmentsFragment())
+        }
 
 
         return binding.root

@@ -36,7 +36,12 @@ class AddEditScheduledTreatmentViewModel(
     }
 
     private var _customers: MutableList<Customer> = mutableListOf()
-    val customers: List<Customer> = _customers
+    val customers: List<Customer>
+        get() = _customers
+
+    private val _customersLoadedEvent = MutableLiveData<Event<Unit>>()
+    val customersLoadedEvent: LiveData<Event<Unit>> = _customersLoadedEvent
+
 
     val time = MutableLiveData<Long>()
     val treatment = MutableLiveData<Treatment>()
@@ -115,7 +120,7 @@ class AddEditScheduledTreatmentViewModel(
         _customers = scheduledTreatmentWithData.customers.toMutableList()
 
         isDataLoaded = true
-        Log.d("HELLO", "loaded values!!!")
+        _customersLoadedEvent.value = Event(Unit)
     }
 
     fun saveScheduledTreatment(context: Context) {
@@ -148,7 +153,7 @@ class AddEditScheduledTreatmentViewModel(
                     currentReceivers
                 )
             } else {
-                updateScheduledTreatment(
+                updateScheduledTreatment(context,
                     ScheduledTreatment(
                         id = scheduledTreatmentId!!,
                         treatmentId = currentTreatment.id,
@@ -188,6 +193,7 @@ class AddEditScheduledTreatmentViewModel(
         }
 
     private fun updateScheduledTreatment(
+        context: Context,
         scheduledTreatment: ScheduledTreatment,
         receivers: List<Customer>
     ) {
@@ -197,6 +203,8 @@ class AddEditScheduledTreatmentViewModel(
         viewModelScope.launch {
             scheduledTreatmentsRepository.update(scheduledTreatment)
             updateScheduledTreatmentCustomerCrossRef(scheduledTreatment.id, receivers)
+
+            scheduleAlarm(context, scheduledTreatmentsRepository.getScheduledTreatmentWithData(scheduledTreatment.id)!!)
             _scheduledTreatmentUpdatedEvent.value = Event(Unit)
         }
     }

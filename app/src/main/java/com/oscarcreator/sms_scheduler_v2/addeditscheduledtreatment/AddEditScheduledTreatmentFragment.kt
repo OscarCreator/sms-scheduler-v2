@@ -17,6 +17,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.chip.Chip
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -25,6 +26,7 @@ import com.oscarcreator.sms_scheduler_v2.R
 import com.oscarcreator.sms_scheduler_v2.SmsSchedulerApplication
 import com.oscarcreator.sms_scheduler_v2.data.customer.Customer
 import com.oscarcreator.sms_scheduler_v2.databinding.FragmentAddeditScheduledTreatmentBinding
+import com.oscarcreator.sms_scheduler_v2.util.EventObserver
 import com.oscarcreator.sms_scheduler_v2.util.toTimeTemplateText
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -37,7 +39,9 @@ class AddEditScheduledTreatmentFragment : Fragment() {
     companion object {
         const val TAG = "AddEditTreatmentFragment"
     }
-
+    
+    private val args: AddEditScheduledTreatmentFragmentArgs by navArgs()
+    
     private var _binding: FragmentAddeditScheduledTreatmentBinding? = null
 
     private val binding: FragmentAddeditScheduledTreatmentBinding
@@ -79,10 +83,6 @@ class AddEditScheduledTreatmentFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        for (receiver in viewModel.customers) {
-            addNewChip(receiver)
-        }
-
         binding.tvTreatments.setText(viewModel.treatment.value?.name, false)
 
     }
@@ -95,16 +95,17 @@ class AddEditScheduledTreatmentFragment : Fragment() {
 
         _binding = FragmentAddeditScheduledTreatmentBinding.inflate(inflater, container, false)
 
-        viewModel.scheduledTreatmentUpdatedEvent.observe(viewLifecycleOwner, {
+        viewModel.scheduledTreatmentUpdatedEvent.observe(viewLifecycleOwner, EventObserver {
             findNavController().navigateUp()
         })
 
         //TODO arguments
-        viewModel.start()
+        viewModel.start(if (args.scheduledTreatmentId == -1L) null else args.scheduledTreatmentId)
 
         //TODO replace with a custom adapter
         val adapter = ArrayAdapter(requireContext(), R.layout.dropdown_menu_list_item, mutableListOf<String>())
         viewModel.allTreatment.observe(viewLifecycleOwner, {
+            adapter.clear()
             for (treatment in it){
                 adapter.add(treatment.name)
             }
@@ -114,7 +115,12 @@ class AddEditScheduledTreatmentFragment : Fragment() {
             viewModel.treatment.value = viewModel.allTreatment.value?.get(position)
         }
 
-        adapter.getPosition(binding.tvTreatments.text.toString())
+        //adapter.getPosition(binding.tvTreatments.text.toString())
+
+        viewModel.treatment.observe(viewLifecycleOwner, {
+            binding.tvTreatments.setText(it.name)
+
+        })
 
         val formatter = SimpleDateFormat("HH:mm dd/MM/yyyy", Locale.getDefault())
         viewModel.time.observe(viewLifecycleOwner, {
@@ -186,6 +192,11 @@ class AddEditScheduledTreatmentFragment : Fragment() {
 
         setUpContactInput()
 
+        viewModel.customersLoadedEvent.observe(viewLifecycleOwner, EventObserver {
+            for (receiver in viewModel.customers) {
+                addNewChip(receiver)
+            }
+        })
 
         setUpSendSmsPermission()
 
