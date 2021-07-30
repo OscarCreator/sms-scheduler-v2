@@ -32,6 +32,7 @@ import com.oscarcreator.sms_scheduler_v2.util.toTimeTemplateText
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.stream.Collectors
 
 //TODO only be able to send one customer at a time. Maybe split them up to multiple scheduled treatments instead.
 // Otherwise it will be difficult to keep track of status of the sms
@@ -84,7 +85,12 @@ class AddEditScheduledTreatmentFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        binding.tvTreatments.setText(viewModel.treatment.value?.name, false)
+        for (receiver in viewModel.customers) {
+            addNewChip(receiver)
+        }
+
+        Log.d(TAG, "onResume, loading: ${binding.flContacts.childCount}, ${viewModel.customers.size}")
+        //binding.tvTreatments.setText(viewModel.treatment.value?.name, false)
 
     }
 
@@ -93,6 +99,8 @@ class AddEditScheduledTreatmentFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
+        Log.d(TAG, "onCreateView")
 
         _binding = FragmentAddeditScheduledTreatmentBinding.inflate(inflater, container, false)
 
@@ -105,22 +113,22 @@ class AddEditScheduledTreatmentFragment : Fragment() {
 
         //TODO replace with a custom adapter
         val adapter = ArrayAdapter(requireContext(), R.layout.dropdown_menu_list_item, mutableListOf<String>())
-        viewModel.allTreatment.observe(viewLifecycleOwner, {
+        viewModel.allTreatment.observe(viewLifecycleOwner, { it ->
             adapter.clear()
-            for (treatment in it){
-                adapter.add(treatment.name)
-            }
+
+            adapter.addAll((it
+                .stream()
+                .map { it.name }
+                .collect(Collectors.toList())))
+            binding.tvTreatments.setAdapter(adapter)
         })
-        binding.tvTreatments.setAdapter(adapter)
+        //binding.tvTreatments.setAdapter(adapter)
         binding.tvTreatments.setOnItemClickListener { _, _, position, _ ->
             viewModel.treatment.value = viewModel.allTreatment.value?.get(position)
         }
 
-        //adapter.getPosition(binding.tvTreatments.text.toString())
-
         viewModel.treatment.observe(viewLifecycleOwner, {
             binding.tvTreatments.setText(it.name)
-
         })
 
         val formatter = SimpleDateFormat("HH:mm dd/MM/yyyy", Locale.getDefault())
@@ -199,6 +207,7 @@ class AddEditScheduledTreatmentFragment : Fragment() {
             for (receiver in viewModel.customers) {
                 addNewChip(receiver)
             }
+            Log.d(TAG, "${binding.flContacts.childCount}, ${viewModel.customers.size}")
         })
 
         setUpSendSmsPermission()

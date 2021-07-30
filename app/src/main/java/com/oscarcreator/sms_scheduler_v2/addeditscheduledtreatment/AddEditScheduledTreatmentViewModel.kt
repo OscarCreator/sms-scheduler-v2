@@ -91,6 +91,10 @@ class AddEditScheduledTreatmentViewModel(
             isNewScheduledTreatment = true
             return
         }
+        if (this.scheduledTreatmentId == scheduledTreatmentId && !isNewScheduledTreatment && isDataLoaded) {
+            //Already initialized
+            return
+        }
         this.scheduledTreatmentId = scheduledTreatmentId
         isNewScheduledTreatment = false
 
