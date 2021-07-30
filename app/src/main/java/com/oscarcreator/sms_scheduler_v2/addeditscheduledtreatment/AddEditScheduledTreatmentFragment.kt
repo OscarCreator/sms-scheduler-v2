@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.chip.Chip
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
 import com.oscarcreator.sms_scheduler_v2.R
 import com.oscarcreator.sms_scheduler_v2.SmsSchedulerApplication
 import com.oscarcreator.sms_scheduler_v2.data.customer.Customer
@@ -129,23 +130,25 @@ class AddEditScheduledTreatmentFragment : Fragment() {
         )
 
         //TODO move to functions
+        //TODO dynamically set time format
         binding.btnTime.setOnClickListener {
             MaterialTimePicker.Builder()
-                .setHour(9)
+                .setTimeFormat(TimeFormat.CLOCK_24H)
+                .setHour(Calendar.getInstance(Locale.getDefault()).get(Calendar.HOUR_OF_DAY))
                 .build().apply {
                     addOnPositiveButtonClickListener {
-                        val parser = SimpleDateFormat("HH:mm", Locale.getDefault())
-                        val timeString = "$hour:$minute"
-                        val date = parser.parse(timeString)
-                        var chosenTime = date!!.time
 
                         Log.d(TAG, "launching date picker")
                         MaterialDatePicker.Builder.datePicker()
                             .build().apply {
                                 addOnPositiveButtonClickListener {
                                     //adding date as millisecond to the chosen time
-                                    chosenTime += it
-                                    viewModel.time.value = chosenTime
+                                    val calendar = Calendar.getInstance(Locale.getDefault())
+                                    calendar.timeInMillis = it
+                                    calendar.set(Calendar.HOUR_OF_DAY, hour)
+                                    calendar.set(Calendar.MINUTE, minute)
+
+                                    viewModel.time.value = calendar.timeInMillis
 
                                 }
                             }
