@@ -26,11 +26,10 @@ class UpcomingTreatmentCardListFragment : Fragment() {
     ): View {
         _binding = FragmentUpcomingTreatmentCardListBinding.inflate(inflater, container, false)
 
-        val layoutManager = LinearLayoutManager(requireContext())
         val adapter = UpcomingTreatmentAdapter()
 
         binding.upcomingTreatmentRecyclerView.apply {
-            this.layoutManager = layoutManager
+            this.layoutManager = LinearLayoutManager(requireContext())
             this.adapter = adapter
 
         }

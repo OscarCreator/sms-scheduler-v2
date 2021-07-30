@@ -56,6 +56,10 @@ class DashboardFragment : Fragment() {
 
         setUpStatisticsView()
 
+        childFragmentManager.beginTransaction()
+            .replace(R.id.upcoming_treatment_list_fragment_container, UpcomingTreatmentCardListFragment())
+            .commit()
+
         return binding.root
     }
 
@@ -90,12 +94,6 @@ class DashboardFragment : Fragment() {
             }
 
         }
-
-        val upcomingTreatmentCardListFragment = UpcomingTreatmentCardListFragment()
-
-        childFragmentManager.beginTransaction()
-            .add(R.id.upcoming_treatment_list_fragment_container, upcomingTreatmentCardListFragment)
-            .commit()
     }
 
 }
