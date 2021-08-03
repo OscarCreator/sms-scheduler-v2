@@ -29,7 +29,8 @@ class TreatmentsFragment : Fragment() {
         database = AppDatabase.getDatabase(requireContext(), lifecycleScope)
 
         val adapter = TreatmentsAdapter(TreatmentsAdapter.OnTreatmentClickedListener{
-
+            val action = TreatmentsFragmentDirections.actionTreatmentsFragmentToTreatmentDetailFragment(it.id)
+            findNavController().navigate(action)
         })
 
         database.treatmentDao().getTreatments().observe(viewLifecycleOwner) {

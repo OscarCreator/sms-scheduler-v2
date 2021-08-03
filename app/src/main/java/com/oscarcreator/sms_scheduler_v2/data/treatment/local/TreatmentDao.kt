@@ -22,8 +22,17 @@ interface TreatmentDao {
      * @param id the id of the [Treatment]
      * @return the treatment with the specified id
      * */
-    @Query("SELECT * FROM TREATMENTS WHERE id = :id")
+    @Query("SELECT * FROM treatments WHERE id = :id")
     fun getTreatment(id: Long): Treatment
+
+    /**
+     * Observes the [Treatment] with the specified id
+     *
+     * @param id the id of the [Treatment]
+     * @return the treatment with the specified id
+     * */
+    @Query("SELECT * FROM treatments WHERE id = :id")
+    fun observeTreatment(id: Long): LiveData<Treatment>
 
     /**
      * Inserts the [Treatment] into the database and returns the id of the [Treatment]
@@ -43,6 +52,14 @@ interface TreatmentDao {
      * */
     @Delete
     suspend fun delete(vararg treatment: Treatment): Int
+
+    /**
+     * Delete treatment by id.
+     *
+     * @return the number of treatments deleted. This should always be 1
+     * */
+    @Query("DELETE FROM treatments WHERE id = :id")
+    suspend fun deleteById(id: Long): Int
 
     /**
      * Updates the specified [Treatment]

@@ -39,4 +39,7 @@
     <string name="empty_message">Meddelandet kan inte vara tomt</string>
     <string name="sms_error_channel">Sms error</string>
     <string name="sms_error_description">När ett schemalagt sms inte kunde bli skickat eller mottagit</string>
+    <string name="empty_treatment_message">empty treatment text</string>
+    <string name="loading_treatment_error">Fel vid laddning av behandlingen</string>
+    <string name="delete">radera</string>
 </resources>

@@ -43,5 +43,8 @@
     <string name="empty_message">Message cannot be empty</string>
     <string name="sms_error_channel">Sms error</string>
     <string name="sms_error_description">When a scheduled sms failed to be delivered or sent</string>
+    <string name="empty_treatment_message">empty treatment text</string>
+    <string name="loading_treatment_error">Error while loading treatment</string>
+    <string name="delete">delete</string>
 
 </resources>
