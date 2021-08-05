@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -31,7 +30,9 @@ class ContactListFragment : Fragment() {
 
 
         val adapter = ContactsListAdapter(ContactsListAdapter.OnContactClickedListener {
-            Toast.makeText(requireContext(), "view contact ${it.name}", Toast.LENGTH_LONG).show()
+            val action = ContactListFragmentDirections
+                .actionContactListFragmentToDetailContactFragment(it.id)
+            findNavController().navigate(action)
         })
 
         database.customerDao().getCustomers().observe(viewLifecycleOwner) {

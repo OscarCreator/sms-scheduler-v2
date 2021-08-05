@@ -46,5 +46,7 @@
     <string name="empty_treatment_message">empty treatment text</string>
     <string name="loading_treatment_error">Error while loading treatment</string>
     <string name="delete">delete</string>
+    <string name="empty_contact_message">empty contact text</string>
+    <string name="loading_contact_error">Error while loading contact</string>
 
 </resources>

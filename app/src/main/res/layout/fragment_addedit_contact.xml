@@ -1,72 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    >
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_name"
+    <data>
+
+        <variable
+            name="viewmodel"
+            type="com.oscarcreator.sms_scheduler_v2.addeditcontact.AddEditContactViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:hint="@string/name"
+        android:layout_height="match_parent"
         >
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/tv_name"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
-            />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_phone_num"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/til_name"
-        app:layout_constraintStart_toStartOf="parent"
-        android:hint="@string/phone_number"
-        >
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/tv_phone_num"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="0230502063"
-            android:inputType="phone"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_name"
-            />
+            android:hint="@string/name"
+            >
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tv_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@={viewmodel.name}"
+                />
 
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_money"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/til_phone_num"
-        app:layout_constraintStart_toStartOf="parent"
-        app:suffixText="SEK"
-        android:hint="@string/money"
-        >
-
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_money"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_phone_num"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="120"
-            android:inputType="numberDecimal"
+            app:layout_constraintTop_toBottomOf="@id/til_name"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_phone_num"
+            android:hint="@string/phone_number"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tv_phone_num"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="0230502063"
+                android:inputType="phone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_name"
+                android:text="@={viewmodel.phoneNumber}"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_money"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/til_phone_num"
+            app:layout_constraintStart_toStartOf="parent"
+            app:suffixText="SEK"
+            android:hint="@string/money"
+            >
+
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_money"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="120"
+                android:inputType="numberDecimal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_phone_num"
+                android:text="@={viewmodel.money}"
+                />
+
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_save_contact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_check"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="16dp"
             />
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </com.google.android.material.textfield.TextInputLayout>
+</layout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>

@@ -92,13 +92,21 @@
         <action
             android:id="@+id/action_contactListFragment_to_addEditContactFragment"
             app:destination="@id/addEditContactFragment" />
+        <action
+            android:id="@+id/action_contactListFragment_to_detailContactFragment"
+            app:destination="@id/detailContactFragment" />
     </fragment>
     <fragment
         android:id="@+id/addEditContactFragment"
         android:name="com.oscarcreator.sms_scheduler_v2.addeditcontact.AddEditContactFragment"
         android:label="@string/addedit_contact_title"
         tools:layout="@layout/fragment_addedit_contact"
-        />
+        >
+        <argument
+            android:name="contactId"
+            app:argType="long"
+            android:defaultValue="-1L" />
+    </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.oscarcreator.sms_scheduler_v2.settings.SettingsFragment"
@@ -172,6 +180,20 @@
             app:destination="@id/addEditTreatment" />
         <argument
             android:name="treatmentId"
+            app:argType="long"
+            android:defaultValue="-1L" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailContactFragment"
+        android:name="com.oscarcreator.sms_scheduler_v2.contactdetail.DetailContactFragment"
+        android:label="DetailContactFragment"
+        tools:layout="@layout/fragment_detail_contact"
+        >
+        <action
+            android:id="@+id/action_detailContactFragment_to_addEditContactFragment"
+            app:destination="@id/addEditContactFragment" />
+        <argument
+            android:name="contactId"
             app:argType="long"
             android:defaultValue="-1L" />
     </fragment>

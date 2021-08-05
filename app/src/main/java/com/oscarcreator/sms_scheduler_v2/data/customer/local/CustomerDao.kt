@@ -29,6 +29,15 @@ interface CustomerDao {
     suspend fun getCustomer(customerId: Long): Customer
 
     /**
+     * Observes the [Customer] with the specified id
+     *
+     * @param id the id of the [Customer]
+     * @return the customer with the specified id
+     * */
+    @Query("SELECT * FROM customers WHERE customer_id = :id")
+    fun observeCustomer(id: Long): LiveData<Customer>
+
+    /**
      * Returns the first five customers which is matched by name or
      *  phone number with the passed text.
      *
@@ -58,6 +67,16 @@ interface CustomerDao {
      * */
     @Delete
     suspend fun delete(vararg customer: Customer): Int
+
+    /**
+     * Deletes the [Customer] with the passed id
+     *
+     * @param contactId the id of the [Customer] to be deleted
+     *
+     * @return the cout of [Customer]s delete, should always be time
+     * */
+    @Query("DELETE FROM customers WHERE customer_id = :contactId")
+    suspend fun deleteById(contactId: Long): Int
 
     /**
      * Updates the passed [Customer] and returns the count of [Customer]s updated.
