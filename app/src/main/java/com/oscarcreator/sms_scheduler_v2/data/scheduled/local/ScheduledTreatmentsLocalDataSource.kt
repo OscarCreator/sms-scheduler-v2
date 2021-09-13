@@ -25,6 +25,9 @@ class ScheduledTreatmentsLocalDataSource internal constructor(
     override suspend fun getScheduledTreatmentWithData(scheduledTreatmentId: Long) =
         scheduledTreatmentsDao.getScheduledTreatmentWithData(scheduledTreatmentId)
 
+    override suspend fun getUpcomingScheduledTreatmentsWithData() =
+        scheduledTreatmentsDao.getUpcomingScheduledTreatmentsWithData()
+
     override suspend fun insert(scheduledTreatment: ScheduledTreatment) =
         scheduledTreatmentsDao.insert(scheduledTreatment)
 

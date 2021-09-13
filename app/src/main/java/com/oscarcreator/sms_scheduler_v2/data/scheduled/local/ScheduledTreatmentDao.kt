@@ -6,6 +6,7 @@ import com.oscarcreator.sms_scheduler_v2.data.customer.Customer
 import com.oscarcreator.sms_scheduler_v2.data.message.Message
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatment
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers
+import com.oscarcreator.sms_scheduler_v2.data.scheduled.SmsStatus
 import com.oscarcreator.sms_scheduler_v2.data.timetemplate.TimeTemplate
 import java.util.*
 
@@ -68,5 +69,9 @@ interface ScheduledTreatmentDao {
     @Transaction
     @Query("SELECT * FROM scheduled_treatment WHERE scheduled_treatment_id == :scheduledTreatmentId")
     suspend fun getScheduledTreatmentWithData(scheduledTreatmentId: Long): ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers?
+
+    @Transaction
+    @Query("SELECT * FROM scheduled_treatment WHERE sms_status == :smsStatus")
+    suspend fun getUpcomingScheduledTreatmentsWithData(smsStatus: SmsStatus = SmsStatus.SCHEDULED): List<ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers>
 
 }

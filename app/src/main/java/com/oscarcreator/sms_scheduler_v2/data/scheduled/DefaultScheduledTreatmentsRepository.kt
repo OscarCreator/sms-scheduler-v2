@@ -20,6 +20,9 @@ class DefaultScheduledTreatmentsRepository(
     override suspend fun getScheduledTreatmentWithData(scheduledTreatmentId: Long) =
         scheduledTreatmentsDataSource.getScheduledTreatmentWithData(scheduledTreatmentId)
 
+    override suspend fun getUpcomingScheduledTreatmentsWithData() =
+        scheduledTreatmentsDataSource.getUpcomingScheduledTreatmentsWithData()
+
     override suspend fun insert(scheduledTreatment: ScheduledTreatment) =
         scheduledTreatmentsDataSource.insert(scheduledTreatment)
 

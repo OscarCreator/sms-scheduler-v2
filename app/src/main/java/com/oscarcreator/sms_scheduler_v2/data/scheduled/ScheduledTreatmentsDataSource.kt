@@ -13,6 +13,8 @@ interface ScheduledTreatmentsDataSource {
 
     suspend fun getScheduledTreatmentWithData(scheduledTreatmentId: Long): ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers?
 
+    suspend fun getUpcomingScheduledTreatmentsWithData(): List<ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers>
+
     suspend fun insert(scheduledTreatment: ScheduledTreatment): Long
 
     suspend fun update(scheduledTreatment: ScheduledTreatment): Int
