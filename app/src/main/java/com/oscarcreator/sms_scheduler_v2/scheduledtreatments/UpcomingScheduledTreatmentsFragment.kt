@@ -34,7 +34,7 @@ class UpcomingScheduledTreatmentsFragment : Fragment() {
                 //TODO only able to edit those which is not delivered
 
                 val action = ScheduledTreatmentsFragmentDirections
-                    .actionScheduledTreatmentsFragmentToAddEditScheduledTreatmentFragment(scheduledTreatment.scheduledTreatment.id)
+                    .actionScheduledTreatmentsFragmentToScheduledTreatmentDetailFragment(scheduledTreatment.scheduledTreatment.id)
                 findNavController().navigate(action)
 
         })

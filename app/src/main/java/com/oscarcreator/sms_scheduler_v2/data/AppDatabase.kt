@@ -12,7 +12,7 @@ import com.oscarcreator.sms_scheduler_v2.data.message.Message
 import com.oscarcreator.sms_scheduler_v2.data.message.local.MessagesDao
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatment
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentCustomerCrossRef
-import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentCustomerCrossRefDao
+import com.oscarcreator.sms_scheduler_v2.data.scheduled.local.ScheduledTreatmentCustomerCrossRefDao
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.local.ScheduledTreatmentDao
 import com.oscarcreator.sms_scheduler_v2.data.timetemplate.TimeTemplate
 import com.oscarcreator.sms_scheduler_v2.data.timetemplate.local.TimeTemplateDao

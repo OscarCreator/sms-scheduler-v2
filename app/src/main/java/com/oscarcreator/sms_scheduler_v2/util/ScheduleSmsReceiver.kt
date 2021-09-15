@@ -76,6 +76,25 @@ fun scheduleAlarm(context: Context, scheduledTreatment: ScheduledTreatmentWithMe
     alarmManager.setExact(AlarmManager.RTC_WAKEUP, time, pendingIntent)
 }
 
+fun deleteAlarm(context: Context, scheduledTreatment: ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers) {
+    val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+    val intent = Intent(context, ScheduleSmsReceiver::class.java)
+    //TODO "extend" Bundle to make a custom
+    intent.putExtra("customer", scheduledTreatment.customers[0].name)
+    intent.putExtra("phone_num", scheduledTreatment.customers[0].phoneNumber)
+    intent.putExtra("id", scheduledTreatment.scheduledTreatment.id)
+    intent.putExtra("message", scheduledTreatment.message.message)
+
+    val pendingIntent = PendingIntent.getBroadcast(
+        context,
+        scheduledTreatment.scheduledTreatment.id.toInt() * 4,
+        intent,
+        PendingIntent.FLAG_UPDATE_CURRENT
+    )
+
+    alarmManager.cancel(pendingIntent)
+}
+
 //TODO action in app for failed scheduled sms, so they can be sent manually
 fun sendNotification(context: Context, intent: Intent, title: String, text: String) {
 

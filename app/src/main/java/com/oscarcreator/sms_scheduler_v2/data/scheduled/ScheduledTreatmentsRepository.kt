@@ -11,6 +11,10 @@ interface ScheduledTreatmentsRepository {
 
     fun getUpcomingScheduledTreatments(currentDay: Calendar): LiveData<List<ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers>>
 
+    fun getOldScheduledTreatmentsWithData(currentDay: Calendar): LiveData<List<ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers>>
+
+    fun getScheduledTreatment(scheduledTreatmentId: Long): LiveData<ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers>
+
     suspend fun getScheduledTreatmentWithData(scheduledTreatmentId: Long): ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers?
 
     suspend fun getUpcomingScheduledTreatmentsWithData(): List<ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers>
@@ -18,6 +22,8 @@ interface ScheduledTreatmentsRepository {
     suspend fun insert(scheduledTreatment: ScheduledTreatment): Long
 
     suspend fun update(scheduledTreatment: ScheduledTreatment): Int
+
+    suspend fun delete(scheduledTreatmentId: Long): Int
 
     suspend fun insertCrossRef(scheduledTreatmentCustomerCrossRef: ScheduledTreatmentCustomerCrossRef): Long
 

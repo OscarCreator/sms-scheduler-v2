@@ -17,6 +17,12 @@ class DefaultScheduledTreatmentsRepository(
     override fun getUpcomingScheduledTreatments(currentDay: Calendar) =
         scheduledTreatmentsDataSource.getUpcomingScheduledTreatmentsWithData(currentDay)
 
+    override fun getOldScheduledTreatmentsWithData(currentDay: Calendar) =
+        scheduledTreatmentsDataSource.getOldScheduledTreatmentsWithData(currentDay)
+
+    override fun getScheduledTreatment(scheduledTreatmentId: Long) =
+        scheduledTreatmentsDataSource.getScheduledTreatment(scheduledTreatmentId)
+
     override suspend fun getScheduledTreatmentWithData(scheduledTreatmentId: Long) =
         scheduledTreatmentsDataSource.getScheduledTreatmentWithData(scheduledTreatmentId)
 
@@ -28,6 +34,9 @@ class DefaultScheduledTreatmentsRepository(
 
     override suspend fun update(scheduledTreatment: ScheduledTreatment) =
         scheduledTreatmentsDataSource.update(scheduledTreatment)
+
+    override suspend fun delete(scheduledTreatmentId: Long): Int =
+        scheduledTreatmentsDataSource.delete(scheduledTreatmentId)
 
 
     override suspend fun insertCrossRef(scheduledTreatmentCustomerCrossRef: ScheduledTreatmentCustomerCrossRef) =

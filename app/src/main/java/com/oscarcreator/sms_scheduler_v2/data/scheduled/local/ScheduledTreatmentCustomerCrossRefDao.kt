@@ -1,7 +1,8 @@
-package com.oscarcreator.sms_scheduler_v2.data.scheduled
+package com.oscarcreator.sms_scheduler_v2.data.scheduled.local
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentCustomerCrossRef
 
 /**
  * A Data access object (Dao) to [ScheduledTreatmentCustomerCrossRef]

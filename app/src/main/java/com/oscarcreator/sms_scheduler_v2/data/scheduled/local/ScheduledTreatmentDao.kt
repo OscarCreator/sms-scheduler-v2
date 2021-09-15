@@ -39,6 +39,10 @@ interface ScheduledTreatmentDao {
     @Query("SELECT * FROM scheduled_treatment WHERE treatment_time < :currentDay")
     fun getOldScheduledTreatmentsWithData(currentDay: Calendar): LiveData<List<ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers>>
 
+    @Transaction
+    @Query("SELECT * FROM scheduled_treatment WHERE scheduled_treatment_id = :scheduledTreatmentId")
+    fun getScheduledTreatment(scheduledTreatmentId: Long): LiveData<ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers>
+
     /**
      * Inserts a [ScheduledTreatment] into the database.
      *
@@ -56,6 +60,9 @@ interface ScheduledTreatmentDao {
      */
     @Delete
     suspend fun delete(vararg scheduledTreatment: ScheduledTreatment): Int
+
+    @Query("DELETE FROM scheduled_treatment WHERE scheduled_treatment_id = :scheduledTreatmentId")
+    suspend fun delete(scheduledTreatmentId: Long): Int
 
     /**
      * Updates the specified [ScheduledTreatment]
