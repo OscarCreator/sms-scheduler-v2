@@ -4,12 +4,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.ui.platform.ComposeView
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.textview.MaterialTextView
+import com.google.android.material.composethemeadapter.MdcTheme
 import com.oscarcreator.sms_scheduler_v2.R
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers
-import com.oscarcreator.sms_scheduler_v2.util.dateToText
-import java.util.*
+import com.oscarcreator.sms_scheduler_v2.scheduledtreatments.ScheduledTreatmentCard
 
 class UpcomingTreatmentAdapter() : RecyclerView.Adapter<UpcomingTreatmentAdapter.UpcomingTreatmentViewHolder>() {
 
@@ -18,9 +18,7 @@ class UpcomingTreatmentAdapter() : RecyclerView.Adapter<UpcomingTreatmentAdapter
     class UpcomingTreatmentViewHolder(
         itemView: View
     ) : RecyclerView.ViewHolder(itemView) {
-        val tvLabel: MaterialTextView = itemView.findViewById(R.id.tv_label)
-        val tvName: MaterialTextView = itemView.findViewById(R.id.tv_name)
-        val tvTime: MaterialTextView = itemView.findViewById(R.id.tv_time)
+        val composeView: ComposeView = itemView.findViewById(R.id.cv)
 
     }
 
@@ -32,6 +30,13 @@ class UpcomingTreatmentAdapter() : RecyclerView.Adapter<UpcomingTreatmentAdapter
     }
 
     override fun onBindViewHolder(holder: UpcomingTreatmentViewHolder, position: Int) {
+
+        holder.composeView.setContent {
+            MdcTheme() {
+                ScheduledTreatmentCard(scheduledTreatment = list[position])
+            }
+        }
+        /*
         val current = list[position]
         holder.tvLabel.text = current.scheduledTreatment.treatmentStatus.name
         holder.tvName.text = current.customers.stream().map{it.name}.toArray().joinToString(", ")
@@ -40,7 +45,7 @@ class UpcomingTreatmentAdapter() : RecyclerView.Adapter<UpcomingTreatmentAdapter
         //TODO use this text as a title for grouping the scheduled treatments
         // the time of sending the scheduled treatment should only be displayed per scheduled treatment
         holder.tvTime.text = c.dateToText(holder.itemView.context, Calendar.getInstance())
-
+*/
     }
 
     override fun getItemCount(): Int {

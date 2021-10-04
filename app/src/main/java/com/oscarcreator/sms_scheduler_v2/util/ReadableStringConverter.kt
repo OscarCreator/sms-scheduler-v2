@@ -5,25 +5,43 @@ import com.oscarcreator.sms_scheduler_v2.R
 import java.text.SimpleDateFormat
 import java.util.*
 
-fun Calendar.dateToText(context: Context, currentTime: Calendar, locale: Locale = Locale.getDefault() ): String {
+/**
+ * Converts the calendar object to string with both time and date.
+ *
+ * Ex. 12:30 Today, 12:30 Tomorrow, 12:30 12/9
+ *
+ * @param context the context
+ * @param currentTime current time as a Calendar object
+ * @param locale the locale for displaying correct time and date
+ *
+ * @return string with both time and date.
+ * */
+fun Calendar.dateToText(
+    context: Context,
+    currentTime: Calendar = Calendar.getInstance(),
+    locale: Locale = Locale.getDefault(),
+): String {
 
-    if (this.get(Calendar.YEAR) == currentTime.get(Calendar.YEAR)){
-        if (this.get(Calendar.DAY_OF_MONTH) == currentTime.get(Calendar.DAY_OF_MONTH)){
-            return context.resources.getString(R.string.today)
+    val dateFormat = SimpleDateFormat("d/M", locale)
+    var date = dateFormat.format(this.time)
+
+    if (this.get(Calendar.YEAR) == currentTime.get(Calendar.YEAR)) {
+        if (this.get(Calendar.DAY_OF_MONTH) == currentTime.get(Calendar.DAY_OF_MONTH)) {
+            date = context.resources.getString(R.string.today)
         }
-
-        //check if this Calendar is one day ahead of currentTime
         this.add(Calendar.DAY_OF_MONTH, -1)
         if (this.get(Calendar.DAY_OF_MONTH) == currentTime.get(Calendar.DAY_OF_MONTH)){
-            this.add(Calendar.DAY_OF_MONTH, 1)
-            return context.resources.getString(R.string.tomorrow)
+            date = context.resources.getString(R.string.tomorrow)
         }
+        this.add(Calendar.DAY_OF_MONTH, 1)
     }
 
-    val dateFormat = SimpleDateFormat("E, d/M", locale)
+    val timeFormat = SimpleDateFormat("H:mm", locale)
+    val time = timeFormat.format(this.time)
 
-    return dateFormat.format(this.time)
+    return "$time $date".trim()
 }
+
 
 fun Long.toTimeTemplateText(): String {
     val isNegative = this < 0
@@ -39,17 +57,17 @@ fun Long.toTimeTemplateText(): String {
 
     val stringBuilder = StringBuilder()
 
-    if(isNegative){
+    if (isNegative) {
         stringBuilder.append("-")
     }
-    if (days > 0){
+    if (days > 0) {
         stringBuilder.append(days).append("d").append(" ")
     }
-    if (hours > 0){
+    if (hours > 0) {
         stringBuilder.append(hours).append("h").append(" ")
     }
 
-    if (minutes > 0){
+    if (minutes > 0) {
         stringBuilder.append(minutes).append("m")
     }
 

@@ -3,12 +3,11 @@ package com.oscarcreator.sms_scheduler_v2.scheduledtreatments
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.ui.platform.ComposeView
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.textview.MaterialTextView
+import com.google.android.material.composethemeadapter.MdcTheme
 import com.oscarcreator.sms_scheduler_v2.R
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers
-import java.text.SimpleDateFormat
-import java.util.*
 
 class ScheduledTreatmentAdapter :
     RecyclerView.Adapter<ScheduledTreatmentAdapter.ScheduledTreatmentListViewHolder>() {
@@ -35,9 +34,7 @@ class ScheduledTreatmentAdapter :
             onScheduledTreatmentClickedListener?.onScheduledTreatmentClicked(adapterPosition, list[adapterPosition])
         }
 
-        val tvLabel: MaterialTextView = itemView.findViewById(R.id.tv_label)
-        val tvName: MaterialTextView = itemView.findViewById(R.id.tv_name)
-        val tvTime: MaterialTextView = itemView.findViewById(R.id.tv_time)
+        val composeView: ComposeView = itemView.findViewById(R.id.cv)
     }
 
     override fun onCreateViewHolder(
@@ -52,6 +49,15 @@ class ScheduledTreatmentAdapter :
 
     override fun onBindViewHolder(holder: ScheduledTreatmentListViewHolder, position: Int) {
 
+        holder.composeView.setContent {
+            MdcTheme() {
+                ScheduledTreatmentCard(
+                        scheduledTreatment = list[position],
+                        onClick = {holder.itemView.callOnClick()}
+                )
+            }
+        }
+        /*
         holder.tvLabel.text = list[position].scheduledTreatment.smsStatus.name
         holder.tvName.text= list[position].customers[0].name
 
@@ -61,7 +67,7 @@ class ScheduledTreatmentAdapter :
         val simpleTimeFormat =  SimpleDateFormat("HH:mm dd/MM-yy", Locale.getDefault())
 
         holder.tvTime.text = simpleTimeFormat.format(c.time)
-
+*/
     }
 
     override fun getItemCount(): Int = list.size
