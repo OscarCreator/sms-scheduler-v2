@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/dashboardFragment"
         android:name="com.oscarcreator.sms_scheduler_v2.dashboard.DashboardFragment"
-        android:label="Dashboard"
+        android:label="@string/dashboard"
         tools:layout="@layout/fragment_dashboard"
         >
         <action
@@ -47,7 +47,7 @@
     <fragment
         android:id="@+id/messageListFragment"
         android:name="com.oscarcreator.sms_scheduler_v2.messages.MessagesFragment"
-        android:label="Messages"
+        android:label="@string/messages"
         tools:layout="@layout/fragment_messages" >
         <action
             android:id="@+id/action_messageListFragment_to_messageDetailFragment"
@@ -70,7 +70,7 @@
     <fragment
         android:id="@+id/timeTemplateListFragment"
         android:name="com.oscarcreator.sms_scheduler_v2.timetemplates.TimeTemplateListFragment"
-        android:label=""
+        android:label="@string/time_templates"
         tools:layout="@layout/fragment_timetemplate_list"
         >
         <action
@@ -80,13 +80,13 @@
     <fragment
         android:id="@+id/addEditTimeTemplateFragment"
         android:name="com.oscarcreator.sms_scheduler_v2.addedittimetemplate.AddEditTimeTemplateFragment"
-        android:label="@string/timetemplate_title"
+        android:label="@string/addedit_timetemplate_title"
         tools:layout="@layout/fragment_addedit_timetemplate"
         />
     <fragment
         android:id="@+id/contactListFragment"
         android:name="com.oscarcreator.sms_scheduler_v2.contacts.ContactListFragment"
-        android:label="Contacts"
+        android:label="@string/contacts"
         tools:layout="@layout/fragment_contact_list"
         >
         <action
@@ -124,7 +124,7 @@
     <fragment
         android:id="@+id/treatmentsFragment"
         android:name="com.oscarcreator.sms_scheduler_v2.treatments.TreatmentsFragment"
-        android:label="TreatmentsFragment"
+        android:label="@string/treatments"
         tools:layout="@layout/fragment_treatments"
         >
         <action
@@ -137,7 +137,7 @@
     <fragment
         android:id="@+id/addEditTreatment"
         android:name="com.oscarcreator.sms_scheduler_v2.addedittreatment.AddEditTreatmentFragment"
-        android:label="AddEditTreatment"
+        android:label="@string/addedit_treatment_title"
         tools:layout="@layout/fragment_addedit_treatment"
         >
         <argument
@@ -148,7 +148,7 @@
     <fragment
         android:id="@+id/messageDetailFragment"
         android:name="com.oscarcreator.sms_scheduler_v2.messagedetail.MessageDetailFragment"
-        android:label="MessageDetailFragment" >
+        android:label="" >
         <action
             android:id="@+id/action_messageDetailFragment_to_addEditMessageFragment"
             app:destination="@id/addEditMessageFragment" />
@@ -162,7 +162,7 @@
     <fragment
         android:id="@+id/scheduledTreatmentsFragment"
         android:name="com.oscarcreator.sms_scheduler_v2.scheduledtreatments.ScheduledTreatmentsFragment"
-        android:label="ScheduledTreatmentsFragment"
+        android:label="@string/scheduled_treatments"
         tools:layout="@layout/fragment_scheduledtreatments"
         >
         <action
@@ -172,7 +172,7 @@
     <fragment
         android:id="@+id/treatmentDetailFragment"
         android:name="com.oscarcreator.sms_scheduler_v2.treatmentdetail.TreatmentDetailFragment"
-        android:label="TreatmentDetailFragment"
+        android:label=""
         tools:layout="@layout/fragment_detail_treatment"
         >
         <action
@@ -186,7 +186,7 @@
     <fragment
         android:id="@+id/detailContactFragment"
         android:name="com.oscarcreator.sms_scheduler_v2.contactdetail.DetailContactFragment"
-        android:label="DetailContactFragment"
+        android:label=""
         tools:layout="@layout/fragment_detail_contact"
         >
         <action
@@ -200,7 +200,7 @@
     <fragment
         android:id="@+id/scheduledTreatmentDetailFragment"
         android:name="com.oscarcreator.sms_scheduler_v2.scheduledtreatmentdetail.ScheduledTreatmentDetailFragment"
-        android:label="ScheduledTreatmentDetailFragment" >
+        android:label="" >
         <action
             android:id="@+id/action_scheduledTreatmentDetailFragment_to_addEditScheduledTreatmentFragment"
             app:destination="@id/addEditScheduledTreatmentFragment" />

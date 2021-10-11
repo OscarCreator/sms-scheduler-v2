@@ -52,5 +52,12 @@
     <string name="default_timetemplate">Default time template</string>
     <string name="default_treatment">Default treatment</string>
     <string name="none">none</string>
+    <string name="messages">Messages</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="time_templates">Time Templates</string>
+    <string name="addedit_timetemplate_title">AddEdit</string>
+    <string name="contacts">Contacts</string>
+    <string name="scheduled_treatments">Scheduled Treatments</string>
+    <string name="archived">Archived</string>
 
 </resources>

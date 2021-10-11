@@ -9,12 +9,10 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
+import com.oscarcreator.sms_scheduler_v2.R
 import com.oscarcreator.sms_scheduler_v2.databinding.FragmentScheduledtreatmentsBinding
 
 class ScheduledTreatmentsFragment : Fragment() {
-
-    //TODO change to resources
-    private val tabNames = arrayOf("Upcoming", "Archived")
 
     private var _binding: FragmentScheduledtreatmentsBinding? = null
     private val binding: FragmentScheduledtreatmentsBinding
@@ -35,6 +33,7 @@ class ScheduledTreatmentsFragment : Fragment() {
         val adapter = ScheduledTreatmentsViewPagerAdapter(childFragmentManager, lifecycle)
         viewPager.adapter = adapter
 
+        val tabNames = arrayOf(getString(R.string.upcoming), getString(R.string.archived))
         TabLayoutMediator(tabLayout, viewPager) {tab, position ->
             tab.text = tabNames[position]
         }.attach()

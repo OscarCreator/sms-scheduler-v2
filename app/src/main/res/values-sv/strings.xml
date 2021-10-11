@@ -1,6 +1,5 @@
 <resources>
 
-
     <string name="increase_procent_treatments">%d%% denna månad</string>
     <string name="view_all">Se alla</string>
     <string name="upcoming">Kommande</string>
@@ -10,7 +9,8 @@
     <string name="treatment">Behandling</string>
     <string name="to">Till</string>
     <string name="time">Tid</string>
-    <string name="time_template">Tidmall</string>
+    <string name="time_template">Tidsmall</string>
+    <string name="time_templates">Tidsmallar</string>
     <string name="message">Meddelande</string>
     <string name="clear_fields">Töm fält</string>
     <string name="complete">Färdigställ</string>
@@ -48,4 +48,10 @@
     <string name="default_timetemplate">Förvald tidsmall</string>
     <string name="default_treatment">Förvald behadling</string>
     <string name="none">ingen</string>
+    <string name="messages">Meddelande</string>
+    <string name="dashboard">Översikt</string>
+    <string name="addedit_timetemplate_title">Skapa/Redigera</string>
+    <string name="contacts">Kontakter</string>
+    <string name="scheduled_treatments">Planerade Behandlingar</string>
+    <string name="archived">Arkiverade</string>
 </resources>
