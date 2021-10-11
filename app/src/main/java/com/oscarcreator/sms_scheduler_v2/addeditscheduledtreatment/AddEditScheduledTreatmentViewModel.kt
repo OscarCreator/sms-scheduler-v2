@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.oscarcreator.sms_scheduler_v2.data.Result
 import com.oscarcreator.sms_scheduler_v2.data.customer.Customer
 import com.oscarcreator.sms_scheduler_v2.data.customer.CustomersRepository
 import com.oscarcreator.sms_scheduler_v2.data.message.Message
@@ -18,6 +19,7 @@ import com.oscarcreator.sms_scheduler_v2.data.timetemplate.TimeTemplate
 import com.oscarcreator.sms_scheduler_v2.data.timetemplate.TimeTemplatesRepository
 import com.oscarcreator.sms_scheduler_v2.data.treatment.Treatment
 import com.oscarcreator.sms_scheduler_v2.data.treatment.TreatmentsRepository
+import com.oscarcreator.sms_scheduler_v2.settings.SettingsFragment
 import com.oscarcreator.sms_scheduler_v2.util.Event
 import com.oscarcreator.sms_scheduler_v2.util.scheduleAlarm
 import kotlinx.coroutines.launch
@@ -73,6 +75,19 @@ class AddEditScheduledTreatmentViewModel(
         timeModifier.value = timeTemplatesRepository.getTimeTemplate(id)
     }
 
+    suspend fun setTreatmentById(id: Long) {
+        treatmentsRepository.getTreatment(id).let {
+            if (it is Result.Success) {
+                onTreatmentLoaded(it.data)
+            } else {
+                //onDataNotAvailable()
+            }
+        }
+    }
+
+    private fun onTreatmentLoaded(treatment: Treatment) {
+        this.treatment.value = treatment
+    }
 
     fun addReceiver(receiver: Customer) {
         _customers.add(receiver)
@@ -86,9 +101,34 @@ class AddEditScheduledTreatmentViewModel(
         _customers.remove(customer)
     }
 
-    fun start(scheduledTreatmentId: Long? = null) {
+    fun start(scheduledTreatmentId: Long? = null, context: Context) {
         if (scheduledTreatmentId == null) {
             isNewScheduledTreatment = true
+
+            val messageId = context.getSharedPreferences(SettingsFragment.SETTINGS_SHARED_PREF, Context.MODE_PRIVATE)
+                .getLong(SettingsFragment.MESSAGE_TEMPLATE_TAG, -1L)
+            if (messageId != -1L) {
+                viewModelScope.launch {
+                    setMessageById(messageId)
+                }
+            }
+
+            val timeTemplateId = context.getSharedPreferences(SettingsFragment.SETTINGS_SHARED_PREF, Context.MODE_PRIVATE)
+                .getLong(SettingsFragment.TIME_TEMPLATE_TAG, -1L)
+            if (timeTemplateId != -1L) {
+                viewModelScope.launch {
+                    setTimeTemplateById(timeTemplateId)
+                }
+            }
+
+            val treatmentId = context.getSharedPreferences(SettingsFragment.SETTINGS_SHARED_PREF, Context.MODE_PRIVATE)
+                .getLong(SettingsFragment.TREATMENT_TEMPLATE_TAG, -1L)
+            if (treatmentId != -1L) {
+                viewModelScope.launch {
+                    setTreatmentById(treatmentId)
+                }
+            }
+
             return
         }
         if (this.scheduledTreatmentId == scheduledTreatmentId && !isNewScheduledTreatment && isDataLoaded) {
@@ -97,6 +137,9 @@ class AddEditScheduledTreatmentViewModel(
         }
         this.scheduledTreatmentId = scheduledTreatmentId
         isNewScheduledTreatment = false
+
+
+
 
 
         viewModelScope.launch {

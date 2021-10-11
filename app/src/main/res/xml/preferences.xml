@@ -7,4 +7,19 @@
         android:summary="Import contacts from phone"
         />
 
+    <DropDownPreference
+        android:key="default_message"
+        android:title="@string/default_message"
+        />
+
+    <DropDownPreference
+        android:key="default_timetemplate"
+        android:title="@string/default_timetemplate"
+        />
+
+    <DropDownPreference
+        android:key="default_treatment"
+        android:title="@string/default_treatment"
+        />
+
 </PreferenceScreen>

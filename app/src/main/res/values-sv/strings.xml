@@ -44,4 +44,8 @@
     <string name="delete">radera</string>
     <string name="empty_contact_message">tom contact text</string>
     <string name="loading_contact_error">Fel vid laddning av contact</string>
+    <string name="default_message">Förvalt meddelande</string>
+    <string name="default_timetemplate">Förvald tidsmall</string>
+    <string name="default_treatment">Förvald behadling</string>
+    <string name="none">ingen</string>
 </resources>

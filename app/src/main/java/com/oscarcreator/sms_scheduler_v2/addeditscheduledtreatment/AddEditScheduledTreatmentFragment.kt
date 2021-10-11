@@ -109,7 +109,7 @@ class AddEditScheduledTreatmentFragment : Fragment() {
         })
 
         //TODO arguments
-        viewModel.start(if (args.scheduledTreatmentId == -1L) null else args.scheduledTreatmentId)
+        viewModel.start(if (args.scheduledTreatmentId == -1L) null else args.scheduledTreatmentId, requireContext())
 
         //TODO replace with a custom adapter
         val adapter = ArrayAdapter(requireContext(), R.layout.dropdown_menu_list_item, mutableListOf<String>())

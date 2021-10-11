@@ -48,5 +48,9 @@
     <string name="delete">delete</string>
     <string name="empty_contact_message">empty contact text</string>
     <string name="loading_contact_error">Error while loading contact</string>
+    <string name="default_message">Default message</string>
+    <string name="default_timetemplate">Default time template</string>
+    <string name="default_treatment">Default treatment</string>
+    <string name="none">none</string>
 
 </resources>
