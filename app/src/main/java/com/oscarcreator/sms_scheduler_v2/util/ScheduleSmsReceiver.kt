@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat
 import com.oscarcreator.sms_scheduler_v2.MainActivity
 import com.oscarcreator.sms_scheduler_v2.NotificationConstants
 import com.oscarcreator.sms_scheduler_v2.R
+import com.oscarcreator.sms_scheduler_v2.addeditmessage.replaceVariables
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers
 
 class ScheduleSmsReceiver() : BroadcastReceiver() {
@@ -64,7 +65,7 @@ fun scheduleAlarm(context: Context, scheduledTreatment: ScheduledTreatmentWithMe
     intent.putExtra("customer", scheduledTreatment.customers[0].name)
     intent.putExtra("phone_num", scheduledTreatment.customers[0].phoneNumber)
     intent.putExtra("id", scheduledTreatment.scheduledTreatment.id)
-    intent.putExtra("message", scheduledTreatment.message.message)
+    intent.putExtra("message", scheduledTreatment.replaceVariables())
     val pendingIntent = PendingIntent.getBroadcast(
         context,
         scheduledTreatment.scheduledTreatment.id.toInt() * 4,
@@ -83,7 +84,7 @@ fun deleteAlarm(context: Context, scheduledTreatment: ScheduledTreatmentWithMess
     intent.putExtra("customer", scheduledTreatment.customers[0].name)
     intent.putExtra("phone_num", scheduledTreatment.customers[0].phoneNumber)
     intent.putExtra("id", scheduledTreatment.scheduledTreatment.id)
-    intent.putExtra("message", scheduledTreatment.message.message)
+    intent.putExtra("message", scheduledTreatment.replaceVariables())
 
     val pendingIntent = PendingIntent.getBroadcast(
         context,

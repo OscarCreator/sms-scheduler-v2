@@ -59,5 +59,15 @@
     <string name="contacts">Contacts</string>
     <string name="scheduled_treatments">Scheduled Treatments</string>
     <string name="archived">Archived</string>
+    <string name="variables_info">Variables Info</string>
 
+    <string-array name="message_variable_descriptions">
+        <item>The name of the person for the treatment.</item>
+        <item>The minute from the scheduled treatment time.</item>
+        <item>The hour from the scheduled treatment time.</item>
+        <item>The number of the day in the month from the scheduled treatment time.</item>
+        <item>The number of the month from the scheduled treatment time.</item>
+        <item>The year from the scheduled treatment time.</item>
+    </string-array>
+    
 </resources>

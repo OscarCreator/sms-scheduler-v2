@@ -15,13 +15,4 @@
         tools:text="Some random text"
         />
 
-    <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/cb_template"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Is template"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/et_message"
-        />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

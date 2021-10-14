@@ -54,4 +54,15 @@
     <string name="contacts">Kontakter</string>
     <string name="scheduled_treatments">Planerade Behandlingar</string>
     <string name="archived">Arkiverade</string>
+    <string name="variables_info">Variablefakta</string>
+
+    <string-array name="message_variable_descriptions">
+        <item>Namnet på personen för behandlingen.</item>
+        <item>Minuten tagen från den schemalagda behandlingens tid.</item>
+        <item>Timmen tagen från den schemalagda behandlingens tid.</item>
+        <item>Den schemalagda behandlingens dag.</item>
+        <item>Den schemalagda behandlingens månad.</item>
+        <item>Den schemalagda behandlingens år.</item>
+    </string-array>
+
 </resources>

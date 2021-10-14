@@ -66,6 +66,9 @@
             android:name="message_id"
             app:argType="long"
             android:defaultValue="-1L" />
+        <action
+            android:id="@+id/action_addEditMessageFragment_to_variableInfoFragment"
+            app:destination="@id/variableInfoFragment" />
     </fragment>
     <fragment
         android:id="@+id/timeTemplateListFragment"
@@ -209,4 +212,9 @@
             app:argType="long"
             android:defaultValue="-1L" />
     </fragment>
+    <fragment
+        android:id="@+id/variableInfoFragment"
+        android:name="com.oscarcreator.sms_scheduler_v2.addeditmessage.VariableInfoFragment"
+        android:label="@string/variables_info"
+        />
 </navigation>

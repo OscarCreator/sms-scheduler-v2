@@ -29,10 +29,7 @@ class AddEditMessageFragment : Fragment() {
             //close keyboard
             binding.etMessage.clearFocus()
             findNavController().navigateUp()
-//
-//            val action = AddEditMessageFragmentDirections
-//                .actionAddEditMessageFragmentToMessageDetailFragment(args.messageId)
-//            findNavController().navigate(action)
+
         })
     }
 
@@ -54,6 +51,13 @@ class AddEditMessageFragment : Fragment() {
                 viewModel.saveMessage()
                 return true
             }
+            R.id.info_variables -> {
+                //TODO navigate
+                val action = AddEditMessageFragmentDirections.actionAddEditMessageFragmentToVariableInfoFragment()
+                findNavController().navigate(action)
+                return true
+            }
+
             android.R.id.home -> {
                 binding.etMessage.clearFocus()
             }

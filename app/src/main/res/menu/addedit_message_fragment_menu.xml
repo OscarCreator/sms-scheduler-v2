@@ -8,4 +8,10 @@
         app:showAsAction="always"
         />
 
+    <item android:id="@+id/info_variables"
+        android:title="@string/variables_info"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_info"
+        />
+
 </menu>

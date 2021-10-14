@@ -5,13 +5,13 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'androidx.navigation.safeargs.kotlin'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     buildToolsVersion "30.0.2"
 
     defaultConfig {
         applicationId "com.oscarcreator.sms_scheduler_v2"
         minSdkVersion 24
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
 
@@ -51,18 +51,18 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "androidx.core:core-ktx:$core_version"
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation "androidx.fragment:fragment-ktx:$fragment_version"
     //material design
     api "com.google.android.material:material:$material_version"
-    testImplementation 'junit:junit:4.13'
+    testImplementation 'junit:junit:4.13.2'
     testImplementation "androidx.test:runner:$androidxTest_version"
 
 
 
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
 
     androidTestImplementation "androidx.test:core-ktx:$androidxTest_version"
     androidTestImplementation "androidx.test:runner:$androidxTest_version"
@@ -100,7 +100,7 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
     //flexbox
-    implementation 'com.google.android:flexbox:2.0.1'
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
 
     //preference fragment
     implementation "androidx.preference:preference-ktx:$preference_version"
@@ -125,14 +125,15 @@ dependencies {
     // Tooling support (Previews, etc.)
     implementation "androidx.compose.ui:ui-tooling:$compose_version"
     // Integration with ViewModels
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha07'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0-rc01'
     // UI Tests
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
 
     // When using a MDC theme
     implementation "com.google.android.material:compose-theme-adapter:$compose_version"
+    //constraint layout
+    implementation 'androidx.constraintlayout:constraintlayout-compose:1.0.0-rc01'
 
-    implementation "androidx.constraintlayout:constraintlayout-compose:1.0.0-beta02"
 
 
 }
