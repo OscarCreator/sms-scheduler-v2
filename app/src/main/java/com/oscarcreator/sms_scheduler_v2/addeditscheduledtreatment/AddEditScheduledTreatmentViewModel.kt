@@ -72,7 +72,18 @@ class AddEditScheduledTreatmentViewModel(
     }
 
     suspend fun setTimeTemplateById(id: Long) {
-        timeModifier.value = timeTemplatesRepository.getTimeTemplate(id)
+        timeTemplatesRepository.getTimeTemplate(id).let {
+            if (it is Result.Success) {
+                onTimeTemplateLoaded(it.data)
+            } else {
+                //TODO error
+            }
+
+        }
+    }
+
+    private fun onTimeTemplateLoaded(timeTemplate: TimeTemplate) {
+        this.timeModifier.value = timeTemplate
     }
 
     suspend fun setTreatmentById(id: Long) {

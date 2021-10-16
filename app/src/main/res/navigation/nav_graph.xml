@@ -72,10 +72,13 @@
     </fragment>
     <fragment
         android:id="@+id/timeTemplateListFragment"
-        android:name="com.oscarcreator.sms_scheduler_v2.timetemplates.TimeTemplateListFragment"
+        android:name="com.oscarcreator.sms_scheduler_v2.timetemplates.TimeTemplatesFragment"
         android:label="@string/time_templates"
         tools:layout="@layout/fragment_timetemplate_list"
         >
+        <action
+            android:id="@+id/action_timeTemplateListFragment_to_timeTemplateDetailFragment"
+            app:destination="@id/timeTemplateDetailFragment" />
         <action
             android:id="@+id/action_timeTemplateListFragment_to_addEditTimeTemplateFragment"
             app:destination="@id/addEditTimeTemplateFragment" />
@@ -85,7 +88,12 @@
         android:name="com.oscarcreator.sms_scheduler_v2.addedittimetemplate.AddEditTimeTemplateFragment"
         android:label="@string/addedit_timetemplate_title"
         tools:layout="@layout/fragment_addedit_timetemplate"
-        />
+        >
+        <argument
+            android:name="timetemplate_id"
+            app:argType="long"
+            android:defaultValue="-1L" />
+    </fragment>
     <fragment
         android:id="@+id/contactListFragment"
         android:name="com.oscarcreator.sms_scheduler_v2.contacts.ContactListFragment"
@@ -217,4 +225,16 @@
         android:name="com.oscarcreator.sms_scheduler_v2.addeditmessage.VariableInfoFragment"
         android:label="@string/variables_info"
         />
+    <fragment
+        android:id="@+id/timeTemplateDetailFragment"
+        android:name="com.oscarcreator.sms_scheduler_v2.timetemplatedetail.TimeTemplateDetailFragment"
+        android:label="TimeTemplateDetailFragment" >
+        <action
+            android:id="@+id/action_timeTemplateDetailFragment_to_addEditTimeTemplateFragment"
+            app:destination="@id/addEditTimeTemplateFragment" />
+        <argument
+            android:name="timetemplate_id"
+            app:argType="long"
+            android:defaultValue="-1L" />
+    </fragment>
 </navigation>

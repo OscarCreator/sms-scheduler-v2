@@ -23,6 +23,12 @@ interface TimeTemplateDao {
     suspend fun getTimeTemplate(id: Long): TimeTemplate
 
     /**
+     * Returns the [TimeTemplate] with the passed id as [LiveData]
+     * */
+    @Query("SELECT * FROM time_template WHERE id = :id")
+    fun observeTimeTemplate(id: Long): LiveData<TimeTemplate>
+
+    /**
      * Inserts a [TimeTemplate] into the database.
      *
      * @param timeTemplate the [TimeTemplate] to be inserted
@@ -38,7 +44,7 @@ interface TimeTemplateDao {
      * @return the number of [TimeTemplate]s deleted
      * */
     @Delete
-    suspend fun delete(timeTemplate: TimeTemplate): Int
+    suspend fun delete(vararg timeTemplate: TimeTemplate): Int
 
     /**
      * Updates the specified [TimeTemplate]

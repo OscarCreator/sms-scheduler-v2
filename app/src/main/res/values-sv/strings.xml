@@ -55,6 +55,7 @@
     <string name="scheduled_treatments">Planerade Behandlingar</string>
     <string name="archived">Arkiverade</string>
     <string name="variables_info">Variablefakta</string>
+    <string name="selected_count">%1$d Markerade</string>
 
     <string-array name="message_variable_descriptions">
         <item>Namnet på personen för behandlingen.</item>

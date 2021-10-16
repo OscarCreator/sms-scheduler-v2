@@ -7,10 +7,11 @@
     android:id="@+id/cv_timetemplate"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
+    app:cardBackgroundColor="@color/selected_background"
     android:clickable="true"
     android:focusable="true"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
     android:layout_margin="8dp"
     >
 

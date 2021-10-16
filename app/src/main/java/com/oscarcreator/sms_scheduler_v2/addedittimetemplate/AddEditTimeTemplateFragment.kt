@@ -2,15 +2,14 @@ package com.oscarcreator.sms_scheduler_v2.addedittimetemplate
 
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.oscarcreator.sms_scheduler_v2.R
-import com.oscarcreator.sms_scheduler_v2.data.AppDatabase
-import com.oscarcreator.sms_scheduler_v2.data.timetemplate.TimeTemplate
+import com.oscarcreator.sms_scheduler_v2.SmsSchedulerApplication
 import com.oscarcreator.sms_scheduler_v2.databinding.FragmentAddeditTimetemplateBinding
-import kotlinx.coroutines.launch
+import com.oscarcreator.sms_scheduler_v2.util.EventObserver
 
 class AddEditTimeTemplateFragment : Fragment() {
 
@@ -19,7 +18,11 @@ class AddEditTimeTemplateFragment : Fragment() {
     private val binding: FragmentAddeditTimetemplateBinding
         get() = _binding!!
 
-    private lateinit var database: AppDatabase
+    private val args: AddEditTimeTemplateFragmentArgs by navArgs()
+
+    private val viewModel by viewModels<AddEditTimeTemplateViewModel> {
+        AddEditTimeTemplateViewModelFactory((requireContext().applicationContext as SmsSchedulerApplication).timeTemplatesRepository)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +37,7 @@ class AddEditTimeTemplateFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId){
             R.id.complete -> {
-                saveTimeTemplate()
+                viewModel.saveTimeTemplate()
                 return true
             }
         }
@@ -51,55 +54,55 @@ class AddEditTimeTemplateFragment : Fragment() {
 
         _binding = FragmentAddeditTimetemplateBinding.inflate(inflater, container, false)
 
-        database = AppDatabase.getDatabase(requireContext(), lifecycleScope)
+        viewModel.start(args.timetemplateId)
 
-        binding.npDays.minValue = 0
-        binding.npDays.maxValue = 365
+        binding.npDays.apply {
+            minValue = 0
+            maxValue = 365
 
-        binding.npHours.minValue = 0
-        binding.npHours.maxValue = 23
+            setOnValueChangedListener { _, _, newValue ->
+                viewModel.days = newValue
+            }
+        }
 
-        binding.npMinutes.minValue = 0
-        binding.npMinutes.maxValue = 59
+        binding.npHours.apply {
+            minValue = 0
+            maxValue = 23
 
-        binding.switchBeforeafter.setOnClickListener {
-            if (binding.switchBeforeafter.isChecked){
+            setOnValueChangedListener { _, _, newValue ->
+                viewModel.hours = newValue
+            }
+        }
+
+        binding.npMinutes.apply {
+            minValue = 0
+            maxValue = 59
+
+            setOnValueChangedListener { _, _, newValue ->
+                viewModel.minutes = newValue
+            }
+        }
+
+        binding.switchBeforeafter.setOnCheckedChangeListener { compoundButton, isChecked ->
+            if (isChecked) {
                 binding.switchBeforeafter.text = binding.switchBeforeafter.textOn
             }else{
                 binding.switchBeforeafter.text = binding.switchBeforeafter.textOff
             }
-
+            viewModel.switchState = isChecked
         }
 
+        viewModel.timeTemplateLoadedEvent.observe(viewLifecycleOwner, EventObserver {
+            binding.npMinutes.value = viewModel.minutes
+            binding.npHours.value = viewModel.hours
+            binding.npDays.value = viewModel.days
+            binding.switchBeforeafter.isChecked = viewModel.switchState
+        })
+
+        viewModel.timeTemplateUpdatedEvent.observe(viewLifecycleOwner, EventObserver {
+            findNavController().navigateUp()
+        })
 
         return binding.root
     }
-
-    private fun validateTimeTemplate(): Boolean {
-        if (binding.npDays.value == 0 &&
-            binding.npHours.value == 0 &&
-            binding.npMinutes.value == 0){
-            Toast.makeText(requireContext(), getString(R.string.time_template_missing_data), Toast.LENGTH_LONG)
-                .show()
-            return false
-        }
-        return true
-    }
-
-    private fun saveTimeTemplate(){
-        if (validateTimeTemplate()){
-            lifecycleScope.launch {
-                database.timeTemplateDao().insert(TimeTemplate(delay = getTimeInMillis()))
-            }
-            findNavController().popBackStack()
-        }
-    }
-
-    private fun getTimeInMillis(): Long {
-        return (binding.npDays.value * 24L * 60L * 60L * 1000L +
-                binding.npHours.value * 60L * 60L * 1000L +
-                binding.npMinutes.value * 60L * 1000L) *
-                if(binding.switchBeforeafter.isChecked) -1 else 1
-    }
-
 }
