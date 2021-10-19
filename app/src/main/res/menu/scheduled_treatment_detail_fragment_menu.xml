@@ -8,4 +8,9 @@
         app:showAsAction="always"
         />
 
+    <item android:id="@+id/send_now"
+        android:title="@string/send_now"
+        app:showAsAction="never"
+        />
+
 </menu>

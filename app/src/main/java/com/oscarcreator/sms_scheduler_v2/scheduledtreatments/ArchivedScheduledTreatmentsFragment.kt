@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.oscarcreator.sms_scheduler_v2.data.AppDatabase
 import com.oscarcreator.sms_scheduler_v2.databinding.FragmentScheduledtreatmentsArchivedBinding
@@ -33,7 +34,10 @@ class ArchivedScheduledTreatmentsFragment: Fragment() {
         }
 
         adapter.setOnScheduledTreatmentClickedListener(ScheduledTreatmentAdapter.OnScheduledTreatmentClickedListener {position, scheduledTreatment ->
-            //TODO show detail fragment, not able to change some parts of the scheduled treatment
+            val action = ScheduledTreatmentsFragmentDirections
+                .actionScheduledTreatmentsFragmentToScheduledTreatmentDetailFragment(
+                    scheduledTreatment.scheduledTreatment.id)
+            findNavController().navigate(action)
         })
 
 

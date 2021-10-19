@@ -29,22 +29,7 @@ class ScheduleSmsReceiver() : BroadcastReceiver() {
 
         if (id != -1L) {
             if (ContextCompat.checkSelfPermission(context, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED){
-                val smsManager = SmsManager.getDefault()
-                //TODO format text with data. ex. Name of customer [namn]
-                val sentPendingIntent = PendingIntent.getBroadcast(
-                    context,
-                    id.toInt() * 4 + 1,
-                    Intent(context, SentSmsReceiver::class.java).apply { putExtras(intent.extras!!) },
-                    PendingIntent.FLAG_UPDATE_CURRENT)
-
-                val deliveredPendingIntent = PendingIntent.getBroadcast(
-                    context,
-                    id.toInt() * 4 + 2,
-                    Intent(context, DeliveredSmsReceiver::class.java).apply { putExtras(intent.extras!!) },
-                    PendingIntent.FLAG_UPDATE_CURRENT
-                )
-
-                smsManager.sendTextMessage(phoneNumber, null, message, sentPendingIntent, deliveredPendingIntent)
+                sendSms(context, intent)
             }else{
                 sendNotification(context, intent,
                     "Permission send sms not granted",
@@ -96,6 +81,39 @@ fun deleteAlarm(context: Context, scheduledTreatment: ScheduledTreatmentWithMess
     )
 
     alarmManager.cancel(pendingIntent)
+}
+
+fun sendSmsNow(context: Context, scheduledTreatment: ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers) {
+    val intent = Intent(context, ScheduleSmsReceiver::class.java)
+    intent.putExtra("customer", scheduledTreatment.customers[0].name)
+    intent.putExtra("phone_num", scheduledTreatment.customers[0].phoneNumber)
+    intent.putExtra("id", scheduledTreatment.scheduledTreatment.id)
+    intent.putExtra("message", scheduledTreatment.replaceVariables())
+
+    sendSms(context, intent)
+}
+
+private fun sendSms(context: Context, intent: Intent) {
+    val phoneNumber = intent.getStringExtra("phone_num")
+    val id = intent.getLongExtra("id", -1)
+    val message = intent.getStringExtra("message")
+
+    val smsManager = SmsManager.getDefault()
+
+    val sentPendingIntent = PendingIntent.getBroadcast(
+        context,
+        id.toInt() * 4 + 1,
+        Intent(context, SentSmsReceiver::class.java).apply { putExtras(intent.extras!!) },
+        PendingIntent.FLAG_UPDATE_CURRENT)
+
+    val deliveredPendingIntent = PendingIntent.getBroadcast(
+        context,
+        id.toInt() * 4 + 2,
+        Intent(context, DeliveredSmsReceiver::class.java).apply { putExtras(intent.extras!!) },
+        PendingIntent.FLAG_UPDATE_CURRENT
+    )
+
+    smsManager.sendTextMessage(phoneNumber, null, message, sentPendingIntent, deliveredPendingIntent)
 }
 
 //TODO action in app for failed scheduled sms, so they can be sent manually

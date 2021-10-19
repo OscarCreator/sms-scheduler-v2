@@ -6,6 +6,7 @@ import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentWithMe
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentsRepository
 import com.oscarcreator.sms_scheduler_v2.util.Event
 import com.oscarcreator.sms_scheduler_v2.util.deleteAlarm
+import com.oscarcreator.sms_scheduler_v2.util.sendSmsNow
 import kotlinx.coroutines.launch
 
 class ScheduledTreatmentViewModel(
@@ -21,13 +22,16 @@ class ScheduledTreatmentViewModel(
     val scheduledTreatment: LiveData<ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers> = _scheduledTreatment
 
     private val _editScheduledTreatmentEvent = MutableLiveData<Event<Unit>>()
-    val editScheduledTreatmentEvent = _editScheduledTreatmentEvent
+    val editScheduledTreatmentEvent: LiveData<Event<Unit>> = _editScheduledTreatmentEvent
 
     private val _deleteScheduledTreatmentEvent = MutableLiveData<Event<Unit>>()
-    val deleteScheduledTreatmentEvent = _deleteScheduledTreatmentEvent
+    val deleteScheduledTreatmentEvent: LiveData<Event<Unit>> = _deleteScheduledTreatmentEvent
+
+    private val _smsSentEvent = MutableLiveData<Event<Unit>>()
+    val smsSentEvent: LiveData<Event<Unit>> = _smsSentEvent
 
     fun editScheduledTreatment() {
-        editScheduledTreatmentEvent.value = Event(Unit)
+        _editScheduledTreatmentEvent.value = Event(Unit)
     }
 
     fun start(scheduledTreatmentId: Long){
@@ -40,6 +44,13 @@ class ScheduledTreatmentViewModel(
             scheduledTreatmentsRepository.delete(it.scheduledTreatment.id)
             _deleteScheduledTreatmentEvent.value = Event(Unit)
         }
+    }
 
+    fun sendNow(context: Context) {
+        _scheduledTreatment.value?.let {
+            deleteAlarm(context, it)
+            sendSmsNow(context, it)
+            _smsSentEvent.value = Event(Unit)
+        }
     }
 }

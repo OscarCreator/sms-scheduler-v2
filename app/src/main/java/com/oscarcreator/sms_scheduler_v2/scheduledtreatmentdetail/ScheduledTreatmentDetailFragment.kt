@@ -37,6 +37,11 @@ class ScheduledTreatmentDetailFragment : Fragment() {
                 viewModel.delete(requireContext())
                 true
             }
+
+            R.id.send_now -> {
+                viewModel.sendNow(requireContext())
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
 

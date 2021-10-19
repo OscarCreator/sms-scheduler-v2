@@ -61,6 +61,7 @@
     <string name="archived">Archived</string>
     <string name="variables_info">Variables Info</string>
     <string name="selected_count">%1$d Selected</string>
+    <string name="send_now">Send now</string>
 
     <string-array name="message_variable_descriptions">
         <item>The name of the person for the treatment.</item>
