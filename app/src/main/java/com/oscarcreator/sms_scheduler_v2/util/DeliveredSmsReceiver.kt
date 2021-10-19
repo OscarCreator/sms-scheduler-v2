@@ -17,42 +17,48 @@ class DeliveredSmsReceiver : BroadcastReceiver() {
         const val TAG = "DeliveredSmsReceiver"
     }
 
+    //TODO change smsstatus to error when not sent
+
     override fun onReceive(context: Context, intent: Intent) {
 
         val id = intent.getLongExtra("id", -1)
+        val receiver = intent.getStringExtra("customer")
 
         when (resultCode) {
 
             Activity.RESULT_OK -> {
-                // sms succeeded to send, mark scheduledTreatment in database
+                // sms succeeded to be delivered, mark scheduledTreatment in database
                 if (id != -1L) {
                     GlobalScope.launch(Dispatchers.IO) {
                         val database = AppDatabase.getDatabase(context, scope = this)
 
                         val scheduledTreatment = database.scheduledTreatmentDao().getScheduledTreatmentWithData(id)
                         if (scheduledTreatment != null) {
-                            scheduledTreatment.scheduledTreatment.smsStatus = SmsStatus.SENT
+                            scheduledTreatment.scheduledTreatment.smsStatus = SmsStatus.RECEIVED
 
                             when (database.scheduledTreatmentDao().update(scheduledTreatment.scheduledTreatment)) {
-                                1 -> Log.i(SentSmsReceiver.TAG, "Sms delivered, scheduled treatment updated. ID = $id")
+                                1 -> Log.i(TAG, "Sms delivered, scheduled treatment updated. ID = $id")
 
                                 else -> {
                                     //TODO unknown error
                                     // should never happen. #1 In app error notification
-                                    Log.e(SentSmsReceiver.TAG, "Sms delivered, scheduled treatment NOT updated. ID $id")
+                                    Log.e(TAG, "Sms delivered, scheduled treatment NOT updated. ID $id")
+                                    sendNotificationToScheduledTreatment(context, intent , "Sms delivered, smsstatus NOT updated", "id = $id, receiver = $receiver, updated didn't return 1")
                                 }
                             }
                         }else {
                             //TODO unknown error, scheduledTreatment does not exist in database but sms sent
                             // should never happen. #2 Deletion of scheduled treatment should remove broadcast receiver
-                            Log.e(SentSmsReceiver.TAG, "Unknown error, scheduled treatment with id = $id, not found but sms was successfully delivered.")
+                            Log.e(TAG, "Unknown error, scheduled treatment with id = $id, not found but sms was successfully delivered.")
+                            sendNotificationToScheduledTreatment(context, intent , "Sms delivered, smsstatus NOT updated", "id = $id, receiver = $receiver, scheduled treatment is null")
                         }
                     }
 
                 }else {
                     //TODO unknown error, id = -1. Sms sent but status not able to be changed
                     // should never happen. #1 In app error notification
-                    Log.e(SentSmsReceiver.TAG, "Unknown error, id = -1 but sms delivered successfully. Not able to change status.")
+                    Log.e(TAG, "Unknown error, id = -1 but sms delivered successfully. Not able to change status.")
+                    sendNotification(context, intent, "Sms delivered, smsstatus NOT updated, id = -1L", "receiver = $receiver")
                 }
             }
 
@@ -67,33 +73,29 @@ class DeliveredSmsReceiver : BroadcastReceiver() {
                             //TODO send notification
 
                             when (database.scheduledTreatmentDao().update(scheduledTreatment.scheduledTreatment)) {
-                                1 -> Log.i(SentSmsReceiver.TAG, "Sms not delivered, scheduled treatment updated. ID = $id")
+                                1 -> Log.i(TAG, "Sms not delivered, scheduled treatment updated. ID = $id")
 
                                 else -> {
                                     //TODO unknown error
                                     // should never happen. #1 In app error notification
-                                    Log.e(SentSmsReceiver.TAG, "Sms not delivered, scheduled treatment NOT updated. ID $id")
+                                    Log.e(TAG, "Sms not delivered, scheduled treatment NOT updated. ID $id")
+                                    sendNotificationToScheduledTreatment(context, intent, "Sms not delivered, smsstatus NOT updated", "id = $id, receiver = $receiver")
                                 }
                             }
 
                         } else {
                             //TODO unknown error, scheduledTreatment does not exist in database
                             // should never happen. #2 Deletion of scheduled treatment should remove broadcast receiver
-                            Log.e(SentSmsReceiver.TAG, "Unknown error, scheduled treatment with id = $id, not found and sms not sent.")
+                            Log.e(TAG, "Unknown error, scheduled treatment with id = $id, not found and sms not sent.")
+                            sendNotificationToScheduledTreatment(context, intent, "Sms not delivered, smsstatus NOT updated", "id = $id, receiver = $receiver, scheduled treatment = null")
                         }
-
-
                     }
                 }else {
                     //TODO unknown error, id = -1. Sms not sent but status not able to be changed
                     // should never happen. #1 In app error notification
-                    Log.e(SentSmsReceiver.TAG, "Unknown error, id = -1 but sms not delivered. Not able to change status.")
+                    Log.e(TAG, "Unknown error, id = -1 but sms not delivered. Not able to change status.")
+                    sendNotification(context, intent, "Sms not delivered, smsstatus NOT updated id = -1L", "receiver = $receiver")
                 }
-                sendNotification(
-                    context,
-                    intent,
-                    "Unknown error",
-                    "error code: $resultCode")
             }
         }
 

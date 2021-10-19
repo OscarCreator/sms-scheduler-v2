@@ -7,11 +7,13 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Bundle
 import android.telephony.SmsManager
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
+import androidx.navigation.NavDeepLinkBuilder
 import com.oscarcreator.sms_scheduler_v2.MainActivity
 import com.oscarcreator.sms_scheduler_v2.NotificationConstants
 import com.oscarcreator.sms_scheduler_v2.R
@@ -117,11 +119,31 @@ fun sendNotification(context: Context, intent: Intent, title: String, text: Stri
             )
         ).setAutoCancel(true)
 
-    Log.d("ScheduleSmsReceiver","notifying")
-
     with(NotificationManagerCompat.from(context)) {
         notify(id, builder.build())
     }
+}
+//TODO change icon
+fun sendNotificationToScheduledTreatment(context: Context, intent: Intent, title: String, text: String) {
 
+    val id = intent.getLongExtra("id", -1)
 
+    val builder = NotificationCompat.Builder(context, NotificationConstants.SMS_ERROR_CHANNEL_ID)
+        .setContentTitle(title)
+        .setContentText(text)
+        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+        .setSmallIcon(R.drawable.ic_contacts)
+        .setContentIntent(
+            NavDeepLinkBuilder(context)
+                .setGraph(R.navigation.nav_graph)
+                .setDestination(R.id.scheduledTreatmentDetailFragment)
+                .setArguments(Bundle().apply {
+                    putLong("scheduledTreatmentId", id)
+                })
+                .createPendingIntent()
+        ).setAutoCancel(true)
+
+    with(NotificationManagerCompat.from(context)) {
+        notify(id.toInt(), builder.build())
+    }
 }
