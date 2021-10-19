@@ -129,6 +129,20 @@ fun ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers.replaceVariables():
                 //month value start with 0 - 11 and not 1 - 12
                 text.replace(s, scheduledTreatment.treatmentTime.get(VARIABLE_CALENDAR_VALUES[index - 1]).plus(1).toString())
             }
+            s == "[min]" -> {
+                val minutes = scheduledTreatment.treatmentTime.get(VARIABLE_CALENDAR_VALUES[index - 1]).toString()
+                when {
+                    minutes == "0" -> {
+                        text.replace(s, "${minutes}0")
+                    }
+                    minutes.length == 1 -> {
+                        text.replace(s, "0${minutes}")
+                    }
+                    else -> {
+                        text.replace(s, minutes)
+                    }
+                }
+            }
             else -> {
                 text.replace(s, scheduledTreatment.treatmentTime.get(VARIABLE_CALENDAR_VALUES[index - 1]).toString())
             }
