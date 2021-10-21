@@ -20,7 +20,7 @@ interface TimeTemplateDao {
      * Returns the matching timetemplate
      * */
     @Query("SELECT * FROM time_template WHERE id == :id")
-    suspend fun getTimeTemplate(id: Long): TimeTemplate
+    suspend fun getTimeTemplate(id: Long): TimeTemplate?
 
     /**
      * Returns the [TimeTemplate] with the passed id as [LiveData]

@@ -28,7 +28,6 @@ import com.oscarcreator.sms_scheduler_v2.SmsSchedulerApplication
 import com.oscarcreator.sms_scheduler_v2.data.customer.Customer
 import com.oscarcreator.sms_scheduler_v2.databinding.FragmentAddeditScheduledTreatmentBinding
 import com.oscarcreator.sms_scheduler_v2.util.EventObserver
-import com.oscarcreator.sms_scheduler_v2.util.toTimeTemplateText
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
@@ -190,11 +189,11 @@ class AddEditScheduledTreatmentFragment : Fragment() {
         })
 
         viewModel.message.observe(viewLifecycleOwner, {
-            binding.btnMessage.text = it.message
+            binding.btnMessage.text = it
         })
 
-        viewModel.timeModifier.observe(viewLifecycleOwner, {
-            binding.btnTimetemplate.text = it.delay.toTimeTemplateText()
+        viewModel.timeTemplateText.observe(viewLifecycleOwner, {
+            binding.btnTimetemplate.text = it
 
         })
 

@@ -5,24 +5,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.oscarcreator.sms_scheduler_v2.R
+import com.oscarcreator.sms_scheduler_v2.data.Result
 import com.oscarcreator.sms_scheduler_v2.data.message.Message
 import com.oscarcreator.sms_scheduler_v2.data.message.MessagesRepository
 import com.oscarcreator.sms_scheduler_v2.util.Event
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class AddEditMessageViewModel(
     private val messagesRepository: MessagesRepository,
 ) : ViewModel() {
 
     val message = MutableLiveData<String>()
-
-    private var messageId: Long = -1
-
-    private var isNewMessage: Boolean = false
-
-    private var isDataLoaded = false
 
     private val _messageUpdateEvent = MutableLiveData<Event<Unit>>()
     val messageUpdateEvent: LiveData<Event<Unit>> = _messageUpdateEvent
@@ -33,16 +26,22 @@ class AddEditMessageViewModel(
     private val _dataLoading = MutableLiveData<Boolean>()
     val dataLoading: LiveData<Boolean> = _dataLoading
 
+    private var isNewMessage: Boolean = false
+
+    private var isDataLoaded = false
+
+    private var messageId: Long = -1L
+
     fun start(messageId: Long) {
         if (_dataLoading.value == true) {
             return
         }
 
+        this.messageId = messageId
         if (messageId == -1L) {
             isNewMessage = true
             return
         }
-        this.messageId = messageId
 
         if (isDataLoaded) {
             // No need to populate, already have data.
@@ -52,12 +51,14 @@ class AddEditMessageViewModel(
         isNewMessage = false
         _dataLoading.value = true
 
-        viewModelScope.launch(Dispatchers.IO) {
-            val message = messagesRepository.getMessage(messageId)
-            withContext(Dispatchers.Main) {
-                onMessageLoaded(message)
+        viewModelScope.launch {
+            messagesRepository.getMessage(messageId).let { result ->
+                if (result is Result.Success) {
+                    onMessageLoaded(result.data)
+                } else {
+                    onDataNotAvailable()
+                }
             }
-
         }
     }
 
@@ -65,6 +66,10 @@ class AddEditMessageViewModel(
         this.message.value = message.message
         _dataLoading.value = false
         isDataLoaded = true
+    }
+
+    private fun onDataNotAvailable() {
+        _dataLoading.value = false
     }
 
     fun saveMessage() {

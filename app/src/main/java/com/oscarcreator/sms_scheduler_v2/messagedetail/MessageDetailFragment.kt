@@ -42,7 +42,6 @@ class MessageDetailFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.message_detail_fragment_menu, menu)
-        super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -65,7 +64,7 @@ class MessageDetailFragment : Fragment() {
         _binding = FragmentMessageDetailBinding.inflate(inflater, container, false)
 
         viewModel.message.observe(viewLifecycleOwner, {
-            binding.tvMessage.text = it.message
+            binding.tvMessage.text = it?.message
         })
 
         viewModel.start(args.messageId)

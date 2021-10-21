@@ -9,19 +9,18 @@ import androidx.lifecycle.viewModelScope
 import com.oscarcreator.sms_scheduler_v2.data.Result
 import com.oscarcreator.sms_scheduler_v2.data.customer.Customer
 import com.oscarcreator.sms_scheduler_v2.data.customer.CustomersRepository
-import com.oscarcreator.sms_scheduler_v2.data.message.Message
 import com.oscarcreator.sms_scheduler_v2.data.message.MessagesRepository
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatment
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentCustomerCrossRef
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentsRepository
-import com.oscarcreator.sms_scheduler_v2.data.timetemplate.TimeTemplate
 import com.oscarcreator.sms_scheduler_v2.data.timetemplate.TimeTemplatesRepository
 import com.oscarcreator.sms_scheduler_v2.data.treatment.Treatment
 import com.oscarcreator.sms_scheduler_v2.data.treatment.TreatmentsRepository
 import com.oscarcreator.sms_scheduler_v2.settings.SettingsFragment
 import com.oscarcreator.sms_scheduler_v2.util.Event
 import com.oscarcreator.sms_scheduler_v2.util.scheduleAlarm
+import com.oscarcreator.sms_scheduler_v2.util.toTimeTemplateText
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -37,6 +36,10 @@ class AddEditScheduledTreatmentViewModel(
         private const val TAG = "AddEditTreatmentViewModel"
     }
 
+    val message = MutableLiveData<String>()
+
+    val timeTemplateText = MutableLiveData<String>()
+
     private var _customers: MutableList<Customer> = mutableListOf()
     val customers: List<Customer>
         get() = _customers
@@ -44,20 +47,17 @@ class AddEditScheduledTreatmentViewModel(
     private val _customersLoadedEvent = MutableLiveData<Event<Unit>>()
     val customersLoadedEvent: LiveData<Event<Unit>> = _customersLoadedEvent
 
-
-    val time = MutableLiveData<Long>()
-    val treatment = MutableLiveData<Treatment>()
-    val timeModifier = MutableLiveData<TimeTemplate>()
-    val message = MutableLiveData<Message>()
-
     private val _allTreatments = treatmentsRepository.getTreatments()
     val allTreatment = _allTreatments
 
     private val _scheduledTreatmentUpdatedEvent = MutableLiveData<Event<Unit>>()
     val scheduledTreatmentUpdatedEvent: LiveData<Event<Unit>> = _scheduledTreatmentUpdatedEvent
 
-    // Further implementation
-    // https://github.com/android/architecture-samples/blob/main/app/src/main/java/com/example/android/architecture/blueprints/todoapp/addedittask/AddEditTaskViewModel.kt
+    private var _messageId = -1L
+    private var _timeTemplateId = -1L
+
+    val time = MutableLiveData<Long>()
+    val treatment = MutableLiveData<Treatment>()
 
     private var scheduledTreatmentId: Long? = 1
     private var isNewScheduledTreatment = false
@@ -67,23 +67,32 @@ class AddEditScheduledTreatmentViewModel(
         return customersRepository.getCustomersLike(text)
     }
 
-    suspend fun setMessageById(id: Long) {
-        message.value = messagesRepository.getMessage(id)
-    }
-
-    suspend fun setTimeTemplateById(id: Long) {
-        timeTemplatesRepository.getTimeTemplate(id).let {
-            if (it is Result.Success) {
-                onTimeTemplateLoaded(it.data)
-            } else {
-                //TODO error
+    suspend fun setMessageById(messageId: Long) {
+        viewModelScope.launch {
+            messagesRepository.getMessage(messageId).let { result ->
+                if (result is Result.Success) {
+                    _messageId = messageId
+                    message.value = result.data.message
+                } else {
+                    _messageId = -1L
+                    message.value = ""
+                }
             }
-
         }
     }
 
-    private fun onTimeTemplateLoaded(timeTemplate: TimeTemplate) {
-        this.timeModifier.value = timeTemplate
+    suspend fun setTimeTemplateById(timeTemplateId: Long) {
+        viewModelScope.launch {
+            timeTemplatesRepository.getTimeTemplate(timeTemplateId).let { result ->
+                if (result is Result.Success) {
+                    _timeTemplateId = timeTemplateId
+                    timeTemplateText.value = result.data.delay.toTimeTemplateText()
+                } else {
+                    _timeTemplateId = -1L
+                    timeTemplateText.value = ""
+                }
+            }
+        }
     }
 
     suspend fun setTreatmentById(id: Long) {
@@ -149,10 +158,6 @@ class AddEditScheduledTreatmentViewModel(
         this.scheduledTreatmentId = scheduledTreatmentId
         isNewScheduledTreatment = false
 
-
-
-
-
         viewModelScope.launch {
             scheduledTreatmentsRepository.getScheduledTreatmentWithData(scheduledTreatmentId).let {
                 if (it != null){
@@ -172,8 +177,8 @@ class AddEditScheduledTreatmentViewModel(
     ) {
         time.value = scheduledTreatmentWithData.scheduledTreatment.treatmentTime.timeInMillis
         treatment.value = scheduledTreatmentWithData.treatment
-        timeModifier.value = scheduledTreatmentWithData.timeTemplate
-        message.value = scheduledTreatmentWithData.message
+        timeTemplateText.value = scheduledTreatmentWithData.timeTemplate.delay.toTimeTemplateText()
+        message.value = scheduledTreatmentWithData.message.message
 
         _customers = scheduledTreatmentWithData.customers.toMutableList()
 
@@ -185,19 +190,18 @@ class AddEditScheduledTreatmentViewModel(
         val currentReceivers = _customers
         val currentTime = time.value
         val currentTreatment = treatment.value
-        val currentTimeTemplate = timeModifier.value
+        val currentTimeTemplate = timeTemplateText.value
         val currentMessage = message.value
         //Why not?
         Log.d(TAG, "receivers: ${currentReceivers.isEmpty()}")
         Log.d(TAG, "currenttime: ${currentTime != null} && ${currentTime != 0L}")
         Log.d(TAG, "treatment: ${currentTreatment != null}")
         Log.d(TAG, "timeTemplate: ${currentTimeTemplate != null}")
-        Log.d(TAG, "message: ${currentMessage != null}")
         if (currentReceivers.isNotEmpty()
             && currentTime != null && currentTime != 0L
             && currentTreatment != null
-            && currentTimeTemplate != null
-            && currentMessage != null
+            && currentTimeTemplate != null && currentTimeTemplate.isNotEmpty() && _timeTemplateId != -1L
+            && currentMessage != null && currentMessage.isNotEmpty() && _messageId != -1L
         ) {
             if (isNewScheduledTreatment || scheduledTreatmentId == null) {
                 createScheduledTreatment(context,
@@ -205,8 +209,8 @@ class AddEditScheduledTreatmentViewModel(
                         treatmentId = currentTreatment.id,
                         treatmentTime = Calendar.getInstance(Locale.getDefault())
                             .apply { timeInMillis = currentTime },
-                        timeTemplateId = currentTimeTemplate.id,
-                        messageId = currentMessage.id
+                        timeTemplateId = _timeTemplateId,
+                        messageId = _messageId
                     ),
                     currentReceivers
                 )
@@ -217,8 +221,8 @@ class AddEditScheduledTreatmentViewModel(
                         treatmentId = currentTreatment.id,
                         treatmentTime = Calendar.getInstance(Locale.getDefault())
                             .apply { timeInMillis = currentTime },
-                        timeTemplateId = currentTimeTemplate.id,
-                        messageId = currentMessage.id
+                        timeTemplateId = _timeTemplateId,
+                        messageId = _messageId
                     ),
                     currentReceivers
                 )

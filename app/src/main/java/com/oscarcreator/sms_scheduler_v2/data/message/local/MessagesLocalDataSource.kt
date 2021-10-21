@@ -1,6 +1,8 @@
 package com.oscarcreator.sms_scheduler_v2.data.message.local
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.map
+import com.oscarcreator.sms_scheduler_v2.data.Result
 import com.oscarcreator.sms_scheduler_v2.data.message.Message
 import com.oscarcreator.sms_scheduler_v2.data.message.MessagesDataSource
 import kotlinx.coroutines.CoroutineDispatcher
@@ -14,11 +16,24 @@ class MessagesLocalDataSource internal constructor(
 
     override fun observeMessages() = messagesDao.observeMessages()
 
-    override fun observeMessage(messageId: Long): LiveData<Message> = messagesDao.observeMessage(messageId)
+    override fun observeMessage(messageId: Long): LiveData<Result<Message>> =
+        messagesDao.observeMessage(messageId).map {
+            Result.Success(it)
+        }
 
-    override suspend fun getMessage(id: Long): Message =
+
+    override suspend fun getMessage(id: Long): Result<Message> =
         withContext(ioDispatcher) {
-            messagesDao.getMessage(id)
+            try {
+                val message = messagesDao.getMessage(id)
+                if (message != null) {
+                    Result.Success(message)
+                } else {
+                    Result.Error(Exception("Message not found!"))
+                }
+            } catch (e: Exception) {
+                Result.Error(e)
+            }
         }
 
     override suspend fun insert(message: Message) = messagesDao.insert(message)

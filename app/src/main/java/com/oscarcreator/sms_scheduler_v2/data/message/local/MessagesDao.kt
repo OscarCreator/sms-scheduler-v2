@@ -34,7 +34,7 @@ interface MessagesDao {
      * @return the message with the passed it
      * */
     @Query("SELECT * FROM message WHERE id = :id")
-    suspend fun getMessage(id: Long): Message
+    suspend fun getMessage(id: Long): Message?
 
     /**
      * Inserts a [Message] into the database.

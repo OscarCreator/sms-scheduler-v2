@@ -15,12 +15,16 @@ class TimeTemplatesLocalDataSource internal constructor(
 
     override suspend fun getTimeTemplate(id: Long): Result<TimeTemplate> =
         withContext(ioDispatcher) {
-            return@withContext try {
-                Result.Success(timeTemplatesDao.getTimeTemplate(id))
+            try {
+                val timeTemplate = timeTemplatesDao.getTimeTemplate(id)
+                if (timeTemplate != null) {
+                    Result.Success(timeTemplate)
+                } else {
+                    Result.Error(Exception("Timetemplate not found!"))
+                }
             } catch (e: Exception) {
                 Result.Error(e)
             }
-
         }
 
     override fun observeTimeTemplates(): LiveData<List<TimeTemplate>> = timeTemplatesDao.getTimeTemplates()
