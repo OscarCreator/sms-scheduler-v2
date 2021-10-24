@@ -18,7 +18,7 @@ class AddEditTimeTemplateViewModel(
     var minutes = 0
     var hours = 0
     var days = 0
-    var switchState = false
+    var switchState = true
 
     private val _timeTemplateUpdatedEvent = MutableLiveData<Event<Unit>>()
     val timeTemplateUpdatedEvent: LiveData<Event<Unit>> = _timeTemplateUpdatedEvent
