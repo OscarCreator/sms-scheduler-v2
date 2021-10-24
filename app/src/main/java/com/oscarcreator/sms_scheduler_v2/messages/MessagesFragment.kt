@@ -3,6 +3,7 @@ package com.oscarcreator.sms_scheduler_v2.messages
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -68,7 +69,7 @@ class MessagesFragment : Fragment(), ActionMode.Callback {
         adapter = MessageAdapter().also {
             it.setOnMessageClickedListener(
                 MessageAdapter.OnMessageClickedListener { position: Int, message: Message ->
-                if (actionMode == null) {
+                    if (actionMode == null) {
 //                    val dialog = MessageBottomSheetDialogFragment()
 //                    dialog.setOnCompleteButtonClicked {
 //                        findNavController().previousBackStackEntry?.savedStateHandle?.set("key",
@@ -77,28 +78,31 @@ class MessagesFragment : Fragment(), ActionMode.Callback {
 //                    }
 //                    dialog.arguments = Bundle().apply { putString("message-key", message.message) }
 //                    dialog.show(childFragmentManager, "bottom-sheet")
-                    val action = MessagesFragmentDirections.actionMessageListFragmentToMessageDetailFragment(message.id)
-                    findNavController().navigate(action)
-                } else {
-                    selectItem(it, position)
-                    Log.d("TEST", "is selected: ${it.selectionList[position]}")
-                }
+                        val action =
+                            MessagesFragmentDirections.actionMessageListFragmentToMessageDetailFragment(
+                                message.id
+                            )
+                        findNavController().navigate(action)
+                    } else {
+                        selectItem(it, position)
+                        Log.d("TEST", "is selected: ${it.selectionList[position]}")
+                    }
 
-            })
+                })
             it.setOnMessageLongClickedListener(
                 MessageAdapter.OnMessageLongClickedListener { position: Int ->
 
-                when (actionMode) {
-                    null -> {
-                        actionMode = requireActivity().startActionMode(this)
-                        selectItem(it, position)
+                    when (actionMode) {
+                        null -> {
+                            actionMode = requireActivity().startActionMode(this)
+                            selectItem(it, position)
 
-                        true
+                            true
+                        }
+                        else -> false
                     }
-                    else -> false
-                }
 
-            })
+                })
 
         }
 
@@ -113,7 +117,7 @@ class MessagesFragment : Fragment(), ActionMode.Callback {
         return binding.root
     }
 
-    private fun selectItem(adapter: MessageAdapter, position: Int){
+    private fun selectItem(adapter: MessageAdapter, position: Int) {
         if (adapter.selectionList[position]) selectedCount-- else selectedCount++
         adapter.selectionList[position] = !adapter.selectionList[position]
         adapter.notifyItemChanged(position)
@@ -139,9 +143,15 @@ class MessagesFragment : Fragment(), ActionMode.Callback {
             R.id.delete -> {
 
                 //TODO how to make sure they are deleted before user exits fragment?
-                lifecycleScope.launch {
-                    val list: Array<Message> = adapter.getSelectedItems()
-                    viewModel.deleteMessages(*list)
+                //TODO redo for the possibility to remove messages in use
+                for (message in adapter.getSelectedItems()) {
+                    lifecycleScope.launch {
+                        try {
+                            viewModel.deleteMessages(message)
+                        } catch (e: Exception) {
+                            Toast.makeText(requireContext(), getString(R.string.temp_delete_exception_text), Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 }
                 mode.finish()
 

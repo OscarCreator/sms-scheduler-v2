@@ -2,6 +2,7 @@ package com.oscarcreator.sms_scheduler_v2.timetemplates
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -103,9 +104,14 @@ class TimeTemplatesFragment : Fragment(), ActionMode.Callback {
     override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.delete -> {
-                lifecycleScope.launch {
-                    val list: Array<TimeTemplate> = adapter.getSelectedItems()
-                    viewModel.deleteTimeTemplates(*list)
+                for(timetemplate in adapter.getSelectedItems()) {
+                    lifecycleScope.launch {
+                        try {
+                            viewModel.deleteTimeTemplates(timetemplate)
+                        } catch (e: Exception) {
+                            Toast.makeText(requireContext(), getString(R.string.temp_delete_exception_text), Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 }
                 mode.finish()
                 true

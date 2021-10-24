@@ -2,6 +2,7 @@ package com.oscarcreator.sms_scheduler_v2.contactdetail
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -33,7 +34,11 @@ class DetailContactFragment : Fragment() {
 
         when (item.itemId) {
             R.id.delete -> {
-                viewModel.deleteContact()
+                //TODO redo for the possibility to remove contacts
+                viewModel.deleteContact {
+                    Toast.makeText(requireContext(), getString(R.string.temp_delete_exception_text), Toast.LENGTH_LONG).show()
+                }
+                return true
             }
         }
 

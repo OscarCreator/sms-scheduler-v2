@@ -57,6 +57,7 @@
     <string name="variables_info">Variablefakta</string>
     <string name="selected_count">%1$d Markerade</string>
     <string name="send_now">Skicka nu</string>
+    <string name="temp_delete_exception_text">Ej möjligt att radera för närvarande.</string>
 
     <string-array name="message_variable_descriptions">
         <item>Namnet på personen för behandlingen.</item>

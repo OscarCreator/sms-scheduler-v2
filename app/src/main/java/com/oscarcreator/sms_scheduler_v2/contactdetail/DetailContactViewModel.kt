@@ -41,12 +41,15 @@ class DetailContactViewModel(
         _contactId.value = contactId
     }
 
-    fun deleteContact() = viewModelScope.launch {
+    fun deleteContact(onException: () -> Unit) = viewModelScope.launch {
         _contactId.value?.let {
-            contactsRepository.deleteById(it)
-            _deleteContactEvent.value = Event(Unit)
+            try {
+                contactsRepository.deleteById(it)
+                _deleteContactEvent.value = Event(Unit)
+            } catch (e: Exception) {
+                onException()
+            }
         }
-
     }
 
     private fun computeResult(contactResult: Result<Customer>): Customer? {

@@ -41,10 +41,14 @@ class TreatmentDetailViewModel(
         _treatmentId.value = treatmentId
     }
 
-    fun deleteTreatment() = viewModelScope.launch {
+    fun deleteTreatment(onException: () -> Unit) = viewModelScope.launch {
         _treatmentId.value?.let {
-            treatmentsRepository.deleteById(it)
-            _deleteTreatmentEvent.value = Event(Unit)
+            try {
+                treatmentsRepository.deleteById(it)
+                _deleteTreatmentEvent.value = Event(Unit)
+            } catch (e: Exception) {
+                onException()
+            }
         }
 
     }

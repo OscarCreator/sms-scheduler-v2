@@ -2,6 +2,7 @@ package com.oscarcreator.sms_scheduler_v2.treatmentdetail
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -29,7 +30,10 @@ class TreatmentDetailFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.delete -> {
-                viewModel.deleteTreatment()
+                //TODO redo for the possibility to remove treatments
+                viewModel.deleteTreatment {
+                    Toast.makeText(requireContext(), getString(R.string.temp_delete_exception_text), Toast.LENGTH_LONG).show()
+                }
 
             }
         }
