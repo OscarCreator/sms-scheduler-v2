@@ -5,7 +5,7 @@ import com.oscarcreator.sms_scheduler_v2.data.Result
 
 interface CustomersDataSource {
 
-    fun getCustomers(): LiveData<List<Customer>>
+    fun observeContacts(): LiveData<List<Customer>>
 
     suspend fun getCustomer(customerId: Long): Result<Customer>
 

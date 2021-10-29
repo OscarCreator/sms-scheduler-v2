@@ -16,8 +16,8 @@ interface CustomerDao {
      *
      * @return all customers
      * */
-    @Query("SELECT * FROM Customers")
-    fun getCustomers(): LiveData<List<Customer>>
+    @Query("SELECT * FROM Customers ORDER BY name ASC")
+    fun observeContacts(): LiveData<List<Customer>>
 
     /**
      * Returns a the [Customer] with the id

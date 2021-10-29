@@ -3,7 +3,7 @@ package com.oscarcreator.sms_scheduler_v2.data.local
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.oscarcreator.sms_scheduler_v2.data.customer.Customer
 import com.oscarcreator.sms_scheduler_v2.data.customer.local.CustomerDao
-import com.oscarcreator.sms_scheduler_v2.util.observeOnce
+import com.oscarcreator.sms_scheduler_v2.util.getOrAwaitValue
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
@@ -28,9 +28,7 @@ class CustomerDaoTest : BaseDaoTest() {
         val customer = Customer(id = 1, name = "bengan", phoneNumber = "0754962045")
         assertThat(customerDao.insert(customer), `is`(1))
 
-        customerDao.getCustomers().observeOnce {
-            assertThat(it, `is`(listOf(customer)))
-        }
+        assertThat(customerDao.observeContacts().getOrAwaitValue(), `is`(listOf(customer)))
     }
 
     @Test
@@ -40,9 +38,7 @@ class CustomerDaoTest : BaseDaoTest() {
         assertThat(customerDao.insert(customer), `is`(1))
         assertThat(customerDao.delete(customer), `is`(1))
 
-        customerDao.getCustomers().observeOnce {
-            assertThat(it, `is`(emptyList()))
-        }
+        assertThat(customerDao.observeContacts().getOrAwaitValue(), `is`(emptyList()))
     }
 
     @Test
@@ -53,9 +49,7 @@ class CustomerDaoTest : BaseDaoTest() {
         val updatedCustomer = Customer(id = 100, name = "Bergit", phoneNumber = "0738092734")
         assertThat(customerDao.update(updatedCustomer), `is`(1))
 
-        customerDao.getCustomers().observeOnce {
-            assertThat(it, `is`(listOf(updatedCustomer)))
-        }
+        assertThat(customerDao.observeContacts().getOrAwaitValue(), `is`(listOf(updatedCustomer)))
     }
 
     @Test
@@ -70,7 +64,6 @@ class CustomerDaoTest : BaseDaoTest() {
         assertThat(customerDao.getCustomersLike("%hansson%"), `is`(listOf(customer1, customer2)))
 
         assertThat(customerDao.getCustomersLike("%53%"), `is`(listOf(customer3, customer2)))
-
     }
 
 }

@@ -54,7 +54,12 @@ class DashboardFragment : Fragment() {
     ): View {
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
 
-        setUpStatisticsView()
+        //setUpStatisticsView()
+
+        binding.fabAddTreatment.setOnClickListener{
+            val action = DashboardFragmentDirections.actionDashboardFragmentToAddEditTreatmentFragment()
+            findNavController().navigate(action)
+        }
 
         childFragmentManager.beginTransaction()
             .replace(R.id.upcoming_treatment_list_fragment_container, UpcomingTreatmentCardListFragment())
@@ -87,12 +92,6 @@ class DashboardFragment : Fragment() {
             totalEarningsExclusive.observe(viewLifecycleOwner) {
                 binding.statisticsView.setTotalEarningsExclusive(it)
             }
-
-            binding.fabAddTreatment.setOnClickListener{
-                val action = DashboardFragmentDirections.actionDashboardFragmentToAddEditTreatmentFragment()
-                findNavController().navigate(action)
-            }
-
         }
     }
 

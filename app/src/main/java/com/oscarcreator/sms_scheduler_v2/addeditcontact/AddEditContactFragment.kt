@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -44,6 +45,14 @@ class AddEditContactFragment : Fragment() {
 
         binding.fabSaveContact.setOnClickListener {
             viewModel.saveContact()
+        }
+
+        binding.etMoney.setOnEditorActionListener { textView, i, keyEvent ->
+            if (i == EditorInfo.IME_ACTION_DONE) {
+                viewModel.saveContact()
+                true
+            }
+            false
         }
 
         return binding.root

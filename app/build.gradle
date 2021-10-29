@@ -44,6 +44,11 @@ android {
         kotlinCompilerExtensionVersion '1.0.1'
     }
 
+    packagingOptions {
+        exclude 'META-INF/AL2.0'
+        exclude 'META-INF/LGPL2.1'
+    }
+
 
 }
 
@@ -79,6 +84,7 @@ dependencies {
     //room
     androidTestImplementation "androidx.room:room-testing:$room_version"
     //lifecycle components
+    testImplementation "androidx.arch.core:core-testing:2.1.0"
     androidTestImplementation "androidx.arch.core:core-testing:2.1.0"
     // Navigation
     androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
@@ -88,6 +94,7 @@ dependencies {
     }
 
     androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
 
     //room
     implementation "androidx.room:room-runtime:$room_version"

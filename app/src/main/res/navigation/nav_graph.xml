@@ -96,9 +96,9 @@
     </fragment>
     <fragment
         android:id="@+id/contactListFragment"
-        android:name="com.oscarcreator.sms_scheduler_v2.contacts.ContactListFragment"
+        android:name="com.oscarcreator.sms_scheduler_v2.contacts.ContactsFragment"
         android:label="@string/contacts"
-        tools:layout="@layout/fragment_contact_list"
+        tools:layout="@layout/fragment_compose_view"
         >
         <action
             android:id="@+id/action_contactListFragment_to_addEditContactFragment"

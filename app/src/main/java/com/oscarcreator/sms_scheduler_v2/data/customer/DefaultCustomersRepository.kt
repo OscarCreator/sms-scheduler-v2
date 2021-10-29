@@ -10,7 +10,7 @@ class DefaultCustomersRepository(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ): CustomersRepository {
 
-    override fun getCustomers(): LiveData<List<Customer>> = customersDataSource.getCustomers()
+    override fun observeContacts(): LiveData<List<Customer>> = customersDataSource.observeContacts()
 
     override suspend fun getCustomerById(id: Long): Result<Customer> = customersDataSource.getCustomer(id)
 

@@ -142,7 +142,7 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
             assertThat(it, `is`(emptyList()))
         }
 
-        database.customerDao().getCustomers().getOrAwaitValue().let {
+        database.customerDao().observeContacts().getOrAwaitValue().let {
             assertThat(it, `is`(listOf(customer)))
         }
 
@@ -174,7 +174,7 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
             assertThat(it, `is`(emptyList()))
         }
 
-        database.customerDao().getCustomers().getOrAwaitValue().let {
+        database.customerDao().observeContacts().getOrAwaitValue().let {
             assertThat(it, `is`(listOf(customer)))
         }
 
@@ -213,7 +213,7 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
             assertThat(it, `is`(listOf(scheduledTreatmentCustomerCrossRef)))
         }
 
-        database.customerDao().getCustomers().getOrAwaitValue().let {
+        database.customerDao().observeContacts().getOrAwaitValue().let {
             assertThat(it, `is`(listOf(customer)))
         }
 

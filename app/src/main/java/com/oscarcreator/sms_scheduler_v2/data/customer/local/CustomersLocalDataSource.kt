@@ -15,7 +15,7 @@ class CustomersLocalDataSource internal constructor(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ): CustomersDataSource {
 
-    override fun getCustomers(): LiveData<List<Customer>> = customerDao.getCustomers()
+    override fun observeContacts(): LiveData<List<Customer>> = customerDao.observeContacts()
 
     override suspend fun getCustomer(customerId: Long): Result<Customer> =
         withContext(ioDispatcher){
