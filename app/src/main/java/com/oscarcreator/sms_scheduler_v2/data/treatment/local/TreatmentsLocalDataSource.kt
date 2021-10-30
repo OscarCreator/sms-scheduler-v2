@@ -14,7 +14,7 @@ class TreatmentsLocalDataSource internal constructor(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : TreatmentsDataSource {
 
-    override fun getTreatments(): LiveData<List<Treatment>> = treatmentsDao.getTreatments()
+    override fun observeTreatments(): LiveData<List<Treatment>> = treatmentsDao.observeTreatments()
 
     override suspend fun getTreatment(id: Long): Result<Treatment> =
         withContext(ioDispatcher) {

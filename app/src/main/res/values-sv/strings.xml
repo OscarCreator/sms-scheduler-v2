@@ -67,5 +67,7 @@
         <item>Den schemalagda behandlingens månad.</item>
         <item>Den schemalagda behandlingens år.</item>
     </string-array>
+    <string name="treatment_time">%1$d min</string>
+    <string name="treatment_price">%1$d SEK</string>
 
 </resources>

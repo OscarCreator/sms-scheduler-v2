@@ -27,7 +27,7 @@ class TreatmentDaoTest : BaseDaoTest() {
         val treatment = Treatment(id = 7, name = "Salt", duration = 50, price = 500)
         assertThat(treatmentDao.insert(treatment), `is`(7))
 
-        treatmentDao.getTreatments().observeOnce {
+        treatmentDao.observeTreatments().observeOnce {
             assertThat(it, `is`(listOf(treatment)))
         }
     }
@@ -38,7 +38,7 @@ class TreatmentDaoTest : BaseDaoTest() {
         assertThat(treatmentDao.insert(treatment), `is`(5))
         assertThat(treatmentDao.delete(treatment), `is`(1))
 
-        treatmentDao.getTreatments().observeOnce {
+        treatmentDao.observeTreatments().observeOnce {
             assertThat(it, `is`(emptyList()))
         }
     }
@@ -50,7 +50,7 @@ class TreatmentDaoTest : BaseDaoTest() {
         val updatedTreatment = Treatment(id = 4, name = "Ham", duration = 40, price = 200)
         assertThat(treatmentDao.update(updatedTreatment), `is`(1))
 
-        treatmentDao.getTreatments().observeOnce {
+        treatmentDao.observeTreatments().observeOnce {
             assertThat(it, `is`(listOf(updatedTreatment)))
         }
     }
@@ -63,7 +63,7 @@ class TreatmentDaoTest : BaseDaoTest() {
         assertThat(treatmentDao.insert(treatment2), `is`(3))
         assertThat(treatmentDao.delete(treatment1, treatment2), `is`(2))
 
-        treatmentDao.getTreatments().observeOnce {
+        treatmentDao.observeTreatments().observeOnce {
             assertThat(it, `is`(emptyList()))
         }
     }
@@ -74,7 +74,7 @@ class TreatmentDaoTest : BaseDaoTest() {
         assertThat(treatmentDao.insert(treatment), `is`(1))
         assertThat(treatmentDao.insert(treatment), `is`(-1))
 
-        treatmentDao.getTreatments().observeOnce {
+        treatmentDao.observeTreatments().observeOnce {
             assertThat(it, `is`(listOf(treatment)))
         }
     }

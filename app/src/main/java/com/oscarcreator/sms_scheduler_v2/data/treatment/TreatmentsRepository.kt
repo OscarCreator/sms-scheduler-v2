@@ -5,7 +5,7 @@ import com.oscarcreator.sms_scheduler_v2.data.Result
 
 interface TreatmentsRepository {
 
-    fun getTreatments(): LiveData<List<Treatment>>
+    fun observeTreatments(): LiveData<List<Treatment>>
 
     suspend fun getTreatment(id: Long): Result<Treatment>
 

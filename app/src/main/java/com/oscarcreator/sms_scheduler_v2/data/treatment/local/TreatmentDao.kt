@@ -14,7 +14,7 @@ interface TreatmentDao {
      * Returns all [Treatment]s in the database
      * */
     @Query("SELECT * FROM treatments")
-    fun getTreatments(): LiveData<List<Treatment>>
+    fun observeTreatments(): LiveData<List<Treatment>>
 
     /**
      * Returns the [Treatment] with the specified id

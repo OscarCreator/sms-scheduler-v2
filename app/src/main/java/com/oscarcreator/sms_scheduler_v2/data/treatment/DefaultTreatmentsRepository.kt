@@ -10,7 +10,7 @@ class DefaultTreatmentsRepository(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ): TreatmentsRepository {
 
-    override fun getTreatments(): LiveData<List<Treatment>> = treatmentsLocalDataSource.getTreatments()
+    override fun observeTreatments(): LiveData<List<Treatment>> = treatmentsLocalDataSource.observeTreatments()
 
     override suspend fun getTreatment(id: Long): Result<Treatment> = treatmentsLocalDataSource.getTreatment(id)
 

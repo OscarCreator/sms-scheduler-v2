@@ -136,7 +136,6 @@
         android:id="@+id/treatmentsFragment"
         android:name="com.oscarcreator.sms_scheduler_v2.treatments.TreatmentsFragment"
         android:label="@string/treatments"
-        tools:layout="@layout/fragment_treatments"
         >
         <action
             android:id="@+id/action_treatmentsFragment_to_addEditTreatment"

@@ -63,6 +63,8 @@
     <string name="selected_count">%1$d Selected</string>
     <string name="send_now">Send now</string>
     <string name="temp_delete_exception_text">Not possible to delete currently.</string>
+    <string name="treatment_time">%1$d min</string>
+    <string name="treatment_price">%1$d SEK</string>
 
     <string-array name="message_variable_descriptions">
         <item>The name of the person for the treatment.</item>
