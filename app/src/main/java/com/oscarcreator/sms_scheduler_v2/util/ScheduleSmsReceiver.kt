@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.telephony.SmsManager
 import android.util.Log
@@ -53,11 +54,19 @@ fun scheduleAlarm(context: Context, scheduledTreatment: ScheduledTreatmentWithMe
     intent.putExtra("phone_num", scheduledTreatment.customers[0].phoneNumber)
     intent.putExtra("id", scheduledTreatment.scheduledTreatment.id)
     intent.putExtra("message", scheduledTreatment.replaceVariables())
-    val pendingIntent = PendingIntent.getBroadcast(
-        context,
-        scheduledTreatment.scheduledTreatment.id.toInt() * 4,
-        intent,
-        PendingIntent.FLAG_UPDATE_CURRENT)
+    val pendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        PendingIntent.getBroadcast(
+            context,
+            scheduledTreatment.scheduledTreatment.id.toInt() * 4,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE)
+    } else {
+        PendingIntent.getBroadcast(
+            context,
+            scheduledTreatment.scheduledTreatment.id.toInt() * 4,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT)
+    }
 
     val time = scheduledTreatment.scheduledTreatment.treatmentTime.timeInMillis + scheduledTreatment.timeTemplate.delay
     Log.d("ScheduleSmsReceiver", "scheduleAlarm")
@@ -73,12 +82,19 @@ fun deleteAlarm(context: Context, scheduledTreatment: ScheduledTreatmentWithMess
     intent.putExtra("id", scheduledTreatment.scheduledTreatment.id)
     intent.putExtra("message", scheduledTreatment.replaceVariables())
 
-    val pendingIntent = PendingIntent.getBroadcast(
-        context,
-        scheduledTreatment.scheduledTreatment.id.toInt() * 4,
-        intent,
-        PendingIntent.FLAG_UPDATE_CURRENT
-    )
+    val pendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        PendingIntent.getBroadcast(
+            context,
+            scheduledTreatment.scheduledTreatment.id.toInt() * 4,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE)
+    } else {
+        PendingIntent.getBroadcast(
+            context,
+            scheduledTreatment.scheduledTreatment.id.toInt() * 4,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT)
+    }
 
     alarmManager.cancel(pendingIntent)
 }
@@ -100,18 +116,36 @@ private fun sendSms(context: Context, intent: Intent) {
 
     val smsManager = SmsManager.getDefault()
 
-    val sentPendingIntent = PendingIntent.getBroadcast(
-        context,
-        id.toInt() * 4 + 1,
-        Intent(context, SentSmsReceiver::class.java).apply { putExtras(intent.extras!!) },
-        PendingIntent.FLAG_UPDATE_CURRENT)
+    val sentPendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        PendingIntent.getBroadcast(
+            context,
+            id.toInt() * 4 + 1,
+            Intent(context, SentSmsReceiver::class.java).apply { putExtras(intent.extras!!) },
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE)
+    } else {
+        PendingIntent.getBroadcast(
+            context,
+            id.toInt() * 4 + 1,
+            Intent(context, SentSmsReceiver::class.java).apply { putExtras(intent.extras!!) },
+            PendingIntent.FLAG_UPDATE_CURRENT)
+    }
 
-    val deliveredPendingIntent = PendingIntent.getBroadcast(
-        context,
-        id.toInt() * 4 + 2,
-        Intent(context, DeliveredSmsReceiver::class.java).apply { putExtras(intent.extras!!) },
-        PendingIntent.FLAG_UPDATE_CURRENT
-    )
+
+    val deliveredPendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        PendingIntent.getBroadcast(
+            context,
+            id.toInt() * 4 + 2,
+            Intent(context, DeliveredSmsReceiver::class.java).apply { putExtras(intent.extras!!) },
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
+        )
+    } else {
+        PendingIntent.getBroadcast(
+            context,
+            id.toInt() * 4 + 2,
+            Intent(context, DeliveredSmsReceiver::class.java).apply { putExtras(intent.extras!!) },
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
+    }
 
     smsManager.sendTextMessage(phoneNumber, null, message, sentPendingIntent, deliveredPendingIntent)
 }
