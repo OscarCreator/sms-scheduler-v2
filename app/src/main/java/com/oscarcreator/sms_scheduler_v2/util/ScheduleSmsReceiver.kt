@@ -19,7 +19,7 @@ import com.oscarcreator.sms_scheduler_v2.MainActivity
 import com.oscarcreator.sms_scheduler_v2.NotificationConstants
 import com.oscarcreator.sms_scheduler_v2.R
 import com.oscarcreator.sms_scheduler_v2.addeditmessage.replaceVariables
-import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers
+import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentWithMessageAndTimeTemplateAndContacts
 
 class ScheduleSmsReceiver() : BroadcastReceiver() {
 
@@ -46,12 +46,12 @@ class ScheduleSmsReceiver() : BroadcastReceiver() {
 
 }
 
-fun scheduleAlarm(context: Context, scheduledTreatment: ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers) {
+fun scheduleAlarm(context: Context, scheduledTreatment: ScheduledTreatmentWithMessageAndTimeTemplateAndContacts) {
     val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     val intent = Intent(context, ScheduleSmsReceiver::class.java)
     //TODO "extend" Bundle to make a custom
-    intent.putExtra("customer", scheduledTreatment.customers[0].name)
-    intent.putExtra("phone_num", scheduledTreatment.customers[0].phoneNumber)
+    intent.putExtra("customer", scheduledTreatment.contacts[0].name)
+    intent.putExtra("phone_num", scheduledTreatment.contacts[0].phoneNumber)
     intent.putExtra("id", scheduledTreatment.scheduledTreatment.id)
     intent.putExtra("message", scheduledTreatment.replaceVariables())
     val pendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -73,12 +73,12 @@ fun scheduleAlarm(context: Context, scheduledTreatment: ScheduledTreatmentWithMe
     alarmManager.setExact(AlarmManager.RTC_WAKEUP, time, pendingIntent)
 }
 
-fun deleteAlarm(context: Context, scheduledTreatment: ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers) {
+fun deleteAlarm(context: Context, scheduledTreatment: ScheduledTreatmentWithMessageAndTimeTemplateAndContacts) {
     val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     val intent = Intent(context, ScheduleSmsReceiver::class.java)
     //TODO "extend" Bundle to make a custom
-    intent.putExtra("customer", scheduledTreatment.customers[0].name)
-    intent.putExtra("phone_num", scheduledTreatment.customers[0].phoneNumber)
+    intent.putExtra("customer", scheduledTreatment.contacts[0].name)
+    intent.putExtra("phone_num", scheduledTreatment.contacts[0].phoneNumber)
     intent.putExtra("id", scheduledTreatment.scheduledTreatment.id)
     intent.putExtra("message", scheduledTreatment.replaceVariables())
 
@@ -99,10 +99,10 @@ fun deleteAlarm(context: Context, scheduledTreatment: ScheduledTreatmentWithMess
     alarmManager.cancel(pendingIntent)
 }
 
-fun sendSmsNow(context: Context, scheduledTreatment: ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers) {
+fun sendSmsNow(context: Context, scheduledTreatment: ScheduledTreatmentWithMessageAndTimeTemplateAndContacts) {
     val intent = Intent(context, ScheduleSmsReceiver::class.java)
-    intent.putExtra("customer", scheduledTreatment.customers[0].name)
-    intent.putExtra("phone_num", scheduledTreatment.customers[0].phoneNumber)
+    intent.putExtra("customer", scheduledTreatment.contacts[0].name)
+    intent.putExtra("phone_num", scheduledTreatment.contacts[0].phoneNumber)
     intent.putExtra("id", scheduledTreatment.scheduledTreatment.id)
     intent.putExtra("message", scheduledTreatment.replaceVariables())
 

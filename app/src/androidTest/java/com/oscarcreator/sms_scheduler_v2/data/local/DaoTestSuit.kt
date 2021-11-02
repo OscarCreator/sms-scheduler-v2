@@ -5,7 +5,7 @@ import org.junit.runners.Suite
 
 @RunWith(Suite::class)
 @Suite.SuiteClasses(
-    CustomerDaoTest::class,
+    ContactDaoTest::class,
     TreatmentDaoTest::class,
     MessagesDaoTest::class,
     TimeTemplateDaoTest::class,

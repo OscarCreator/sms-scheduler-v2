@@ -22,7 +22,7 @@ class DetailContactFragment : Fragment() {
 
     private val viewModel by viewModels<DetailContactViewModel> {
         DetailContactViewModelFactory(
-            (requireContext().applicationContext as SmsSchedulerApplication).customersRepository
+            (requireContext().applicationContext as SmsSchedulerApplication).contactsRepository
         )
     }
 

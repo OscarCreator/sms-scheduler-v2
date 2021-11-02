@@ -7,13 +7,13 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import com.oscarcreator.sms_scheduler_v2.data.AppDatabase
 import com.oscarcreator.sms_scheduler_v2.data.FakeTreatmentsRepository
-import com.oscarcreator.sms_scheduler_v2.data.customer.Customer
-import com.oscarcreator.sms_scheduler_v2.data.customer.DefaultCustomersRepository
-import com.oscarcreator.sms_scheduler_v2.data.customer.local.CustomersLocalDataSource
+import com.oscarcreator.sms_scheduler_v2.data.contact.Contact
+import com.oscarcreator.sms_scheduler_v2.data.contact.DefaultContactsRepository
+import com.oscarcreator.sms_scheduler_v2.data.contact.local.ContactsLocalDataSource
 import com.oscarcreator.sms_scheduler_v2.data.message.Message
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.DefaultScheduledTreatmentsRepository
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatment
-import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentCustomerCrossRef
+import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentContactCrossRef
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentsRepository
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.local.ScheduledTreatmentsLocalDataSource
 import com.oscarcreator.sms_scheduler_v2.data.timetemplate.TimeTemplate
@@ -44,8 +44,8 @@ class AddEditScheduledTreatmentViewModelTest {
 
     private val timeTemplate = TimeTemplate(6, 100)
     private val message = Message(8, "some old text", true)
-    private val receiver1 = Customer(4, "Bosse", "40602380")
-    private val receiver2 = Customer(2, "Bergit", "0720934592", 4000)
+    private val receiver1 = Contact(4, "Bosse", "40602380")
+    private val receiver2 = Contact(2, "Bergit", "0720934592", 4000)
     private val treatment = Treatment("Treatment 4", 400, 90, treatmentId = 9)
 
     private lateinit var scheduledTreatmentsRepository: ScheduledTreatmentsRepository
@@ -62,8 +62,8 @@ class AddEditScheduledTreatmentViewModelTest {
             )
 
         )
-        val customerRepository = DefaultCustomersRepository(
-            CustomersLocalDataSource(database.customerDao()))
+        val customerRepository = DefaultContactsRepository(
+            ContactsLocalDataSource(database.customerDao()))
 
         val treatmentsRepository = FakeTreatmentsRepository()
         //TODO use fake repositories
@@ -88,20 +88,20 @@ class AddEditScheduledTreatmentViewModelTest {
         Assert.assertEquals(viewModelScheduled.message.value, null)
         Assert.assertEquals(viewModelScheduled.timeTemplateText.value, null)
         Assert.assertEquals(viewModelScheduled.treatment.value, null)
-        Assert.assertEquals(viewModelScheduled.customers, mutableListOf<Customer>())
+        Assert.assertEquals(viewModelScheduled.contacts, mutableListOf<Contact>())
     }
 
     @Test
     fun observeReceiversUpdatesWhenChanged() {
-        val receiver = Customer(name = "Bengt", phoneNumber = "0740203052")
+        val receiver = Contact(name = "Bengt", phoneNumber = "0740203052")
         val expected = listOf(receiver)
 
         viewModelScheduled.addReceiver(receiver)
-        assertThat(viewModelScheduled.customers, `is`(expected))
+        assertThat(viewModelScheduled.contacts, `is`(expected))
 
         viewModelScheduled.removeReceiver(receiver)
 
-        assertThat(viewModelScheduled.customers, `is`(emptyList<Customer>()))
+        assertThat(viewModelScheduled.contacts, `is`(emptyList<Contact>()))
     }
 
     @Test
@@ -130,7 +130,7 @@ class AddEditScheduledTreatmentViewModelTest {
         )
         assertThat(database.scheduledTreatmentDao().insert(scheduledTreatment), `is`(11))
         val scheduledTreatmentCustomerCrossRef =
-            ScheduledTreatmentCustomerCrossRef(11, receiver1.id)
+            ScheduledTreatmentContactCrossRef(11, receiver1.id)
         database.scheduledTreatmentCrossRefDao().insert(scheduledTreatmentCustomerCrossRef)
 
         val customerRetrieved = database.customerDao().getCustomer(receiver1.id)

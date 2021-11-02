@@ -6,13 +6,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.oscarcreator.sms_scheduler_v2.R
 import com.oscarcreator.sms_scheduler_v2.data.Result
-import com.oscarcreator.sms_scheduler_v2.data.customer.Customer
-import com.oscarcreator.sms_scheduler_v2.data.customer.CustomersRepository
+import com.oscarcreator.sms_scheduler_v2.data.contact.Contact
+import com.oscarcreator.sms_scheduler_v2.data.contact.ContactsRepository
 import com.oscarcreator.sms_scheduler_v2.util.Event
 import kotlinx.coroutines.launch
 
 class AddEditContactViewModel(
-    private val contactsRepository: CustomersRepository
+    private val contactsRepository: ContactsRepository
 ): ViewModel() {
 
     companion object {
@@ -75,13 +75,13 @@ class AddEditContactViewModel(
 
         val currentContactId = contactId
         if (isNewContact || currentContactId == -1L) {
-            createContact(Customer(name = currentName, phoneNumber = currentPhoneNumber, money = currentMoney.toInt()))
+            createContact(Contact(name = currentName, phoneNumber = currentPhoneNumber, money = currentMoney.toInt()))
         } else {
-            updateContact(Customer(currentContactId, currentName, currentPhoneNumber, currentMoney.toInt()))
+            updateContact(Contact(currentContactId, currentName, currentPhoneNumber, currentMoney.toInt()))
         }
     }
 
-    private fun onContactLoaded(contact: Customer) {
+    private fun onContactLoaded(contact: Contact) {
         name.value = contact.name
         phoneNumber.value = contact.phoneNumber
         money.value = contact.money.toString()
@@ -92,13 +92,13 @@ class AddEditContactViewModel(
         _dataLoading.value = false
     }
 
-    private fun createContact(newCustomer: Customer) = viewModelScope.launch {
-        contactsRepository.insert(newCustomer)
+    private fun createContact(newContact: Contact) = viewModelScope.launch {
+        contactsRepository.insert(newContact)
         _contactUpdatedEvent.value = Event(Unit)
     }
 
-    private fun updateContact(customer: Customer) = viewModelScope.launch {
-        contactsRepository.update(customer)
+    private fun updateContact(contact: Contact) = viewModelScope.launch {
+        contactsRepository.update(contact)
         _contactUpdatedEvent.value = Event(Unit)
     }
 

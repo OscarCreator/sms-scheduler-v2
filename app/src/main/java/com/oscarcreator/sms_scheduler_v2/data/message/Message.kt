@@ -3,7 +3,7 @@ package com.oscarcreator.sms_scheduler_v2.data.message
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.oscarcreator.sms_scheduler_v2.data.AppDatabase
-import com.oscarcreator.sms_scheduler_v2.data.customer.Customer
+import com.oscarcreator.sms_scheduler_v2.data.contact.Contact
 
 /**
  * [Message] is a data class which is able to be inserted into the [AppDatabase]
@@ -15,7 +15,7 @@ data class Message(
      * */
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     /**
-     * The message which will be formatted and then sent to the [Customer]s
+     * The message which will be formatted and then sent to the [Contact]s
      * */
     val message: String,
     /**

@@ -6,12 +6,12 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.oscarcreator.sms_scheduler_v2.data.customer.Customer
-import com.oscarcreator.sms_scheduler_v2.data.customer.local.CustomerDao
+import com.oscarcreator.sms_scheduler_v2.data.contact.Contact
+import com.oscarcreator.sms_scheduler_v2.data.contact.local.ContactDao
 import com.oscarcreator.sms_scheduler_v2.data.message.Message
 import com.oscarcreator.sms_scheduler_v2.data.message.local.MessagesDao
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatment
-import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentCustomerCrossRef
+import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentContactCrossRef
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.local.ScheduledTreatmentCustomerCrossRefDao
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.local.ScheduledTreatmentDao
 import com.oscarcreator.sms_scheduler_v2.data.timetemplate.TimeTemplate
@@ -24,12 +24,12 @@ import kotlinx.coroutines.launch
 
 @Database(
     entities = [
-        Customer::class,
+        Contact::class,
         Treatment::class,
         Message::class,
         TimeTemplate::class,
         ScheduledTreatment::class,
-        ScheduledTreatmentCustomerCrossRef::class
+        ScheduledTreatmentContactCrossRef::class
     ],
     version = 1,
     exportSchema = false
@@ -37,7 +37,7 @@ import kotlinx.coroutines.launch
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 
-    abstract fun customerDao(): CustomerDao
+    abstract fun customerDao(): ContactDao
     abstract fun treatmentDao(): TreatmentDao
     abstract fun messageDao(): MessagesDao
     abstract fun timeTemplateDao(): TimeTemplateDao

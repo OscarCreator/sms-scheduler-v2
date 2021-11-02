@@ -5,7 +5,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.oscarcreator.sms_scheduler_v2.FakeContactsRepository
 import com.oscarcreator.sms_scheduler_v2.MainCoroutineRule
 import com.oscarcreator.sms_scheduler_v2.addeditcontact.AddEditContactViewModel
-import com.oscarcreator.sms_scheduler_v2.data.customer.Customer
+import com.oscarcreator.sms_scheduler_v2.data.contact.Contact
 import com.oscarcreator.sms_scheduler_v2.getOrAwaitValue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
@@ -37,7 +37,7 @@ class AddEditContactViewModelTest {
 
     @Test
     fun saveContactToRepository_contactSaved() {
-        val contact = Customer(1, "Bengt", "0238492", 200)
+        val contact = Contact(1, "Bengt", "0238492", 200)
 
         addEditContactViewModel.start()
 
@@ -58,7 +58,7 @@ class AddEditContactViewModelTest {
 
     @Test
     fun loadContact_dataShown() {
-        val contact = Customer(1, "Bengt", "0238492", 200)
+        val contact = Contact(1, "Bengt", "0238492", 200)
 
         runBlocking {
             contactsRepository.insert(contact)

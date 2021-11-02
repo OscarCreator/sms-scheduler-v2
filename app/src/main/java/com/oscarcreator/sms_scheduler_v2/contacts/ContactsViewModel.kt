@@ -3,15 +3,15 @@ package com.oscarcreator.sms_scheduler_v2.contacts
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.oscarcreator.sms_scheduler_v2.data.customer.Customer
-import com.oscarcreator.sms_scheduler_v2.data.customer.CustomersRepository
+import com.oscarcreator.sms_scheduler_v2.data.contact.Contact
+import com.oscarcreator.sms_scheduler_v2.data.contact.ContactsRepository
 import com.oscarcreator.sms_scheduler_v2.util.Event
 
 class ContactsViewModel(
-    private val contactsRepository: CustomersRepository
+    private val contactsRepository: ContactsRepository
 ) : ViewModel() {
 
-    val contacts: LiveData<List<Customer>> = contactsRepository.observeContacts()
+    val contacts: LiveData<List<Contact>> = contactsRepository.observeContacts()
 
 
     private val _newContactEvent = MutableLiveData<Event<Unit>>()

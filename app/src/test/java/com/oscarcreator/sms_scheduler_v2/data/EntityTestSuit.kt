@@ -5,11 +5,11 @@ import org.junit.runners.Suite
 
 @RunWith(Suite::class)
 @Suite.SuiteClasses(
-    CustomerTest::class,
+    ContactTest::class,
     TreatmentTest::class,
     MessageTest::class,
     TimeTemplateTest::class,
     ScheduledTreatmentTest::class,
-    ScheduledTreatmentCustomerCrossRefTest::class
+    ScheduledTreatmentContactCrossRefTest::class
 )
 class EntityTestSuit

@@ -3,10 +3,10 @@ package com.oscarcreator.sms_scheduler_v2.util
 import android.content.Context
 import androidx.annotation.VisibleForTesting
 import com.oscarcreator.sms_scheduler_v2.data.AppDatabase
-import com.oscarcreator.sms_scheduler_v2.data.customer.CustomersDataSource
-import com.oscarcreator.sms_scheduler_v2.data.customer.CustomersRepository
-import com.oscarcreator.sms_scheduler_v2.data.customer.DefaultCustomersRepository
-import com.oscarcreator.sms_scheduler_v2.data.customer.local.CustomersLocalDataSource
+import com.oscarcreator.sms_scheduler_v2.data.contact.ContactsDataSource
+import com.oscarcreator.sms_scheduler_v2.data.contact.ContactsRepository
+import com.oscarcreator.sms_scheduler_v2.data.contact.DefaultContactsRepository
+import com.oscarcreator.sms_scheduler_v2.data.contact.local.ContactsLocalDataSource
 import com.oscarcreator.sms_scheduler_v2.data.message.DefaultMessagesRepository
 import com.oscarcreator.sms_scheduler_v2.data.message.MessagesDataSource
 import com.oscarcreator.sms_scheduler_v2.data.message.MessagesRepository
@@ -32,7 +32,7 @@ object ServiceLocator {
     var messagesRepository: MessagesRepository? = null
 
     @Volatile
-    var customersRepository: CustomersRepository? = null
+    var contactsRepository: ContactsRepository? = null
 
     @Volatile
     var scheduledTreatmentsRepository: ScheduledTreatmentsRepository? = null
@@ -61,22 +61,22 @@ object ServiceLocator {
     }
 
 
-    fun provideCustomersRepository(context: Context, scope: CoroutineScope): CustomersRepository {
+    fun provideCustomersRepository(context: Context, scope: CoroutineScope): ContactsRepository {
         synchronized(this){
-            return customersRepository ?: createCustomersRepository(context, scope)
+            return contactsRepository ?: createCustomersRepository(context, scope)
 
         }
     }
 
-    private fun createCustomersRepository(context: Context, scope: CoroutineScope): CustomersRepository {
-        val newRepository = DefaultCustomersRepository(createCustomersLocalDataSource(context, scope))
-        customersRepository = newRepository
+    private fun createCustomersRepository(context: Context, scope: CoroutineScope): ContactsRepository {
+        val newRepository = DefaultContactsRepository(createCustomersLocalDataSource(context, scope))
+        contactsRepository = newRepository
         return newRepository
     }
 
-    private fun createCustomersLocalDataSource(context: Context, scope: CoroutineScope): CustomersDataSource {
+    private fun createCustomersLocalDataSource(context: Context, scope: CoroutineScope): ContactsDataSource {
         val database = provideDatabase(context, scope)
-        return CustomersLocalDataSource(database.customerDao())
+        return ContactsLocalDataSource(database.customerDao())
     }
 
     fun provideScheduledTreatmentsRepository(context: Context, scope: CoroutineScope): ScheduledTreatmentsRepository {
@@ -163,7 +163,7 @@ object ServiceLocator {
             }
             database = null
             messagesRepository = null
-            customersRepository = null
+            contactsRepository = null
             treatmentsRepository = null
             scheduledTreatmentsRepository = null
             timeTemplatesRepository = null

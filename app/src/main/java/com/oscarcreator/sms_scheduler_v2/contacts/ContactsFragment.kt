@@ -20,7 +20,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.composethemeadapter.MdcTheme
 import com.oscarcreator.sms_scheduler_v2.SmsSchedulerApplication
-import com.oscarcreator.sms_scheduler_v2.data.customer.Customer
+import com.oscarcreator.sms_scheduler_v2.data.contact.Contact
 import com.oscarcreator.sms_scheduler_v2.databinding.FragmentComposeViewBinding
 import com.oscarcreator.sms_scheduler_v2.util.EventObserver
 
@@ -31,7 +31,7 @@ class ContactsFragment : Fragment() {
         get() = _binding!!
 
     private val viewModel by viewModels<ContactsViewModel> {
-        ContactsViewModelFactory((requireContext().applicationContext as SmsSchedulerApplication).customersRepository)
+        ContactsViewModelFactory((requireContext().applicationContext as SmsSchedulerApplication).contactsRepository)
     }
 
 
@@ -95,7 +95,7 @@ fun ContactsScreen(contactsViewModel: ContactsViewModel) {
 @OptIn(ExperimentalMaterialApi::class)
 @ExperimentalMaterialApi
 @Composable
-fun ContactList(contacts: List<Customer>, onClick: (id: Long) -> Unit) {
+fun ContactList(contacts: List<Contact>, onClick: (id: Long) -> Unit) {
     LazyColumn {
         items(contacts) { contact ->
             ListItem(
@@ -117,9 +117,9 @@ fun ContactList(contacts: List<Customer>, onClick: (id: Long) -> Unit) {
 @Composable
 fun PreviewContactList() {
     val contacts = listOf(
-        Customer(1, "Name 1", "030405356", 300),
-        Customer(1, "Name 2", "072984242", 500),
-        Customer(1, "Name 3", "02384902", 1200)
+        Contact(1, "Name 1", "030405356", 300),
+        Contact(1, "Name 2", "072984242", 500),
+        Contact(1, "Name 3", "02384902", 1200)
 
     )
     ContactList(contacts = contacts, onClick = {})

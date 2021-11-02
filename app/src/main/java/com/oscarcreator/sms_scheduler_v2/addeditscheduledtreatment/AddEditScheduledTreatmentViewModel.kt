@@ -7,12 +7,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.oscarcreator.sms_scheduler_v2.data.Result
-import com.oscarcreator.sms_scheduler_v2.data.customer.Customer
-import com.oscarcreator.sms_scheduler_v2.data.customer.CustomersRepository
+import com.oscarcreator.sms_scheduler_v2.data.contact.Contact
+import com.oscarcreator.sms_scheduler_v2.data.contact.ContactsRepository
 import com.oscarcreator.sms_scheduler_v2.data.message.MessagesRepository
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatment
-import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentCustomerCrossRef
-import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers
+import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentContactCrossRef
+import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentWithMessageAndTimeTemplateAndContacts
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentsRepository
 import com.oscarcreator.sms_scheduler_v2.data.timetemplate.TimeTemplatesRepository
 import com.oscarcreator.sms_scheduler_v2.data.treatment.Treatment
@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 class AddEditScheduledTreatmentViewModel(
-    private val customersRepository: CustomersRepository,
+    private val contactsRepository: ContactsRepository,
     private val treatmentsRepository: TreatmentsRepository,
     private val timeTemplatesRepository: TimeTemplatesRepository,
     private val messagesRepository: MessagesRepository,
@@ -40,9 +40,9 @@ class AddEditScheduledTreatmentViewModel(
 
     val timeTemplateText = MutableLiveData<String>()
 
-    private var _customers: MutableList<Customer> = mutableListOf()
-    val customers: List<Customer>
-        get() = _customers
+    private var _contacts: MutableList<Contact> = mutableListOf()
+    val contacts: List<Contact>
+        get() = _contacts
 
     private val _customersLoadedEvent = MutableLiveData<Event<Unit>>()
     val customersLoadedEvent: LiveData<Event<Unit>> = _customersLoadedEvent
@@ -63,8 +63,8 @@ class AddEditScheduledTreatmentViewModel(
     private var isNewScheduledTreatment = false
     private var isDataLoaded = false
 
-    suspend fun getCustomersLike(text: String): List<Customer> {
-        return customersRepository.getCustomersLike(text)
+    suspend fun getCustomersLike(text: String): List<Contact> {
+        return contactsRepository.getCustomersLike(text)
     }
 
     suspend fun setMessageById(messageId: Long) {
@@ -109,16 +109,16 @@ class AddEditScheduledTreatmentViewModel(
         this.treatment.value = treatment
     }
 
-    fun addReceiver(receiver: Customer) {
-        _customers.add(receiver)
+    fun addReceiver(receiver: Contact) {
+        _contacts.add(receiver)
     }
 
     fun removeReceiver(index: Int) {
-        _customers.removeAt(index)
+        _contacts.removeAt(index)
     }
 
-    fun removeReceiver(customer: Customer){
-        _customers.remove(customer)
+    fun removeReceiver(contact: Contact){
+        _contacts.remove(contact)
     }
 
     fun start(scheduledTreatmentId: Long? = null, context: Context) {
@@ -173,21 +173,21 @@ class AddEditScheduledTreatmentViewModel(
     }
 
     private fun onScheduledTreatmentLoaded(
-        scheduledTreatmentWithData: ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers
+        scheduledTreatmentWithData: ScheduledTreatmentWithMessageAndTimeTemplateAndContacts
     ) {
         time.value = scheduledTreatmentWithData.scheduledTreatment.treatmentTime.timeInMillis
         treatment.value = scheduledTreatmentWithData.treatment
         timeTemplateText.value = scheduledTreatmentWithData.timeTemplate.delay.toTimeTemplateText()
         message.value = scheduledTreatmentWithData.message.message
 
-        _customers = scheduledTreatmentWithData.customers.toMutableList()
+        _contacts = scheduledTreatmentWithData.contacts.toMutableList()
 
         isDataLoaded = true
         _customersLoadedEvent.value = Event(Unit)
     }
 
     fun saveScheduledTreatment(context: Context) {
-        val currentReceivers = _customers
+        val currentReceivers = _contacts
         val currentTime = time.value
         val currentTreatment = treatment.value
         val currentTimeTemplate = timeTemplateText.value
@@ -242,7 +242,7 @@ class AddEditScheduledTreatmentViewModel(
     private fun createScheduledTreatment(
         context: Context,
         newScheduledTreatment: ScheduledTreatment,
-        receivers: List<Customer>
+        receivers: List<Contact>
     ) =
         viewModelScope.launch {
             // launch is used to run it in a coroutine for communicating with database through repository
@@ -257,7 +257,7 @@ class AddEditScheduledTreatmentViewModel(
     private fun updateScheduledTreatment(
         context: Context,
         scheduledTreatment: ScheduledTreatment,
-        receivers: List<Customer>
+        receivers: List<Contact>
     ) {
         if (isNewScheduledTreatment) {
             throw RuntimeException("update() was callled but scheduledTreatment is new")
@@ -271,16 +271,16 @@ class AddEditScheduledTreatmentViewModel(
         }
     }
 
-    private suspend fun createScheduledTreatmentCustomerCrossRef(scheduledTreatmentId: Long, receivers: List<Customer>){
+    private suspend fun createScheduledTreatmentCustomerCrossRef(scheduledTreatmentId: Long, receivers: List<Contact>){
         for (receiver in receivers) {
             scheduledTreatmentsRepository.insertCrossRef(
-                ScheduledTreatmentCustomerCrossRef(scheduledTreatmentId, receiver.id))
+                ScheduledTreatmentContactCrossRef(scheduledTreatmentId, receiver.id))
         }
     }
 
     private suspend fun updateScheduledTreatmentCustomerCrossRef(
         scheduledTreatmentId: Long,
-        receivers: List<Customer>
+        receivers: List<Contact>
     ) {
         // Delete all old receivers
         scheduledTreatmentsRepository.deleteCrossRefs(scheduledTreatmentId)

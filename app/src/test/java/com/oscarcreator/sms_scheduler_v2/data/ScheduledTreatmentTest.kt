@@ -1,9 +1,9 @@
 package com.oscarcreator.sms_scheduler_v2.data
 
-import com.oscarcreator.sms_scheduler_v2.data.customer.Customer
+import com.oscarcreator.sms_scheduler_v2.data.contact.Contact
 import com.oscarcreator.sms_scheduler_v2.data.message.Message
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatment
-import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers
+import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentWithMessageAndTimeTemplateAndContacts
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.TreatmentStatus
 import com.oscarcreator.sms_scheduler_v2.data.timetemplate.TimeTemplate
 import com.oscarcreator.sms_scheduler_v2.data.treatment.Treatment
@@ -40,10 +40,10 @@ class ScheduledTreatmentTest {
         )
         val message = Message(message = "some text")
         val timeTemplate  = TimeTemplate(delay = 10)
-        val customers = listOf(Customer(name = "Ferd", phoneNumber = "0723849064"))
+        val customers = listOf(Contact(name = "Ferd", phoneNumber = "0723849064"))
         val treatment = Treatment(name = "something", price = 40, duration = 1)
 
-        val scheduledTreatmentWithData = ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers(
+        val scheduledTreatmentWithData = ScheduledTreatmentWithMessageAndTimeTemplateAndContacts(
             scheduledTreatment, message, timeTemplate, treatment, customers
         )
 
@@ -63,12 +63,12 @@ class ScheduledTreatmentTest {
         val message = Message(message = "some text")
         val timeTemplate  = TimeTemplate(delay = 10)
         val customers = listOf(
-            Customer(name = "Ferd", phoneNumber = "0723849064"),
-            Customer(name = "Ferd2", phoneNumber = "1723849065")
+            Contact(name = "Ferd", phoneNumber = "0723849064"),
+            Contact(name = "Ferd2", phoneNumber = "1723849065")
         )
         val treatment = Treatment(name = "something", price = 40, duration = 1)
 
-        val scheduledTreatmentWithData = ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers(
+        val scheduledTreatmentWithData = ScheduledTreatmentWithMessageAndTimeTemplateAndContacts(
             scheduledTreatment, message, timeTemplate, treatment, customers
         )
 
@@ -88,12 +88,12 @@ class ScheduledTreatmentTest {
         val message = Message(message = "some text")
         val timeTemplate  = TimeTemplate(delay = 10)
         val customers = listOf(
-            Customer(name = "Ferd", phoneNumber = "0723849064"),
-            Customer(name = "Ferd2", phoneNumber = "1723849065")
+            Contact(name = "Ferd", phoneNumber = "0723849064"),
+            Contact(name = "Ferd2", phoneNumber = "1723849065")
         )
         val treatment = Treatment(name = "something", price = 40, duration = 1)
 
-        val scheduledTreatmentWithData = ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers(
+        val scheduledTreatmentWithData = ScheduledTreatmentWithMessageAndTimeTemplateAndContacts(
             scheduledTreatment, message, timeTemplate, treatment, customers
         )
 

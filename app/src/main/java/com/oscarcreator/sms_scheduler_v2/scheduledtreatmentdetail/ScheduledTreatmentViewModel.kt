@@ -2,7 +2,7 @@ package com.oscarcreator.sms_scheduler_v2.scheduledtreatmentdetail
 
 import android.content.Context
 import androidx.lifecycle.*
-import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers
+import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentWithMessageAndTimeTemplateAndContacts
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentsRepository
 import com.oscarcreator.sms_scheduler_v2.util.Event
 import com.oscarcreator.sms_scheduler_v2.util.deleteAlarm
@@ -19,7 +19,7 @@ class ScheduledTreatmentViewModel(
         scheduledTreatmentsRepository.getScheduledTreatment(it)
     }
 
-    val scheduledTreatment: LiveData<ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers> = _scheduledTreatment
+    val scheduledTreatment: LiveData<ScheduledTreatmentWithMessageAndTimeTemplateAndContacts> = _scheduledTreatment
 
     private val _editScheduledTreatmentEvent = MutableLiveData<Event<Unit>>()
     val editScheduledTreatmentEvent: LiveData<Event<Unit>> = _editScheduledTreatmentEvent

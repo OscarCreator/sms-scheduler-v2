@@ -8,12 +8,12 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.composethemeadapter.MdcTheme
 import com.oscarcreator.sms_scheduler_v2.R
-import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers
+import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentWithMessageAndTimeTemplateAndContacts
 import com.oscarcreator.sms_scheduler_v2.scheduledtreatments.ScheduledTreatmentCard
 
 class UpcomingTreatmentAdapter() : RecyclerView.Adapter<UpcomingTreatmentAdapter.UpcomingTreatmentViewHolder>() {
 
-    var list: List<ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers> = emptyList()
+    var list: List<ScheduledTreatmentWithMessageAndTimeTemplateAndContacts> = emptyList()
 
     class UpcomingTreatmentViewHolder(
         itemView: View
@@ -52,7 +52,7 @@ class UpcomingTreatmentAdapter() : RecyclerView.Adapter<UpcomingTreatmentAdapter
         return list.size
     }
 
-    fun setScheduledTreatments(list: List<ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers>){
+    fun setScheduledTreatments(list: List<ScheduledTreatmentWithMessageAndTimeTemplateAndContacts>){
         this.list = list
         notifyDataSetChanged()
         Log.d("UpcomingTreatmentAdapter", "list size=${list.size}")

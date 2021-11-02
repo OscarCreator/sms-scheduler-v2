@@ -3,13 +3,13 @@ package com.oscarcreator.sms_scheduler_v2.contactdetail
 import androidx.lifecycle.*
 import com.oscarcreator.sms_scheduler_v2.R
 import com.oscarcreator.sms_scheduler_v2.data.Result
-import com.oscarcreator.sms_scheduler_v2.data.customer.Customer
-import com.oscarcreator.sms_scheduler_v2.data.customer.CustomersRepository
+import com.oscarcreator.sms_scheduler_v2.data.contact.Contact
+import com.oscarcreator.sms_scheduler_v2.data.contact.ContactsRepository
 import com.oscarcreator.sms_scheduler_v2.util.Event
 import kotlinx.coroutines.launch
 
 class DetailContactViewModel(
-    private val contactsRepository: CustomersRepository
+    private val contactsRepository: ContactsRepository
 ): ViewModel() {
 
     private val _contactId = MutableLiveData<Long>()
@@ -18,7 +18,7 @@ class DetailContactViewModel(
         contactsRepository.observeCustomer(contactId)
             .map { computeResult(it) }
     }
-    val contact: LiveData<Customer?> = _contact
+    val contact: LiveData<Contact?> = _contact
 
     private val _dataLoading = MutableLiveData<Boolean>()
     val dataLoading: LiveData<Boolean> = _dataLoading
@@ -52,7 +52,7 @@ class DetailContactViewModel(
         }
     }
 
-    private fun computeResult(contactResult: Result<Customer>): Customer? {
+    private fun computeResult(contactResult: Result<Contact>): Contact? {
         return if (contactResult is Result.Success) {
             contactResult.data
         } else {

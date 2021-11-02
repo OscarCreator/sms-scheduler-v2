@@ -17,7 +17,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.oscarcreator.sms_scheduler_v2.MainActivity
 import com.oscarcreator.sms_scheduler_v2.R
 import com.oscarcreator.sms_scheduler_v2.data.FakeContactsRepository
-import com.oscarcreator.sms_scheduler_v2.data.customer.Customer
+import com.oscarcreator.sms_scheduler_v2.data.contact.Contact
 import com.oscarcreator.sms_scheduler_v2.util.ServiceLocator
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
@@ -41,7 +41,7 @@ class ContactFlowTest {
     @Before
     fun initRepository() {
         repository = FakeContactsRepository()
-        ServiceLocator.customersRepository = repository
+        ServiceLocator.contactsRepository = repository
     }
 
     @After
@@ -51,7 +51,7 @@ class ContactFlowTest {
 
     @Test
     fun displayContact_whenRepositoryHasData() {
-        val contact = Customer(1, "Bengt", "020304020")
+        val contact = Contact(1, "Bengt", "020304020")
         runBlocking {
             repository.insert(contact)
         }
@@ -65,7 +65,7 @@ class ContactFlowTest {
 
     @Test
     fun deleteContact() {
-        val contact = Customer(1, "Bengt", "02002034")
+        val contact = Contact(1, "Bengt", "02002034")
         runBlocking {
             repository.insert(contact)
         }
@@ -111,7 +111,7 @@ class ContactFlowTest {
 
     @Test
     fun validContact_isSaved_andNavigatesBack() {
-        val contact = Customer(1, "Bengt", "03498239", 10)
+        val contact = Contact(1, "Bengt", "03498239", 10)
 
         val activityScenario = launchActivity()
 
@@ -152,7 +152,7 @@ class ContactFlowTest {
 
     @Test
     fun invalidContact_isNotSaved() {
-        val contact = Customer(1, "Bengt", "03498239", 10)
+        val contact = Contact(1, "Bengt", "03498239", 10)
 
         val activityScenario = launchActivity()
 

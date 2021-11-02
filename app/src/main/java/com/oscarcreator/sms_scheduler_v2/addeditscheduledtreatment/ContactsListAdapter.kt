@@ -6,12 +6,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textview.MaterialTextView
 import com.oscarcreator.sms_scheduler_v2.R
-import com.oscarcreator.sms_scheduler_v2.data.customer.Customer
+import com.oscarcreator.sms_scheduler_v2.data.contact.Contact
 
 class ContactsListAdapter(private val onContactClickedListener: OnContactClickedListener? = null)
     : RecyclerView.Adapter<ContactsListAdapter.ContactsListViewHolder>(){
 
-    var list: List<Customer> = emptyList()
+    var list: List<Contact> = emptyList()
 
     inner class ContactsListViewHolder(
         itemView: View,
@@ -33,12 +33,12 @@ class ContactsListAdapter(private val onContactClickedListener: OnContactClicked
     }
 
     interface OnContactClickedListener {
-        fun onEntryClicked(customer: Customer)
+        fun onEntryClicked(contact: Contact)
 
         companion object {
-            inline operator fun invoke(crossinline function: (Customer) -> Unit) =
+            inline operator fun invoke(crossinline function: (Contact) -> Unit) =
                 object : OnContactClickedListener {
-                    override fun onEntryClicked(customer: Customer) = function(customer)
+                    override fun onEntryClicked(contact: Contact) = function(contact)
                 }
         }
     }
@@ -56,7 +56,7 @@ class ContactsListAdapter(private val onContactClickedListener: OnContactClicked
 
     override fun getItemCount(): Int = list.size
 
-    fun setContacts(list: List<Customer>){
+    fun setContacts(list: List<Contact>){
         this.list = list
         notifyDataSetChanged()
     }

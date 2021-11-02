@@ -2,10 +2,10 @@ package com.oscarcreator.sms_scheduler_v2.data.scheduled.local
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.oscarcreator.sms_scheduler_v2.data.customer.Customer
+import com.oscarcreator.sms_scheduler_v2.data.contact.Contact
 import com.oscarcreator.sms_scheduler_v2.data.message.Message
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatment
-import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers
+import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentWithMessageAndTimeTemplateAndContacts
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.SmsStatus
 import com.oscarcreator.sms_scheduler_v2.data.timetemplate.TimeTemplate
 import java.util.*
@@ -18,15 +18,15 @@ interface ScheduledTreatmentDao {
 
     /**
      * Queries the corresponding object associated with the scheduled treatment
-     * @return all scheduledTreatments with [Message], [TimeTemplate] and [Customer]s
+     * @return all scheduledTreatments with [Message], [TimeTemplate] and [Contact]s
      * */
     @Transaction
     @Query("SELECT * FROM scheduled_treatment")
-    fun getScheduledTreatmentsWithMessageAndTimeTemplateAndCustomers(): LiveData<List<ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers>>
+    fun getScheduledTreatmentsWithMessageAndTimeTemplateAndContacts(): LiveData<List<ScheduledTreatmentWithMessageAndTimeTemplateAndContacts>>
 
     @Transaction
     @Query("SELECT * FROM scheduled_treatment WHERE treatment_time > :currentDay")
-    fun getUpcomingScheduledTreatmentsWithData(currentDay: Calendar): LiveData<List<ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers>>
+    fun getUpcomingScheduledTreatmentsWithData(currentDay: Calendar): LiveData<List<ScheduledTreatmentWithMessageAndTimeTemplateAndContacts>>
 
     /**
      * Returns the [ScheduledTreatment]s which the time of the treatment has been passed.
@@ -37,11 +37,11 @@ interface ScheduledTreatmentDao {
      * */
     @Transaction
     @Query("SELECT * FROM scheduled_treatment WHERE treatment_time < :currentDay")
-    fun getOldScheduledTreatmentsWithData(currentDay: Calendar): LiveData<List<ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers>>
+    fun getOldScheduledTreatmentsWithData(currentDay: Calendar): LiveData<List<ScheduledTreatmentWithMessageAndTimeTemplateAndContacts>>
 
     @Transaction
     @Query("SELECT * FROM scheduled_treatment WHERE scheduled_treatment_id = :scheduledTreatmentId")
-    fun getScheduledTreatment(scheduledTreatmentId: Long): LiveData<ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers>
+    fun getScheduledTreatment(scheduledTreatmentId: Long): LiveData<ScheduledTreatmentWithMessageAndTimeTemplateAndContacts>
 
     /**
      * Inserts a [ScheduledTreatment] into the database.
@@ -75,10 +75,10 @@ interface ScheduledTreatmentDao {
 
     @Transaction
     @Query("SELECT * FROM scheduled_treatment WHERE scheduled_treatment_id == :scheduledTreatmentId")
-    suspend fun getScheduledTreatmentWithData(scheduledTreatmentId: Long): ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers?
+    suspend fun getScheduledTreatmentWithData(scheduledTreatmentId: Long): ScheduledTreatmentWithMessageAndTimeTemplateAndContacts?
 
     @Transaction
     @Query("SELECT * FROM scheduled_treatment WHERE sms_status == :smsStatus")
-    suspend fun getUpcomingScheduledTreatmentsWithData(smsStatus: SmsStatus = SmsStatus.SCHEDULED): List<ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers>
+    suspend fun getUpcomingScheduledTreatmentsWithData(smsStatus: SmsStatus = SmsStatus.SCHEDULED): List<ScheduledTreatmentWithMessageAndTimeTemplateAndContacts>
 
 }

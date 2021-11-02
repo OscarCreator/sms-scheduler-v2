@@ -1,7 +1,7 @@
 package com.oscarcreator.sms_scheduler_v2.data.scheduled.local
 
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatment
-import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentCustomerCrossRef
+import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentContactCrossRef
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentsDataSource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -9,14 +9,14 @@ import java.util.*
 
 class ScheduledTreatmentsLocalDataSource internal constructor(
     private val scheduledTreatmentsDao: ScheduledTreatmentDao,
-    private val scheduledTreatmentCustomerCrossRefDao: ScheduledTreatmentCustomerCrossRefDao,
+    private val scheduledTreatmentContactCrossRefDao: ScheduledTreatmentCustomerCrossRefDao,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ): ScheduledTreatmentsDataSource {
 
     override fun getScheduledTreatments() = scheduledTreatmentsDao.getScheduledTreatments()
 
-    override fun getScheduledTreatmentsWithMessageAndTimeTemplateAndCustomers() =
-        scheduledTreatmentsDao.getScheduledTreatmentsWithMessageAndTimeTemplateAndCustomers()
+    override fun getScheduledTreatmentsWithMessageAndTimeTemplateAndContacts() =
+        scheduledTreatmentsDao.getScheduledTreatmentsWithMessageAndTimeTemplateAndContacts()
 
     override fun getUpcomingScheduledTreatmentsWithData(currentDay: Calendar) =
         scheduledTreatmentsDao.getUpcomingScheduledTreatmentsWithData(currentDay)
@@ -42,14 +42,14 @@ class ScheduledTreatmentsLocalDataSource internal constructor(
     override suspend fun delete(scheduledTreatmentId: Long): Int =
         scheduledTreatmentsDao.delete(scheduledTreatmentId)
 
-    override suspend fun insertCrossRef(scheduledTreatmentCustomerCrossRef: ScheduledTreatmentCustomerCrossRef) =
-        scheduledTreatmentCustomerCrossRefDao.insert(scheduledTreatmentCustomerCrossRef)
+    override suspend fun insertCrossRef(scheduledTreatmentContactCrossRef: ScheduledTreatmentContactCrossRef) =
+        scheduledTreatmentContactCrossRefDao.insert(scheduledTreatmentContactCrossRef)
 
-    override suspend fun updateCrossRef(scheduledTreatmentCustomerCrossRef: ScheduledTreatmentCustomerCrossRef) =
-        scheduledTreatmentCustomerCrossRefDao.update(scheduledTreatmentCustomerCrossRef)
+    override suspend fun updateCrossRef(scheduledTreatmentContactCrossRef: ScheduledTreatmentContactCrossRef) =
+        scheduledTreatmentContactCrossRefDao.update(scheduledTreatmentContactCrossRef)
 
     override suspend fun deleteCrossRefs(scheduledTreatmentId: Long) =
-        scheduledTreatmentCustomerCrossRefDao.delete(scheduledTreatmentId)
+        scheduledTreatmentContactCrossRefDao.delete(scheduledTreatmentId)
 
 
 }

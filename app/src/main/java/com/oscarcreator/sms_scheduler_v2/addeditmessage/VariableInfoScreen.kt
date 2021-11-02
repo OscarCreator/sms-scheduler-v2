@@ -19,7 +19,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.google.android.material.composethemeadapter.MdcTheme
 import com.oscarcreator.sms_scheduler_v2.R
-import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers
+import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentWithMessageAndTimeTemplateAndContacts
 import java.util.*
 
 val VARIABLE_CALENDAR_VALUES = listOf(Calendar.MINUTE, Calendar.HOUR_OF_DAY, Calendar.DATE, Calendar.MONTH, Calendar.YEAR)
@@ -117,13 +117,13 @@ fun PreviewSystemUiVariableInfoScreen() {
     }
 }
 
-fun ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers.replaceVariables(): String {
+fun ScheduledTreatmentWithMessageAndTimeTemplateAndContacts.replaceVariables(): String {
     var text = message.message
 
     VARIABLE_VALUES.forEachIndexed { index, s ->
         text = when {
             index == 0 -> {
-                text.replace(s, customers[0].name)
+                text.replace(s, contacts[0].name)
             }
             s == "[month]" -> {
                 //month value start with 0 - 11 and not 1 - 12

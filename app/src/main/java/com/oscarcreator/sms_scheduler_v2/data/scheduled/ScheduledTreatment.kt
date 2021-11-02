@@ -1,7 +1,7 @@
 package com.oscarcreator.sms_scheduler_v2.data.scheduled
 
 import androidx.room.*
-import com.oscarcreator.sms_scheduler_v2.data.customer.Customer
+import com.oscarcreator.sms_scheduler_v2.data.contact.Contact
 import com.oscarcreator.sms_scheduler_v2.data.message.Message
 import com.oscarcreator.sms_scheduler_v2.data.timetemplate.TimeTemplate
 import com.oscarcreator.sms_scheduler_v2.data.treatment.Treatment
@@ -50,7 +50,7 @@ data class ScheduledTreatment(
     /** [TimeTemplate] which modifies the send time */
     @ColumnInfo(name = "time_template_id") val timeTemplateId: Long,
 
-    /** id of [Message] to be sent to the [Customer]s */
+    /** id of [Message] to be sent to the [Contact]s */
     @ColumnInfo(name = "message_id") val messageId: Long,
 
     @ColumnInfo(name = "sms_status") var smsStatus: SmsStatus = SmsStatus.SCHEDULED,
@@ -72,7 +72,7 @@ enum class TreatmentStatus(val code: Int) {
     SCHEDULED(-1),
     /** Treatment is completed */
     DONE(0),
-    /** The customer did not arrive */
+    /** The contact did not arrive */
     NOT_ARRIVED(1),
     /** The treatment is canceled */
     CANCELED(2);
@@ -97,7 +97,7 @@ enum class SmsStatus(val code: Int) {
 /**
  * A data class which combines the relations with the [ScheduledTreatment]
  * */
-data class ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers(
+data class ScheduledTreatmentWithMessageAndTimeTemplateAndContacts(
     /**
      * The [ScheduledTreatment]
      * */
@@ -127,14 +127,14 @@ data class ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers(
     )
     val treatment: Treatment,
     /**
-     * The [Customer]s which will receive a notification sms
+     * The [Contact]s which will receive a notification sms
      */
     @Relation(
         parentColumn = "scheduled_treatment_id",
-        entityColumn = "customer_id",
-        associateBy = Junction(ScheduledTreatmentCustomerCrossRef::class)
+        entityColumn = "contact_id",
+        associateBy = Junction(ScheduledTreatmentContactCrossRef::class)
     )
-    val customers: List<Customer>
+    val contacts: List<Contact>
 
 ){
 
@@ -149,7 +149,7 @@ data class ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers(
      * Returns the formatted messages
      */
     fun getFormattedMessages(): List<String> {
-        val messages = customers.map { message.message }
+        val messages = contacts.map { message.message }
         //TODO format
         return messages
     }
@@ -158,19 +158,19 @@ data class ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers(
      * Returns all the phone numbers
      */
     fun getPhoneNumbers(): List<String> {
-        return customers.map { it.phoneNumber  }
+        return contacts.map { it.phoneNumber  }
     }
 
 }
 
 /**
- * Relation between [ScheduledTreatment] and [Customer]
+ * Relation between [ScheduledTreatment] and [Contact]
  */
 @Entity(
     tableName = "scheduled_treatment_cross_ref",
     primaryKeys = [
         "scheduled_treatment_id",
-        "customer_id"
+        "contact_id"
     ],
     foreignKeys = [
         ForeignKey(
@@ -180,16 +180,16 @@ data class ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers(
             onDelete = ForeignKey.CASCADE
         ),
         ForeignKey(
-            entity = Customer::class,
-            parentColumns = ["customer_id"],
-            childColumns = ["customer_id"],
+            entity = Contact::class,
+            parentColumns = ["contact_id"],
+            childColumns = ["contact_id"],
             onDelete = ForeignKey.RESTRICT
         )
     ]
 )
-data class ScheduledTreatmentCustomerCrossRef(
+data class ScheduledTreatmentContactCrossRef(
     @ColumnInfo(name = "scheduled_treatment_id") val scheduledTreatmentId: Long,
-    @ColumnInfo(name = "customer_id") val customerId: Long,
+    @ColumnInfo(name = "contact_id") val contactId: Long,
     /** Time of the delivered */
     @ColumnInfo(name = "delivered_time") val deliveredTime: Calendar? = null
 )

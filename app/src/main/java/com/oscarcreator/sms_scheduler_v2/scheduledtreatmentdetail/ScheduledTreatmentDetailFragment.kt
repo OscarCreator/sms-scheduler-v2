@@ -68,7 +68,7 @@ class ScheduledTreatmentDetailFragment : Fragment() {
         })
 
         viewModel.scheduledTreatment.observe(viewLifecycleOwner) {
-            binding.tvContact.text = it.customers[0].name
+            binding.tvContact.text = it.contacts[0].name
 
             val c = Calendar.getInstance()
             c.timeInMillis = it.scheduledTreatment.treatmentTime.timeInMillis

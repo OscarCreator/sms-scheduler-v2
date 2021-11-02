@@ -7,12 +7,12 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.composethemeadapter.MdcTheme
 import com.oscarcreator.sms_scheduler_v2.R
-import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers
+import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentWithMessageAndTimeTemplateAndContacts
 
 class ScheduledTreatmentAdapter :
     RecyclerView.Adapter<ScheduledTreatmentAdapter.ScheduledTreatmentListViewHolder>() {
 
-    private var list: List<ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers> = listOf()
+    private var list: List<ScheduledTreatmentWithMessageAndTimeTemplateAndContacts> = listOf()
 
     private var onScheduledTreatmentClickedListener: OnScheduledTreatmentClickedListener? = null
 
@@ -57,24 +57,13 @@ class ScheduledTreatmentAdapter :
                 )
             }
         }
-        /*
-        holder.tvLabel.text = list[position].scheduledTreatment.smsStatus.name
-        holder.tvName.text= list[position].customers[0].name
-
-        val c = Calendar.getInstance()
-        c.timeInMillis = list[position].getSendTime()
-
-        val simpleTimeFormat =  SimpleDateFormat("HH:mm dd/MM-yy", Locale.getDefault())
-
-        holder.tvTime.text = simpleTimeFormat.format(c.time)
-*/
     }
 
     override fun getItemCount(): Int = list.size
 
     override fun getItemId(position: Int): Long = list[position].scheduledTreatment.id
 
-    fun setScheduledTreatments(scheduledTreatments: List<ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers>) {
+    fun setScheduledTreatments(scheduledTreatments: List<ScheduledTreatmentWithMessageAndTimeTemplateAndContacts>) {
         list = scheduledTreatments
     }
 
@@ -84,12 +73,12 @@ class ScheduledTreatmentAdapter :
 
 
     interface OnScheduledTreatmentClickedListener {
-        fun onScheduledTreatmentClicked(position: Int, scheduledTreatment: ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers)
+        fun onScheduledTreatmentClicked(position: Int, scheduledTreatment: ScheduledTreatmentWithMessageAndTimeTemplateAndContacts)
 
         companion object {
-            inline operator fun invoke(crossinline function: (Int, ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers) -> Unit) =
+            inline operator fun invoke(crossinline function: (Int, ScheduledTreatmentWithMessageAndTimeTemplateAndContacts) -> Unit) =
                 object : OnScheduledTreatmentClickedListener {
-                    override fun onScheduledTreatmentClicked(position: Int, scheduledTreatment: ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers) = function(position, scheduledTreatment)
+                    override fun onScheduledTreatmentClicked(position: Int, scheduledTreatment: ScheduledTreatmentWithMessageAndTimeTemplateAndContacts) = function(position, scheduledTreatment)
                 }
         }
     }

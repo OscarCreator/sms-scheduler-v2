@@ -23,7 +23,7 @@ class AddEditContactFragment : Fragment() {
 
     private val viewModel by viewModels<AddEditContactViewModel> {
         AddEditContactViewModelFactory(
-            (requireContext().applicationContext as SmsSchedulerApplication).customersRepository
+            (requireContext().applicationContext as SmsSchedulerApplication).contactsRepository
         )
     }
 

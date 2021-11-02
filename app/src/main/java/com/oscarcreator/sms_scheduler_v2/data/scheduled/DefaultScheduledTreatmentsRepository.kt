@@ -11,8 +11,8 @@ class DefaultScheduledTreatmentsRepository(
 
     override fun getScheduledTreatments() = scheduledTreatmentsDataSource.getScheduledTreatments()
 
-    override fun getScheduledTreatmentsWithMessageAndTimeTemplateAndCustomers() =
-        scheduledTreatmentsDataSource.getScheduledTreatmentsWithMessageAndTimeTemplateAndCustomers()
+    override fun getScheduledTreatmentsWithMessageAndTimeTemplateAndContacts() =
+        scheduledTreatmentsDataSource.getScheduledTreatmentsWithMessageAndTimeTemplateAndContacts()
 
     override fun getUpcomingScheduledTreatments(currentDay: Calendar) =
         scheduledTreatmentsDataSource.getUpcomingScheduledTreatmentsWithData(currentDay)
@@ -39,11 +39,11 @@ class DefaultScheduledTreatmentsRepository(
         scheduledTreatmentsDataSource.delete(scheduledTreatmentId)
 
 
-    override suspend fun insertCrossRef(scheduledTreatmentCustomerCrossRef: ScheduledTreatmentCustomerCrossRef) =
-        scheduledTreatmentsDataSource.insertCrossRef(scheduledTreatmentCustomerCrossRef)
+    override suspend fun insertCrossRef(scheduledTreatmentContactCrossRef: ScheduledTreatmentContactCrossRef) =
+        scheduledTreatmentsDataSource.insertCrossRef(scheduledTreatmentContactCrossRef)
 
-    override suspend fun updateCrossRef(scheduledTreatmentCustomerCrossRef: ScheduledTreatmentCustomerCrossRef) =
-        scheduledTreatmentsDataSource.updateCrossRef(scheduledTreatmentCustomerCrossRef)
+    override suspend fun updateCrossRef(scheduledTreatmentContactCrossRef: ScheduledTreatmentContactCrossRef) =
+        scheduledTreatmentsDataSource.updateCrossRef(scheduledTreatmentContactCrossRef)
 
     override suspend fun deleteCrossRefs(scheduledTreatmentId: Long) =
         scheduledTreatmentsDataSource.deleteCrossRefs(scheduledTreatmentId)

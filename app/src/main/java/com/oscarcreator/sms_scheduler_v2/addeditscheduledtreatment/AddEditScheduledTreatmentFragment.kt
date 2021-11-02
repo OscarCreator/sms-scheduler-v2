@@ -25,7 +25,7 @@ import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.oscarcreator.sms_scheduler_v2.R
 import com.oscarcreator.sms_scheduler_v2.SmsSchedulerApplication
-import com.oscarcreator.sms_scheduler_v2.data.customer.Customer
+import com.oscarcreator.sms_scheduler_v2.data.contact.Contact
 import com.oscarcreator.sms_scheduler_v2.databinding.FragmentAddeditScheduledTreatmentBinding
 import com.oscarcreator.sms_scheduler_v2.util.EventObserver
 import kotlinx.coroutines.launch
@@ -33,8 +33,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.stream.Collectors
 
-//TODO only be able to send one customer at a time. Maybe split them up to multiple scheduled treatments instead.
-// Otherwise it will be difficult to keep track of status of the sms
 class AddEditScheduledTreatmentFragment : Fragment() {
 
     companion object {
@@ -50,7 +48,7 @@ class AddEditScheduledTreatmentFragment : Fragment() {
 
     private val viewModel by viewModels<AddEditScheduledTreatmentViewModel> {
         AddEditScheduledTreatmentViewModelFactory(
-            (requireContext().applicationContext as SmsSchedulerApplication).customersRepository,
+            (requireContext().applicationContext as SmsSchedulerApplication).contactsRepository,
             (requireContext().applicationContext as SmsSchedulerApplication).treatmentsRepository,
             (requireContext().applicationContext as SmsSchedulerApplication).timeTemplatesRepository,
             (requireContext().applicationContext as SmsSchedulerApplication).messagesRepository,
@@ -84,11 +82,11 @@ class AddEditScheduledTreatmentFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        for (receiver in viewModel.customers) {
+        for (receiver in viewModel.contacts) {
             addNewChip(receiver)
         }
 
-        Log.d(TAG, "onResume, loading: ${binding.flContacts.childCount}, ${viewModel.customers.size}")
+        Log.d(TAG, "onResume, loading: ${binding.flContacts.childCount}, ${viewModel.contacts.size}")
         //binding.tvTreatments.setText(viewModel.treatment.value?.name, false)
 
     }
@@ -107,7 +105,6 @@ class AddEditScheduledTreatmentFragment : Fragment() {
             findNavController().navigateUp()
         })
 
-        //TODO arguments
         viewModel.start(if (args.scheduledTreatmentId == -1L) null else args.scheduledTreatmentId, requireContext())
 
         //TODO replace with a custom adapter
@@ -121,7 +118,7 @@ class AddEditScheduledTreatmentFragment : Fragment() {
                 .collect(Collectors.toList())))
             binding.tvTreatments.setAdapter(adapter)
         })
-        //binding.tvTreatments.setAdapter(adapter)
+
         binding.tvTreatments.setOnItemClickListener { _, _, position, _ ->
             viewModel.treatment.value = viewModel.allTreatment.value?.get(position)
         }
@@ -203,10 +200,10 @@ class AddEditScheduledTreatmentFragment : Fragment() {
         setUpContactInput()
 
         viewModel.customersLoadedEvent.observe(viewLifecycleOwner, EventObserver {
-            for (receiver in viewModel.customers) {
+            for (receiver in viewModel.contacts) {
                 addNewChip(receiver)
             }
-            Log.d(TAG, "${binding.flContacts.childCount}, ${viewModel.customers.size}")
+            Log.d(TAG, "${binding.flContacts.childCount}, ${viewModel.contacts.size}")
         })
 
         setUpSendSmsPermission()
@@ -271,8 +268,8 @@ class AddEditScheduledTreatmentFragment : Fragment() {
     private fun setUpContactInput() {
 
         val adapter = ContactsListAdapter(
-            ContactsListAdapter.OnContactClickedListener { customer: Customer ->
-                addReceiver(customer)
+            ContactsListAdapter.OnContactClickedListener { contact: Contact ->
+                addReceiver(contact)
             }
         )
 
@@ -331,10 +328,10 @@ class AddEditScheduledTreatmentFragment : Fragment() {
         }
     }
 
-    private fun addReceiver(customer: Customer) {
+    private fun addReceiver(contact: Contact) {
         binding.etContactInput.text.clear()
-        addNewChip(customer)
-        viewModel.addReceiver(customer)
+        addNewChip(contact)
+        viewModel.addReceiver(contact)
     }
 
     private fun removeReceiver(){
@@ -346,16 +343,16 @@ class AddEditScheduledTreatmentFragment : Fragment() {
         }
     }
 
-    private fun addNewChip(customer: Customer) {
+    private fun addNewChip(contact: Contact) {
         val chip = Chip(context).apply {
-            text = customer.name
+            text = contact.name
             isCloseIconVisible = true
             isClickable = true
             isCheckable = false
             setOnCloseIconClickListener {
                 binding.flContacts.removeView(this)
                 //better to delete with index
-                viewModel.removeReceiver(customer)
+                viewModel.removeReceiver(contact)
             }
         }
 

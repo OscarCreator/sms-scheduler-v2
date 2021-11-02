@@ -14,7 +14,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.oscarcreator.sms_scheduler_v2.R
 import com.oscarcreator.sms_scheduler_v2.data.AppDatabase
-import com.oscarcreator.sms_scheduler_v2.data.customer.Customer
+import com.oscarcreator.sms_scheduler_v2.data.contact.Contact
 import com.oscarcreator.sms_scheduler_v2.databinding.FragmentLoadContactsBinding
 import kotlinx.coroutines.launch
 
@@ -55,7 +55,7 @@ class LoadContactsFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
                     val list = adapter.getSelected()
                     for (pair in list){
                         database.customerDao().insert(
-                            Customer(name = pair.first, phoneNumber = pair.second))
+                            Contact(name = pair.first, phoneNumber = pair.second))
                     }
                 }
                 findNavController().popBackStack()
