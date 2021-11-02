@@ -154,6 +154,11 @@
             android:name="treatmentId"
             app:argType="long"
             android:defaultValue="-1L" />
+        <action
+            android:id="@+id/action_addEditTreatment_to_treatmentDetailFragment"
+            app:destination="@id/treatmentDetailFragment"
+            app:popUpTo="@id/treatmentDetailFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/messageDetailFragment"

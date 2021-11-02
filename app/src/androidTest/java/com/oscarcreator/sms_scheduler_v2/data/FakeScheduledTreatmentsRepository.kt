@@ -25,7 +25,7 @@ class FakeScheduledTreatmentsRepository : ScheduledTreatmentsRepository {
 
     var message = Message(1, "Some text")
     var timeTemplate = TimeTemplate(4, 30400L)
-    var treatment = Treatment(72, "Some treatment", 500, 30)
+    var treatment = Treatment("Some treatment", 500, 30, treatmentId = 72)
     var customers: List<Customer> = listOf(Customer(5, "Name", "9383475", 200))
 
     override fun getScheduledTreatments(): LiveData<List<ScheduledTreatment>> =
@@ -39,8 +39,20 @@ class FakeScheduledTreatmentsRepository : ScheduledTreatmentsRepository {
         TODO("Not yet implemented")
     }
 
+    override fun getOldScheduledTreatmentsWithData(currentDay: Calendar): LiveData<List<ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers>> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getScheduledTreatment(scheduledTreatmentId: Long): LiveData<ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers> {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun getScheduledTreatmentWithData(scheduledTreatmentId: Long): ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers? {
         return ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers(scheduledTreatmentsServiceData[scheduledTreatmentId]!!, message, timeTemplate, treatment, customers)
+    }
+
+    override suspend fun getUpcomingScheduledTreatmentsWithData(): List<ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers> {
+        TODO("Not yet implemented")
     }
 
     override suspend fun insert(scheduledTreatment: ScheduledTreatment): Long {
@@ -51,6 +63,10 @@ class FakeScheduledTreatmentsRepository : ScheduledTreatmentsRepository {
     override suspend fun update(scheduledTreatment: ScheduledTreatment): Int {
         scheduledTreatmentsServiceData[scheduledTreatment.id] = scheduledTreatment
         return 1
+    }
+
+    override suspend fun delete(scheduledTreatmentId: Long): Int {
+        TODO("Not yet implemented")
     }
 
     override suspend fun insertCrossRef(scheduledTreatmentCustomerCrossRef: ScheduledTreatmentCustomerCrossRef): Long {

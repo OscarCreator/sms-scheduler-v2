@@ -197,7 +197,7 @@ fun PreviewScheduledTreatmentCard() {
                         Message(1,
                                 "Hello, welcome to treatment tomorrow 5/4 12:00 at our location. If you want to unbook then you can do that until 24h before your treatment."),
                         TimeTemplate(1, 1000L * 60L * 60L),
-                        Treatment(1, "Treatmentpi", 100, 40),
+                        Treatment("Treatmentpi", 100, 40),
                         listOf(Customer(1, "Anders Andersson, Bengt bengtsson", "070205302", 600))
                 )
         )

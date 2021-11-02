@@ -16,7 +16,7 @@ import java.util.*
     foreignKeys = [
         ForeignKey(
             entity = Treatment::class,
-            parentColumns = ["id"],
+            parentColumns = ["treatment_id"],
             childColumns = ["treatment_id"]
         ),
         ForeignKey(
@@ -123,7 +123,7 @@ data class ScheduledTreatmentWithMessageAndTimeTemplateAndCustomers(
      */
     @Relation(
         parentColumn = "treatment_id",
-        entityColumn = "id"
+        entityColumn = "treatment_id"
     )
     val treatment: Treatment,
     /**

@@ -6,6 +6,7 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import com.oscarcreator.sms_scheduler_v2.data.AppDatabase
+import com.oscarcreator.sms_scheduler_v2.data.FakeTreatmentsRepository
 import com.oscarcreator.sms_scheduler_v2.data.customer.Customer
 import com.oscarcreator.sms_scheduler_v2.data.customer.DefaultCustomersRepository
 import com.oscarcreator.sms_scheduler_v2.data.customer.local.CustomersLocalDataSource
@@ -45,7 +46,7 @@ class AddEditScheduledTreatmentViewModelTest {
     private val message = Message(8, "some old text", true)
     private val receiver1 = Customer(4, "Bosse", "40602380")
     private val receiver2 = Customer(2, "Bergit", "0720934592", 4000)
-    private val treatment = Treatment(9, "Treatment 4", 400, 90)
+    private val treatment = Treatment("Treatment 4", 400, 90, treatmentId = 9)
 
     private lateinit var scheduledTreatmentsRepository: ScheduledTreatmentsRepository
 
@@ -63,14 +64,16 @@ class AddEditScheduledTreatmentViewModelTest {
         )
         val customerRepository = DefaultCustomersRepository(
             CustomersLocalDataSource(database.customerDao()))
+
+        val treatmentsRepository = FakeTreatmentsRepository()
         //TODO use fake repositories
-        //viewModelScheduled = AddEditScheduledTreatmentViewModel(customerRepository, scheduledTreatmentsRepository)
+        //viewModelScheduled = AddEditScheduledTreatmentViewModel(customerRepository, treatmentsRepository, )
 
         assertThat(database.timeTemplateDao().insert(timeTemplate), `is`(timeTemplate.id))
         assertThat(database.messageDao().insert(message), `is`(message.id))
         assertThat(database.customerDao().insert(receiver1), `is`(receiver1.id))
         assertThat(database.customerDao().insert(receiver2), `is`(receiver2.id))
-        assertThat(database.treatmentDao().insert(treatment), `is`(treatment.id))
+        assertThat(database.treatmentDao().insert(treatment), `is`(treatment.treatmentId))
     }
 
     @After
@@ -80,11 +83,12 @@ class AddEditScheduledTreatmentViewModelTest {
 
     @Test
     fun testDefaultValues() {
+
         Assert.assertEquals(viewModelScheduled.time.value, null)
         Assert.assertEquals(viewModelScheduled.message.value, null)
-        Assert.assertEquals(viewModelScheduled.timeModifier.value, null)
+        Assert.assertEquals(viewModelScheduled.timeTemplateText.value, null)
         Assert.assertEquals(viewModelScheduled.treatment.value, null)
-        Assert.assertEquals(viewModelScheduled.customers.value, mutableListOf<Customer>())
+        Assert.assertEquals(viewModelScheduled.customers, mutableListOf<Customer>())
     }
 
     @Test
@@ -93,16 +97,16 @@ class AddEditScheduledTreatmentViewModelTest {
         val expected = listOf(receiver)
 
         viewModelScheduled.addReceiver(receiver)
-        assertThat(viewModelScheduled.customers.getOrAwaitValue(), `is`(expected))
+        assertThat(viewModelScheduled.customers, `is`(expected))
 
         viewModelScheduled.removeReceiver(receiver)
 
-        assertThat(viewModelScheduled.customers.getOrAwaitValue(), `is`(emptyList<Customer>()))
+        assertThat(viewModelScheduled.customers, `is`(emptyList<Customer>()))
     }
 
     @Test
     fun start_noId_keepsDefaultValues() = runBlocking {
-        viewModelScheduled.start()
+        viewModelScheduled.start(context = ApplicationProvider.getApplicationContext())
         testDefaultValues()
     }
 
@@ -119,7 +123,7 @@ class AddEditScheduledTreatmentViewModelTest {
 
         val scheduledTreatment = ScheduledTreatment(
             id = 11,
-            treatmentId = treatment.id,
+            treatmentId = treatment.treatmentId,
             treatmentTime = Calendar.getInstance().apply { timeInMillis = time },
             timeTemplateId = timeTemplate.id,
             messageId = message.id
@@ -131,7 +135,7 @@ class AddEditScheduledTreatmentViewModelTest {
 
         val customerRetrieved = database.customerDao().getCustomer(receiver1.id)
         assertThat(customerRetrieved, `is`(receiver1))
-        val treatmentRetrieved = database.treatmentDao().getTreatment(treatment.id)
+        val treatmentRetrieved = database.treatmentDao().getTreatment(treatment.treatmentId)
         assertThat(treatmentRetrieved, `is`(treatment))
         val timeTemplates = database.timeTemplateDao().getTimeTemplates()
         assertThat(timeTemplates.getOrAwaitValue(), `is`(listOf(timeTemplate)))
@@ -140,11 +144,11 @@ class AddEditScheduledTreatmentViewModelTest {
         val crossRef = database.scheduledTreatmentCrossRefDao().getScheduledTreatmentCustomerCrossRefs(11)
         assertThat(crossRef, `is`(listOf(scheduledTreatmentCustomerCrossRef)))
 
-        viewModelScheduled.start(11)
+        //viewModelScheduled.start(11)
 
         //TODO find out why the query to database returns null
         // when the objects clearly is in database
-        assertThat(viewModelScheduled.customers.getOrAwaitValue(), `is`(mutableListOf(receiver1)))
+        //assertThat(viewModelScheduled.customers.getOrAwaitValue(), `is`(mutableListOf(receiver1)))
 
         assertThat(viewModelScheduled.message.getOrAwaitValue(), `is`(messages))
     }

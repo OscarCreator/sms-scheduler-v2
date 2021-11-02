@@ -104,7 +104,7 @@ fun TreatmentList(treatments: List<Treatment>, onClick: (treatmentId: Long) -> U
                     Text(LocalContext.current
                         .getString(R.string.treatment_time, treatment.duration))
                 },
-                modifier = Modifier.clickable { onClick(treatment.id) }
+                modifier = Modifier.clickable { onClick(treatment.treatmentId) }
             )
         }
 
@@ -117,9 +117,9 @@ fun TreatmentList(treatments: List<Treatment>, onClick: (treatmentId: Long) -> U
 @Composable
 fun PreviewTreatmentList() {
     val treatments = listOf(
-        Treatment(1, "Treatment 1", 500, 50),
-        Treatment(1, "Treatment 2", 400, 40),
-        Treatment(1, "Treatment 3", 1900, 110)
+        Treatment("Treatment 1", 500, 50),
+        Treatment("Treatment 2", 400, 40),
+        Treatment("Treatment 3", 1900, 110)
     )
     MdcTheme {
         TreatmentList(treatments = treatments, onClick = {})

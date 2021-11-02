@@ -49,7 +49,7 @@ class TreatmentFlowTest {
 
     @Test
     fun displayTreatment_whenRepositoryHasData() {
-        val treatment = Treatment(1, "Treatment 1", 400, 50)
+        val treatment = Treatment("Treatment 1", 400, 50)
         runBlocking {
             repository.insert(treatment)
         }
@@ -63,7 +63,7 @@ class TreatmentFlowTest {
 
     @Test
     fun deleteTreatment() {
-        val treatment = Treatment(1, "Treatment 1", 400, 50)
+        val treatment = Treatment("Treatment 1", 400, 50)
         runBlocking {
             repository.insert(treatment)
         }
@@ -102,7 +102,7 @@ class TreatmentFlowTest {
 
     @Test
     fun validTreatment_isSaved_andNavigatesBack() {
-        val treatment = Treatment(1, "Treatment 1", 400, 50)
+        val treatment = Treatment("Treatment 1", 400, 50)
 
         val activityScenario = launchActivity()
 
@@ -143,7 +143,7 @@ class TreatmentFlowTest {
 
     @Test
     fun invalidTreatment_isNotSaved() {
-        val treatment = Treatment(1, "Treatment 1", 400, 50)
+        val treatment = Treatment("Treatment 1", 400, 50)
 
         val activityScenario = launchActivity()
 

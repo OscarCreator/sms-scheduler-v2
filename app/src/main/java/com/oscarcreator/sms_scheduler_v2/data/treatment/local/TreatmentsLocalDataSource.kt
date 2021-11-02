@@ -14,6 +14,8 @@ class TreatmentsLocalDataSource internal constructor(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : TreatmentsDataSource {
 
+    override fun observeAllTreatments(): LiveData<List<Treatment>> = treatmentsDao.observeAllTreatments()
+
     override fun observeTreatments(): LiveData<List<Treatment>> = treatmentsDao.observeTreatments()
 
     override suspend fun getTreatment(id: Long): Result<Treatment> =
@@ -34,12 +36,13 @@ class TreatmentsLocalDataSource internal constructor(
 
     override suspend fun insert(treatment: Treatment): Long = treatmentsDao.insert(treatment)
 
-    override suspend fun update(treatment: Treatment): Int = treatmentsDao.update(treatment)
-
     override suspend fun delete(vararg treatments: Treatment): Int =
         treatmentsDao.delete(*treatments)
 
     override suspend fun deleteById(id: Long): Int = treatmentsDao.deleteById(id)
 
+    override suspend fun updateToBeDeleted(id: Long) = treatmentsDao.updateToBeDeleted(id)
+
+    override suspend fun updateScheduledTreatmentsWithNewTreatment(oldId: Long, newId: Long) = treatmentsDao.updateScheduledTreatmentsWithNewTreatment(oldId, newId)
 
 }

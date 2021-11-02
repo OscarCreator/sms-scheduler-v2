@@ -35,7 +35,7 @@ class AddEditTreatmentViewModelTest {
 
     @Test
     fun saveTreatmentToRepository_treatmentSaved() {
-        val treatment = Treatment(1, "Treatment 1", 400, 30)
+        val treatment = Treatment("Treatment 1", 400, 30)
 
         addEditTreatmentViewModel.start()
 
@@ -56,13 +56,13 @@ class AddEditTreatmentViewModelTest {
 
     @Test
     fun loadTreatment_dataShown() {
-        val treatment = Treatment(1, "Treatment 1", 400, 30)
+        val treatment = Treatment("Treatment 1", 400, 30)
 
         runBlocking {
             treatmentsRepository.insert(treatment)
         }
 
-        addEditTreatmentViewModel.start(treatment.id)
+        addEditTreatmentViewModel.start(treatment.treatmentId)
 
         assertThat(addEditTreatmentViewModel.name.getOrAwaitValue(), `is`(treatment.name))
         assertThat(addEditTreatmentViewModel.price.getOrAwaitValue(), `is`(treatment.price.toString()))

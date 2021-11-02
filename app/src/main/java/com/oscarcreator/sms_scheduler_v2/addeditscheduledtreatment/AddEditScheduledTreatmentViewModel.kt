@@ -47,7 +47,7 @@ class AddEditScheduledTreatmentViewModel(
     private val _customersLoadedEvent = MutableLiveData<Event<Unit>>()
     val customersLoadedEvent: LiveData<Event<Unit>> = _customersLoadedEvent
 
-    private val _allTreatments = treatmentsRepository.getTreatments()
+    private val _allTreatments = treatmentsRepository.observeTreatments()
     val allTreatment = _allTreatments
 
     private val _scheduledTreatmentUpdatedEvent = MutableLiveData<Event<Unit>>()
@@ -206,7 +206,7 @@ class AddEditScheduledTreatmentViewModel(
             if (isNewScheduledTreatment || scheduledTreatmentId == null) {
                 createScheduledTreatment(context,
                     ScheduledTreatment(
-                        treatmentId = currentTreatment.id,
+                        treatmentId = currentTreatment.treatmentId,
                         treatmentTime = Calendar.getInstance(Locale.getDefault())
                             .apply { timeInMillis = currentTime },
                         timeTemplateId = _timeTemplateId,
@@ -218,7 +218,7 @@ class AddEditScheduledTreatmentViewModel(
                 updateScheduledTreatment(context,
                     ScheduledTreatment(
                         id = scheduledTreatmentId!!,
-                        treatmentId = currentTreatment.id,
+                        treatmentId = currentTreatment.treatmentId,
                         treatmentTime = Calendar.getInstance(Locale.getDefault())
                             .apply { timeInMillis = currentTime },
                         timeTemplateId = _timeTemplateId,

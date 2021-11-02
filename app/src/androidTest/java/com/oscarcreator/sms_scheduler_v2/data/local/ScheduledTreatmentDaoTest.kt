@@ -43,7 +43,7 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
         customer = Customer(id = 8, name = "Bengt burger", phoneNumber = "07839402787", money = 10)
         assertThat(database.customerDao().insert(customer), `is`(8))
 
-        treatment = Treatment(id = 105, name = "Treatment1", price = 101, duration = 30)
+        treatment = Treatment(treatmentId = 105, name = "Treatment1", price = 101, duration = 30)
         assertThat(database.treatmentDao().insert(treatment), `is`(105))
 
     }
@@ -53,7 +53,7 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
 
         val scheduledTreatment = ScheduledTreatment(
             id = 10,
-            treatmentId = treatment.id,
+            treatmentId = treatment.treatmentId,
             timeTemplateId = timeTemplate.id,
             messageId = message.id,
             treatmentTime = Calendar.getInstance().apply { set(Calendar.YEAR, 2021) },
@@ -81,7 +81,7 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
 
         val scheduledTreatment = ScheduledTreatment(
             id = 10,
-            treatmentId = treatment.id,
+            treatmentId = treatment.treatmentId,
             timeTemplateId = timeTemplate.id,
             messageId = message.id,
             treatmentTime = Calendar.getInstance().apply { set(Calendar.YEAR, 2021) },
@@ -102,15 +102,15 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
         val updatedCustomer = Customer(id = 8, name = "Bengt Burger with big b's", phoneNumber = customer.phoneNumber, money = 5)
         assertThat(database.customerDao().update(updatedCustomer), `is`(1))
 
-        val updatedTreatment = Treatment(id = 105, name = "Treatment Two", price = 604, duration = 55)
-        assertThat(database.treatmentDao().update(updatedTreatment), `is`(1))
+//        val updatedTreatment = Treatment(treatmentId = 105, name = "Treatment Two", price = 604, duration = 55)
+//        assertThat(database.treatmentDao().updateToBeDeleted(updatedTreatment), `is`(1))
 
         scheduledTreatmentDao.getScheduledTreatmentWithData(scheduledTreatmentId).let {
             assertThat(it!!.scheduledTreatment, `is`(scheduledTreatment))
             assertThat(it.customers, `is`(listOf(updatedCustomer)))
             assertThat(it.message, `is`(updatedMessage))
             assertThat(it.timeTemplate, `is`(updatedTimeTemplate))
-            assertThat(it.treatment, `is`(updatedTreatment))
+            assertThat(it.treatment, `is`(treatment))
 
         }
 
@@ -120,7 +120,7 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
     fun scheduledTreatment_insertAndDeleted_removesScheduledTreatmentAndCrossRefButKeepsCustomers() = runBlocking {
         val scheduledTreatment = ScheduledTreatment(
             id = 10,
-            treatmentId = treatment.id,
+            treatmentId = treatment.treatmentId,
             timeTemplateId = timeTemplate.id,
             messageId = message.id,
             treatmentTime = Calendar.getInstance().apply { set(Calendar.YEAR, 2021) },
@@ -153,7 +153,7 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
     fun scheduledTreatment_insertAndDeletedCrossRef_keepsScheduledTreatmentAndCustomer() = runBlocking {
         val scheduledTreatment = ScheduledTreatment(
             id = 10,
-            treatmentId = treatment.id,
+            treatmentId = treatment.treatmentId,
             timeTemplateId = timeTemplate.id,
             messageId = message.id,
             treatmentTime = Calendar.getInstance().apply { set(Calendar.YEAR, 2021) },
@@ -184,7 +184,7 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
     fun scheduledTreatment_insertAndDeletedCustomer_keepsCustomer() = runBlocking {
         val scheduledTreatment = ScheduledTreatment(
             id = 10,
-            treatmentId = treatment.id,
+            treatmentId = treatment.treatmentId,
             timeTemplateId = timeTemplate.id,
             messageId = message.id,
             treatmentTime = Calendar.getInstance().apply { set(Calendar.YEAR, 2021) },
@@ -223,7 +223,7 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
     fun scheduledTreatment_insertYear2021_returnsScheduledTreatment() = runBlocking {
         val scheduledTreatment = ScheduledTreatment(
             id = 10,
-            treatmentId = treatment.id,
+            treatmentId = treatment.treatmentId,
             timeTemplateId = timeTemplate.id,
             messageId = message.id,
             treatmentTime = Calendar.getInstance().apply { set(Calendar.YEAR, 2021) },
@@ -257,7 +257,7 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
     fun scheduledTreatment_insertYear2021_returnsEmpty() = runBlocking {
         val scheduledTreatment = ScheduledTreatment(
             id = 10,
-            treatmentId = treatment.id,
+            treatmentId = treatment.treatmentId,
             timeTemplateId = timeTemplate.id,
             messageId = message.id,
             treatmentTime = Calendar.getInstance().apply { set(Calendar.YEAR, 2021) },

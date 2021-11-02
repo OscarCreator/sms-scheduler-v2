@@ -3,7 +3,7 @@ package com.oscarcreator.sms_scheduler_v2.data.local
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.oscarcreator.sms_scheduler_v2.data.treatment.Treatment
 import com.oscarcreator.sms_scheduler_v2.data.treatment.local.TreatmentDao
-import com.oscarcreator.sms_scheduler_v2.util.observeOnce
+import com.oscarcreator.sms_scheduler_v2.util.getOrAwaitValue
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.`is`
@@ -24,59 +24,39 @@ class TreatmentDaoTest : BaseDaoTest() {
 
     @Test
     fun treatment_insertedInDatabase_returnsTreatment() = runBlocking {
-        val treatment = Treatment(id = 7, name = "Salt", duration = 50, price = 500)
+        val treatment = Treatment(name = "Salt", duration = 50, price = 500, treatmentId = 7)
         assertThat(treatmentDao.insert(treatment), `is`(7))
 
-        treatmentDao.observeTreatments().observeOnce {
-            assertThat(it, `is`(listOf(treatment)))
-        }
+        assertThat(treatmentDao.observeAllTreatments().getOrAwaitValue(), `is`(listOf(treatment)))
     }
 
     @Test
     fun treatment_insertedAndDeleted_returnsEmpty() = runBlocking {
-        val treatment = Treatment(id = 5, name = "Sausage", duration = 10, price = 5000)
+        val treatment = Treatment(treatmentId = 5, name = "Sausage", duration = 10, price = 5000)
         assertThat(treatmentDao.insert(treatment), `is`(5))
         assertThat(treatmentDao.delete(treatment), `is`(1))
 
-        treatmentDao.observeTreatments().observeOnce {
-            assertThat(it, `is`(emptyList()))
-        }
-    }
-
-    @Test
-    fun treatment_insertedAndUpdated_returnsUpdated() = runBlocking {
-        val treatment = Treatment(id = 4, name = "Ham", duration = 40, price = 100)
-        treatmentDao.insert(treatment)
-        val updatedTreatment = Treatment(id = 4, name = "Ham", duration = 40, price = 200)
-        assertThat(treatmentDao.update(updatedTreatment), `is`(1))
-
-        treatmentDao.observeTreatments().observeOnce {
-            assertThat(it, `is`(listOf(updatedTreatment)))
-        }
+        assertThat(treatmentDao.observeAllTreatments().getOrAwaitValue(), `is`(emptyList()))
     }
 
     @Test
     fun treatment_deleteMultiple_returnsEmpty() = runBlocking {
-        val treatment1 = Treatment(id = 1, name = "Ham1", duration = 40, price = 100)
-        val treatment2 = Treatment(id = 3, name = "Ham2", duration = 50, price = 200)
+        val treatment1 = Treatment(treatmentId = 1, name = "Ham1", duration = 40, price = 100)
+        val treatment2 = Treatment(treatmentId = 3, name = "Ham2", duration = 50, price = 200)
         assertThat(treatmentDao.insert(treatment1), `is`(1))
         assertThat(treatmentDao.insert(treatment2), `is`(3))
         assertThat(treatmentDao.delete(treatment1, treatment2), `is`(2))
 
-        treatmentDao.observeTreatments().observeOnce {
-            assertThat(it, `is`(emptyList()))
-        }
+        assertThat(treatmentDao.observeAllTreatments().getOrAwaitValue(), `is`(emptyList()))
     }
 
     @Test
     fun treatment_insertDuplicate_isNotInserted() = runBlocking {
-        val treatment = Treatment(id = 1, name = "Ern", duration = 10, price = 1)
+        val treatment = Treatment(treatmentId = 1, name = "Ern", duration = 10, price = 1)
         assertThat(treatmentDao.insert(treatment), `is`(1))
         assertThat(treatmentDao.insert(treatment), `is`(-1))
 
-        treatmentDao.observeTreatments().observeOnce {
-            assertThat(it, `is`(listOf(treatment)))
-        }
+        assertThat(treatmentDao.observeAllTreatments().getOrAwaitValue(), `is`(listOf(treatment)))
     }
 
     @Test
@@ -87,5 +67,25 @@ class TreatmentDaoTest : BaseDaoTest() {
         assertThat(treatmentDao.insert(treatment2), `is`(2))
     }
 
+    @Test
+    fun treatment_inserted_updateToBeDeleted() = runBlocking {
+        val treatment1 = Treatment(name = "Tobby", price = 400, duration = 50, treatmentId = 2)
+        treatmentDao.insert(treatment1)
+        treatmentDao.updateToBeDeleted(treatment1.treatmentId)
+
+        assertThat(treatmentDao.observeAllTreatments().getOrAwaitValue().first().toBeDeleted, `is`(true))
+    }
+
+    @Test
+    fun treatment_deleteById() = runBlocking {
+        val treatment = Treatment(name = "Tobby", price = 400, duration = 30, treatmentId = 4)
+        treatmentDao.insert(treatment)
+
+        assertThat(treatmentDao.observeAllTreatments().getOrAwaitValue(), `is`(listOf(treatment)))
+
+        treatmentDao.deleteById(treatment.treatmentId)
+
+        assertThat(treatmentDao.observeAllTreatments().getOrAwaitValue(), `is`(emptyList()))
+    }
 
 }

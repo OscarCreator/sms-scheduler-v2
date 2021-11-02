@@ -13,9 +13,16 @@ class FakeTreatmentsRepository: TreatmentsRepository {
 
     private val observableTreatments = MutableLiveData<List<Treatment>>()
 
-    override fun observeTreatments(): LiveData<List<Treatment>> {
+    override fun observeAllTreatments(): LiveData<List<Treatment>> {
         runBlocking { observableTreatments.value = treatmentsServiceData.values.toList() }
         return observableTreatments
+    }
+
+    override fun observeTreatments(): LiveData<List<Treatment>> {
+        runBlocking { observableTreatments.value = treatmentsServiceData.values.toList() }
+        return observableTreatments.map { treatments ->
+            treatments.filter { !it.toBeDeleted }
+        }
     }
 
     override suspend fun getTreatment(id: Long): Result<Treatment> {
@@ -30,7 +37,7 @@ class FakeTreatmentsRepository: TreatmentsRepository {
     override fun observeTreatment(id: Long): LiveData<Result<Treatment>> {
         runBlocking { observableTreatments.value = treatmentsServiceData.values.toList() }
         return observableTreatments.map { treatments ->
-            val treatment = treatments.find { it.id == id }
+            val treatment = treatments.find { it.treatmentId == id }
             if (treatment == null) {
                 Result.Error(Exception("Did not find treatment"))
             } else {
@@ -40,18 +47,14 @@ class FakeTreatmentsRepository: TreatmentsRepository {
     }
 
     override suspend fun insert(treatment: Treatment): Long {
-        treatmentsServiceData[treatment.id] = treatment
-        return treatment.id
+        treatmentsServiceData[treatment.treatmentId] = treatment
+        return treatment.treatmentId
     }
 
-    override suspend fun update(treatment: Treatment): Int {
-        treatmentsServiceData[treatment.id] = treatment
-        return 1
-    }
 
     override suspend fun delete(vararg treatments: Treatment): Int {
         for (treatment in treatments) {
-            treatmentsServiceData.remove(treatment.id)
+            treatmentsServiceData.remove(treatment.treatmentId)
         }
         return treatments.size
     }
@@ -59,5 +62,18 @@ class FakeTreatmentsRepository: TreatmentsRepository {
     override suspend fun deleteById(id: Long): Int {
         treatmentsServiceData.remove(id)
         return 1
+    }
+
+    override suspend fun updateToBeDeleted(id: Long) {
+        val treatment = treatmentsServiceData[id]
+        if (treatment != null) {
+            val newTreatment = Treatment(treatment.name, treatment.price, treatment.duration, toBeDeleted = true)
+            treatmentsServiceData[id] = newTreatment
+        }
+
+    }
+
+    override suspend fun updateScheduledTreatmentsWithNewTreatment(oldId: Long, newId: Long) {
+        TODO("Not yet implemented")
     }
 }

@@ -29,10 +29,12 @@ class AddEditTreatmentViewModel(
     private val _snackbarText = MutableLiveData<Event<Int>>()
     val snackbarText: LiveData<Event<Int>> = _snackbarText
 
-    private val _treatmentUpdatedEvent = MutableLiveData<Event<Unit>>()
-    val treatmentUpdatedEvent: LiveData<Event<Unit>> = _treatmentUpdatedEvent
+    private val _treatmentUpdatedEvent = MutableLiveData<Event<Long>>()
+    val treatmentUpdatedEvent: LiveData<Event<Long>> = _treatmentUpdatedEvent
 
     private var treatmentId: Long = -1L
+    private var treatmentGroupId: String = ""
+    private var treatmentVersion: Long = -1L
     private var isNewTreatment = false
     private var isDataLoaded = false
 
@@ -75,10 +77,17 @@ class AddEditTreatmentViewModel(
         }
 
         val currentTreatmentId = treatmentId
+        val currentTreatmentGroupId = treatmentGroupId
         if (isNewTreatment || currentTreatmentId == -1L) {
             createTreatment(Treatment(duration = currentDuration.toInt(), name = currentName, price = currentPrice.toInt()))
         } else {
-            updateTreatment(Treatment(currentTreatmentId, currentName, currentPrice.toInt(), currentDuration.toInt()))
+            updateTreatment(Treatment(
+                currentName,
+                currentPrice.toInt(),
+                currentDuration.toInt(),
+                treatmentGroupId = currentTreatmentGroupId,
+                treatmentVersion = treatmentVersion + 1)
+            )
         }
 
     }
@@ -87,6 +96,8 @@ class AddEditTreatmentViewModel(
         name.value = treatment.name
         price.value = treatment.price.toString()
         duration.value = treatment.duration.toString()
+        treatmentGroupId = treatment.treatmentGroupId
+        treatmentVersion = treatment.treatmentVersion
         _dataLoading.value = false
     }
 
@@ -96,12 +107,24 @@ class AddEditTreatmentViewModel(
 
     private fun createTreatment(newTreatment: Treatment) = viewModelScope.launch {
         treatmentsRepository.insert(newTreatment)
-        _treatmentUpdatedEvent.value = Event(Unit)
+        _treatmentUpdatedEvent.value = Event(-1)
     }
 
     private fun updateTreatment(treatment: Treatment) = viewModelScope.launch {
-        treatmentsRepository.update(treatment)
-        _treatmentUpdatedEvent.value = Event(Unit)
+
+        //TODO only upcoming, update()
+        // else mark as "deleted" and insert() and updateST()
+
+        try {
+            treatmentsRepository.deleteById(treatmentId)
+        } catch (e: Exception) {
+            treatmentsRepository.updateToBeDeleted(treatmentId)
+        }
+        val newTreatmentId = treatmentsRepository.insert(treatment)
+
+        treatmentsRepository.updateScheduledTreatmentsWithNewTreatment(treatmentId, newTreatmentId)
+
+        _treatmentUpdatedEvent.value = Event(newTreatmentId)
 
     }
 

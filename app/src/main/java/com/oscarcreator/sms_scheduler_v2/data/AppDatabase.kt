@@ -67,8 +67,7 @@ abstract class AppDatabase : RoomDatabase() {
         }
 
         suspend fun populateDatabase(database: AppDatabase) {
-            database.customerDao().insert(Customer(1, "Bengt", "04053824"))
-            database.customerDao().insert(Customer(2, "Jerry", "3759324567"))
+
         }
     }
 

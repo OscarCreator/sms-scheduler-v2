@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.oscarcreator.sms_scheduler_v2.SmsSchedulerApplication
 import com.oscarcreator.sms_scheduler_v2.databinding.FragmentAddeditTreatmentBinding
+import com.oscarcreator.sms_scheduler_v2.util.EventObserver
 
 class AddEditTreatmentFragment : Fragment() {
 
@@ -45,14 +46,21 @@ class AddEditTreatmentFragment : Fragment() {
         }
         binding.lifecycleOwner = this.viewLifecycleOwner
 
-        viewModel.treatmentUpdatedEvent.observe(viewLifecycleOwner) {
-            findNavController().navigateUp()
+        viewModel.treatmentUpdatedEvent.observe(viewLifecycleOwner, EventObserver {
+            if (it != -1L) {
+                //updated
+                val action = AddEditTreatmentFragmentDirections.actionAddEditTreatmentToTreatmentDetailFragment(it)
+                findNavController().navigate(action)
+            } else {
+                //created
+                findNavController().navigateUp()
+            }
 
-        }
+        })
 
-        viewModel.snackbarText.observe(viewLifecycleOwner) {
+        viewModel.snackbarText.observe(viewLifecycleOwner, EventObserver {
 
-        }
+        })
 
         binding.fabSaveTreatment.setOnClickListener {
             viewModel.saveTreatment()
