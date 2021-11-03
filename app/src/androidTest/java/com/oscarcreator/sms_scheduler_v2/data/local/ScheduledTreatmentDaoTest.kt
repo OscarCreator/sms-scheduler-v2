@@ -40,7 +40,7 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
         message = Message(id = 5, message = "hey this is a message")
         assertThat(database.messageDao().insert(message), `is`(5))
 
-        contact = Contact(id = 8, name = "Bengt burger", phoneNumber = "07839402787", money = 10)
+        contact = Contact(contactId = 8, name = "Bengt burger", phoneNumber = "07839402787", money = 10)
         assertThat(database.customerDao().insert(contact), `is`(8))
 
         treatment = Treatment(treatmentId = 105, name = "Treatment1", price = 101, duration = 30)
@@ -61,7 +61,7 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
         val scheduledTreatmentId = scheduledTreatmentDao.insert(scheduledTreatment)
         val scheduledTreatmentCustomerCrossRef = ScheduledTreatmentContactCrossRef(
             scheduledTreatmentId = scheduledTreatmentId,
-            contactId = contact.id
+            contactId = contact.contactId
         )
         database.scheduledTreatmentCrossRefDao().insert(scheduledTreatmentCustomerCrossRef)
 
@@ -89,7 +89,7 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
         val scheduledTreatmentId = scheduledTreatmentDao.insert(scheduledTreatment)
         val scheduledTreatmentCustomerCrossRef = ScheduledTreatmentContactCrossRef(
             scheduledTreatmentId = scheduledTreatmentId,
-            contactId = contact.id
+            contactId = contact.contactId
         )
         database.scheduledTreatmentCrossRefDao().insert(scheduledTreatmentCustomerCrossRef)
 
@@ -99,7 +99,7 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
         val updatedMessage = Message(id = 5, message = "updated message", isTemplate = true)
         assertThat(database.messageDao().update(updatedMessage), `is`(1))
 
-        val updatedCustomer = Contact(id = 8, name = "Bengt Burger with big b's", phoneNumber = contact.phoneNumber, money = 5)
+        val updatedCustomer = Contact(contactId = 8, name = "Bengt Burger with big b's", phoneNumber = contact.phoneNumber, money = 5)
         assertThat(database.customerDao().update(updatedCustomer), `is`(1))
 
 //        val updatedTreatment = Treatment(treatmentId = 105, name = "Treatment Two", price = 604, duration = 55)
@@ -128,7 +128,7 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
         val scheduledTreatmentId = scheduledTreatmentDao.insert(scheduledTreatment)
         val scheduledTreatmentCustomerCrossRef = ScheduledTreatmentContactCrossRef(
             scheduledTreatmentId = scheduledTreatmentId,
-            contactId = contact.id
+            contactId = contact.contactId
         )
         database.scheduledTreatmentCrossRefDao().insert(scheduledTreatmentCustomerCrossRef)
 
@@ -142,7 +142,7 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
             assertThat(it, `is`(emptyList()))
         }
 
-        database.customerDao().observeContacts().getOrAwaitValue().let {
+        database.customerDao().observeContactsASC().getOrAwaitValue().let {
             assertThat(it, `is`(listOf(contact)))
         }
 
@@ -161,7 +161,7 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
         val scheduledTreatmentId = scheduledTreatmentDao.insert(scheduledTreatment)
         val scheduledTreatmentCustomerCrossRef = ScheduledTreatmentContactCrossRef(
             scheduledTreatmentId = scheduledTreatmentId,
-            contactId = contact.id
+            contactId = contact.contactId
         )
         database.scheduledTreatmentCrossRefDao().insert(scheduledTreatmentCustomerCrossRef)
         database.scheduledTreatmentCrossRefDao().delete(scheduledTreatmentCustomerCrossRef)
@@ -174,7 +174,7 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
             assertThat(it, `is`(emptyList()))
         }
 
-        database.customerDao().observeContacts().getOrAwaitValue().let {
+        database.customerDao().observeContactsASC().getOrAwaitValue().let {
             assertThat(it, `is`(listOf(contact)))
         }
 
@@ -192,7 +192,7 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
         val scheduledTreatmentId = scheduledTreatmentDao.insert(scheduledTreatment)
         val scheduledTreatmentCustomerCrossRef = ScheduledTreatmentContactCrossRef(
             scheduledTreatmentId = scheduledTreatmentId,
-            contactId = contact.id
+            contactId = contact.contactId
         )
 
         database.scheduledTreatmentCrossRefDao().insert(scheduledTreatmentCustomerCrossRef)
@@ -213,7 +213,7 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
             assertThat(it, `is`(listOf(scheduledTreatmentCustomerCrossRef)))
         }
 
-        database.customerDao().observeContacts().getOrAwaitValue().let {
+        database.customerDao().observeContactsASC().getOrAwaitValue().let {
             assertThat(it, `is`(listOf(contact)))
         }
 
@@ -231,7 +231,7 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
         val scheduledTreatmentId = scheduledTreatmentDao.insert(scheduledTreatment)
         val scheduledTreatmentCustomerCrossRef = ScheduledTreatmentContactCrossRef(
             scheduledTreatmentId = scheduledTreatmentId,
-            contactId = contact.id
+            contactId = contact.contactId
         )
 
         database.scheduledTreatmentCrossRefDao().insert(scheduledTreatmentCustomerCrossRef)
@@ -265,7 +265,7 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
         val scheduledTreatmentId = scheduledTreatmentDao.insert(scheduledTreatment)
         val scheduledTreatmentCustomerCrossRef = ScheduledTreatmentContactCrossRef(
             scheduledTreatmentId = scheduledTreatmentId,
-            contactId = contact.id
+            contactId = contact.contactId
         )
 
         database.scheduledTreatmentCrossRefDao().insert(scheduledTreatmentCustomerCrossRef)

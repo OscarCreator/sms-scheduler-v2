@@ -25,41 +25,41 @@ class ContactDaoTest : BaseDaoTest() {
     @Test
     @Throws(Exception::class)
     fun customer_insertedInDatabase_returnsCustomer() = runBlocking {
-        val customer = Contact(id = 1, name = "bengan", phoneNumber = "0754962045")
+        val customer = Contact(contactId = 1, name = "bengan", phoneNumber = "0754962045")
         assertThat(contactDao.insert(customer), `is`(1))
 
-        assertThat(contactDao.observeContacts().getOrAwaitValue(), `is`(listOf(customer)))
+        assertThat(contactDao.observeAllContacts().getOrAwaitValue(), `is`(listOf(customer)))
     }
 
     @Test
     @Throws(Exception::class)
     fun customer_insertedAndDeleted_returnsEmpty() = runBlocking {
-        val customer = Contact(id = 1, name = "bergit", phoneNumber = "0738092735")
+        val customer = Contact(contactId = 1, name = "bergit", phoneNumber = "0738092735")
         assertThat(contactDao.insert(customer), `is`(1))
         assertThat(contactDao.delete(customer), `is`(1))
 
-        assertThat(contactDao.observeContacts().getOrAwaitValue(), `is`(emptyList()))
+        assertThat(contactDao.observeAllContacts().getOrAwaitValue(), `is`(emptyList()))
     }
 
     @Test
     @Throws(Exception::class)
     fun customer_insertedAndUpdated_returnsUpdated() = runBlocking {
-        val customer = Contact(id = 100, name = "bergit", phoneNumber = "0738092735")
+        val customer = Contact(contactId = 100, name = "bergit", phoneNumber = "0738092735")
         assertThat(contactDao.insert(customer), `is`(100))
-        val updatedCustomer = Contact(id = 100, name = "Bergit", phoneNumber = "0738092734")
+        val updatedCustomer = Contact(contactId = 100, name = "Bergit", phoneNumber = "0738092734")
         assertThat(contactDao.update(updatedCustomer), `is`(1))
 
-        assertThat(contactDao.observeContacts().getOrAwaitValue(), `is`(listOf(updatedCustomer)))
+        assertThat(contactDao.observeAllContacts().getOrAwaitValue(), `is`(listOf(updatedCustomer)))
     }
 
     @Test
     fun customer_getMatching_returnsOnlyMatching() = runBlocking {
-        val customer1 = Contact(300, "bergit hansson", "18305238940")
-        assertThat(contactDao.insert(customer1), `is`(customer1.id))
-        val customer2 = Contact(301, "ulf hansson", "053243945")
-        assertThat(contactDao.insert(customer2), `is`(customer2.id))
-        val customer3 = Contact(302, "sten", "053058425")
-        assertThat(contactDao.insert(customer3), `is`(customer3.id))
+        val customer1 = Contact( "bergit hansson", "18305238940", contactId = 1)
+        assertThat(contactDao.insert(customer1), `is`(customer1.contactId))
+        val customer2 = Contact( "ulf hansson", "053243945", contactId = 2)
+        assertThat(contactDao.insert(customer2), `is`(customer2.contactId))
+        val customer3 = Contact( "sten", "053058425", contactId = 3)
+        assertThat(contactDao.insert(customer3), `is`(customer3.contactId))
 
         assertThat(contactDao.getCustomersLike("%hansson%"), `is`(listOf(customer1, customer2)))
 

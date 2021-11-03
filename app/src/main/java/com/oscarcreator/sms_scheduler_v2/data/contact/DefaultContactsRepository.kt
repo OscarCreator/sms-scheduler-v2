@@ -10,7 +10,11 @@ class DefaultContactsRepository(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ): ContactsRepository {
 
+    override fun observeAllContacts(): LiveData<List<Contact>> = contactsDataSource.observeAllContacts()
+
     override fun observeContacts(): LiveData<List<Contact>> = contactsDataSource.observeContacts()
+
+    override fun observeContactsASC(): LiveData<List<Contact>> = contactsDataSource.observeContactsASC()
 
     override suspend fun getCustomerById(id: Long): Result<Contact> = contactsDataSource.getCustomer(id)
 
@@ -26,4 +30,6 @@ class DefaultContactsRepository(
     override suspend fun deleteById(contactId: Long): Int = contactsDataSource.deleteById(contactId)
 
     override suspend fun update(contact: Contact): Int = contactsDataSource.update(contact)
+
+    override suspend fun updateToBeDeleted(contactId: Long) = contactsDataSource.updateToBeDeleted(contactId)
 }

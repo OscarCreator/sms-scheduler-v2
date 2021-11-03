@@ -16,9 +16,23 @@ class FakeContactsRepository : ContactsRepository {
 
     private val observableContacts = MutableLiveData<List<Contact>>()
 
-    override fun observeContacts(): LiveData<List<Contact>> {
+    override fun observeAllContacts(): LiveData<List<Contact>> {
         runBlocking { observableContacts.value = contactsServiceData.values.toList() }
         return observableContacts
+    }
+
+    override fun observeContacts(): LiveData<List<Contact>> {
+        runBlocking { observableContacts.value = contactsServiceData.values.toList() }
+        return observableContacts.map { contacts ->
+            contacts.filter { !it.toBeDeleted }
+        }
+    }
+
+    override fun observeContactsASC(): LiveData<List<Contact>> {
+        runBlocking { observableContacts.value = contactsServiceData.values.toList() }
+        return observableContacts.map { contacts ->
+            contacts.filter { !it.toBeDeleted }.sortedBy { it.name }
+        }
     }
 
     override suspend fun getCustomerById(customerId: Long): Result<Contact> {
@@ -33,7 +47,7 @@ class FakeContactsRepository : ContactsRepository {
     override fun observeCustomer(customerId: Long): LiveData<Result<Contact>> {
         runBlocking { observableContacts.value = contactsServiceData.values.toList() }
         return observableContacts.map { customers ->
-            val customer = customers.find { it.id == customerId }
+            val customer = customers.find { it.contactId == customerId }
             if (customer == null) {
                 Result.Error(Exception("Did not find contact"))
             } else {
@@ -50,16 +64,16 @@ class FakeContactsRepository : ContactsRepository {
     }
 
     override suspend fun insert(contact: Contact): Long {
-        contactsServiceData[contact.id] = contact
+        contactsServiceData[contact.contactId] = contact
         withContext(Dispatchers.Main) {
             observableContacts.value = contactsServiceData.values.toList()
         }
-        return contact.id
+        return contact.contactId
     }
 
     override suspend fun delete(vararg contact: Contact): Int {
         for (value in contact) {
-            contactsServiceData.remove(value.id)
+            contactsServiceData.remove(value.contactId)
         }
         return contact.size
     }
@@ -69,8 +83,16 @@ class FakeContactsRepository : ContactsRepository {
         return 1
     }
 
+    override suspend fun updateToBeDeleted(contactId: Long) {
+        val contact = contactsServiceData[contactId]
+        if (contact != null) {
+            val newContact =  Contact(contact.name, contact.phoneNumber, contact.money, toBeDeleted = true, contactId = contact.contactId, contactGroupId = contact.contactGroupId, contactVersion = contact.contactVersion)
+            contactsServiceData[contactId] = newContact
+        }
+    }
+
     override suspend fun update(contact: Contact): Int {
-        contactsServiceData[contact.id] = contact
+        contactsServiceData[contact.contactId] = contact
         return 1
     }
 }

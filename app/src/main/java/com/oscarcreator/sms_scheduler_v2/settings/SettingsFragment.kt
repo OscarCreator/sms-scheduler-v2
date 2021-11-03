@@ -88,7 +88,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 }
                 shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS) -> {
                     //TODO Show educational UI before requesting permission again. Alertdialog?, Snackbar?
-
+                    //TODO replace with resource
                     AlertDialog.Builder(requireContext())
                         .setTitle("Contacts Permission required")
                         .setMessage("Contacts permission is required to retrieve all your contacts. Do you want to allow this permission?")
@@ -206,9 +206,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private fun setUpTreatmentTemplate() {
         val defaultTreatmentTemplate: DropDownPreference? = findPreference("default_treatment")
 
-        (requireContext().applicationContext as SmsSchedulerApplication).treatmentsRepository.getTreatments().observe(viewLifecycleOwner) {
+        (requireContext().applicationContext as SmsSchedulerApplication).treatmentsRepository.observeTreatments().observe(viewLifecycleOwner) {
 
-            treatmentMap = it.map { treatmentTemplate -> Pair(treatmentTemplate.id, treatmentTemplate.name) }.toMutableList().let { list ->
+            treatmentMap = it.map { treatmentTemplate -> Pair(treatmentTemplate.treatmentId, treatmentTemplate.name) }.toMutableList().let { list ->
                 list.add(0, Pair(-1L, getString(R.string.none)))
                 list
             }.toMap()

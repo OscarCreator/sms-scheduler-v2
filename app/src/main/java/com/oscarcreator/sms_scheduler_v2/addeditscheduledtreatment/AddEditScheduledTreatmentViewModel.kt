@@ -274,7 +274,7 @@ class AddEditScheduledTreatmentViewModel(
     private suspend fun createScheduledTreatmentCustomerCrossRef(scheduledTreatmentId: Long, receivers: List<Contact>){
         for (receiver in receivers) {
             scheduledTreatmentsRepository.insertCrossRef(
-                ScheduledTreatmentContactCrossRef(scheduledTreatmentId, receiver.id))
+                ScheduledTreatmentContactCrossRef(scheduledTreatmentId, receiver.contactId))
         }
     }
 

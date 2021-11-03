@@ -29,10 +29,12 @@ class AddEditContactViewModel(
     private val _snackbarText = MutableLiveData<Event<Int>>()
     val snackbarText: LiveData<Event<Int>> = _snackbarText
 
-    private val _contactUpdatedEvent = MutableLiveData<Event<Unit>>()
-    val contactUpdatedEvent: LiveData<Event<Unit>> = _contactUpdatedEvent
+    private val _contactUpdatedEvent = MutableLiveData<Event<Long>>()
+    val contactUpdatedEvent: LiveData<Event<Long>> = _contactUpdatedEvent
 
     private var contactId: Long = -1L
+    private var contactGroupId: String = ""
+    private var contactVersion: Long = -1L
     private var isNewContact = false
     private var isDataLoaded = false
 
@@ -74,10 +76,17 @@ class AddEditContactViewModel(
         }
 
         val currentContactId = contactId
+        val currentContactGroupId = contactGroupId
         if (isNewContact || currentContactId == -1L) {
             createContact(Contact(name = currentName, phoneNumber = currentPhoneNumber, money = currentMoney.toInt()))
         } else {
-            updateContact(Contact(currentContactId, currentName, currentPhoneNumber, currentMoney.toInt()))
+            updateContact(Contact(
+                currentName,
+                currentPhoneNumber,
+                currentMoney.toInt(),
+                contactGroupId = currentContactGroupId,
+                contactVersion = contactVersion + 1
+            ))
         }
     }
 
@@ -85,6 +94,8 @@ class AddEditContactViewModel(
         name.value = contact.name
         phoneNumber.value = contact.phoneNumber
         money.value = contact.money.toString()
+        contactGroupId = contact.contactGroupId
+        contactVersion = contact.contactVersion
         _dataLoading.value = false
     }
 
@@ -93,13 +104,21 @@ class AddEditContactViewModel(
     }
 
     private fun createContact(newContact: Contact) = viewModelScope.launch {
-        contactsRepository.insert(newContact)
-        _contactUpdatedEvent.value = Event(Unit)
+        val newContactId = contactsRepository.insert(newContact)
+        _contactUpdatedEvent.value = Event(newContactId)
     }
 
     private fun updateContact(contact: Contact) = viewModelScope.launch {
-        contactsRepository.update(contact)
-        _contactUpdatedEvent.value = Event(Unit)
+        try {
+            contactsRepository.deleteById(contactId)
+            val newContactId = contactsRepository.insert(contact)
+
+            _contactUpdatedEvent.value = Event(newContactId)
+        } catch (e: Exception) {
+            _contactUpdatedEvent.value = Event(-1L)
+        }
+
+        //TODO update scheduled treatment with new contact
     }
 
 }

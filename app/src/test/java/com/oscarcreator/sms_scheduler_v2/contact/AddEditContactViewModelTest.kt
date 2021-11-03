@@ -37,7 +37,7 @@ class AddEditContactViewModelTest {
 
     @Test
     fun saveContactToRepository_contactSaved() {
-        val contact = Contact(1, "Bengt", "0238492", 200)
+        val contact = Contact( "Bengt", "0238492", 200)
 
         addEditContactViewModel.start()
 
@@ -58,13 +58,13 @@ class AddEditContactViewModelTest {
 
     @Test
     fun loadContact_dataShown() {
-        val contact = Contact(1, "Bengt", "0238492", 200)
+        val contact = Contact( "Bengt", "0238492", 200)
 
         runBlocking {
             contactsRepository.insert(contact)
         }
 
-        addEditContactViewModel.start(contact.id)
+        addEditContactViewModel.start(contact.contactId)
 
         assertThat(addEditContactViewModel.name.getOrAwaitValue(), `is`(contact.name))
         assertThat(addEditContactViewModel.phoneNumber.getOrAwaitValue(), `is`(contact.phoneNumber))

@@ -5,7 +5,11 @@ import com.oscarcreator.sms_scheduler_v2.data.Result
 
 interface ContactsDataSource {
 
+    fun observeAllContacts(): LiveData<List<Contact>>
+
     fun observeContacts(): LiveData<List<Contact>>
+
+    fun observeContactsASC(): LiveData<List<Contact>>
 
     suspend fun getCustomer(customerId: Long): Result<Contact>
 
@@ -20,4 +24,6 @@ interface ContactsDataSource {
     suspend fun deleteById(contactId: Long): Int
 
     suspend fun update(contact: Contact): Int
+
+    suspend fun updateToBeDeleted(contactId: Long)
 }

@@ -12,12 +12,24 @@ import com.oscarcreator.sms_scheduler_v2.data.contact.Contact
 interface ContactDao {
 
     /**
-     * Returns all [Contact] in a [LiveData] object.
+     * Returns all [Contact]s unordered.
+     * */
+    @Query("SELECT * FROM contacts")
+    fun observeAllContacts(): LiveData<List<Contact>>
+
+    /**
+     * Returns all [Contact]s which is not "deleted" unordered.
+     * */
+    @Query("SELECT * FROM contacts WHERE to_be_deleted = :bool")
+    fun observeContacts(bool: Boolean = false): LiveData<List<Contact>>
+
+    /**
+     * Returns all [Contact] in a [LiveData] object which is not "deleted".
      *
      * @return all customers
      * */
-    @Query("SELECT * FROM contacts ORDER BY name ASC")
-    fun observeContacts(): LiveData<List<Contact>>
+    @Query("SELECT * FROM contacts WHERE to_be_deleted = :bool ORDER BY name ASC")
+    fun observeContactsASC(bool: Boolean = false): LiveData<List<Contact>>
 
     /**
      * Returns a the [Contact] with the id
@@ -86,4 +98,8 @@ interface ContactDao {
      * */
     @Update(onConflict = OnConflictStrategy.IGNORE)
     suspend fun update(contact: Contact): Int
+
+    @Query("UPDATE contacts SET to_be_deleted = :bool WHERE contact_id = :id")
+    suspend fun updateToBeDeleted(id: Long, bool: Boolean = true)
+
 }

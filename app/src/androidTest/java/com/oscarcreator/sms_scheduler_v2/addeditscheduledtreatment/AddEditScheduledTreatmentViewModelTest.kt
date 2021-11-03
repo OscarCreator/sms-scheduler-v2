@@ -44,8 +44,8 @@ class AddEditScheduledTreatmentViewModelTest {
 
     private val timeTemplate = TimeTemplate(6, 100)
     private val message = Message(8, "some old text", true)
-    private val receiver1 = Contact(4, "Bosse", "40602380")
-    private val receiver2 = Contact(2, "Bergit", "0720934592", 4000)
+    private val receiver1 = Contact( "Bosse", "40602380", contactId = 4)
+    private val receiver2 = Contact("Bergit", "0720934592", 4000, contactId = 2)
     private val treatment = Treatment("Treatment 4", 400, 90, treatmentId = 9)
 
     private lateinit var scheduledTreatmentsRepository: ScheduledTreatmentsRepository
@@ -71,8 +71,8 @@ class AddEditScheduledTreatmentViewModelTest {
 
         assertThat(database.timeTemplateDao().insert(timeTemplate), `is`(timeTemplate.id))
         assertThat(database.messageDao().insert(message), `is`(message.id))
-        assertThat(database.customerDao().insert(receiver1), `is`(receiver1.id))
-        assertThat(database.customerDao().insert(receiver2), `is`(receiver2.id))
+        assertThat(database.customerDao().insert(receiver1), `is`(receiver1.contactId))
+        assertThat(database.customerDao().insert(receiver2), `is`(receiver2.contactId))
         assertThat(database.treatmentDao().insert(treatment), `is`(treatment.treatmentId))
     }
 
@@ -130,10 +130,10 @@ class AddEditScheduledTreatmentViewModelTest {
         )
         assertThat(database.scheduledTreatmentDao().insert(scheduledTreatment), `is`(11))
         val scheduledTreatmentCustomerCrossRef =
-            ScheduledTreatmentContactCrossRef(11, receiver1.id)
+            ScheduledTreatmentContactCrossRef(11, receiver1.contactId)
         database.scheduledTreatmentCrossRefDao().insert(scheduledTreatmentCustomerCrossRef)
 
-        val customerRetrieved = database.customerDao().getCustomer(receiver1.id)
+        val customerRetrieved = database.customerDao().getCustomer(receiver1.contactId)
         assertThat(customerRetrieved, `is`(receiver1))
         val treatmentRetrieved = database.treatmentDao().getTreatment(treatment.treatmentId)
         assertThat(treatmentRetrieved, `is`(treatment))

@@ -51,7 +51,7 @@ class ContactFlowTest {
 
     @Test
     fun displayContact_whenRepositoryHasData() {
-        val contact = Contact(1, "Bengt", "020304020")
+        val contact = Contact("Bengt", "020304020")
         runBlocking {
             repository.insert(contact)
         }
@@ -65,7 +65,7 @@ class ContactFlowTest {
 
     @Test
     fun deleteContact() {
-        val contact = Contact(1, "Bengt", "02002034")
+        val contact = Contact( "Bengt", "02002034")
         runBlocking {
             repository.insert(contact)
         }
@@ -111,7 +111,7 @@ class ContactFlowTest {
 
     @Test
     fun validContact_isSaved_andNavigatesBack() {
-        val contact = Contact(1, "Bengt", "03498239", 10)
+        val contact = Contact( "Bengt", "03498239", 10)
 
         val activityScenario = launchActivity()
 
@@ -152,7 +152,7 @@ class ContactFlowTest {
 
     @Test
     fun invalidContact_isNotSaved() {
-        val contact = Contact(1, "Bengt", "03498239", 10)
+        val contact = Contact( "Bengt", "03498239", 10)
 
         val activityScenario = launchActivity()
 

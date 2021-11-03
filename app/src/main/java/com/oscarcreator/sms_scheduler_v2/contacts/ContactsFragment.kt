@@ -105,7 +105,7 @@ fun ContactList(contacts: List<Contact>, onClick: (id: Long) -> Unit) {
                 secondaryText = {
                     Text(contact.phoneNumber)
                 },
-                modifier = Modifier.clickable { onClick(contact.id) }
+                modifier = Modifier.clickable { onClick(contact.contactId) }
             )
         }
     }
@@ -117,9 +117,9 @@ fun ContactList(contacts: List<Contact>, onClick: (id: Long) -> Unit) {
 @Composable
 fun PreviewContactList() {
     val contacts = listOf(
-        Contact(1, "Name 1", "030405356", 300),
-        Contact(1, "Name 2", "072984242", 500),
-        Contact(1, "Name 3", "02384902", 1200)
+        Contact( "Name 1", "030405356", 300),
+        Contact( "Name 2", "072984242", 500),
+        Contact( "Name 3", "02384902", 1200)
 
     )
     ContactList(contacts = contacts, onClick = {})

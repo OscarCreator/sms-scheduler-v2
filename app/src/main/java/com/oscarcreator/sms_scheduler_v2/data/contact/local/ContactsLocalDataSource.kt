@@ -15,7 +15,11 @@ class ContactsLocalDataSource internal constructor(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ): ContactsDataSource {
 
-    override fun observeContacts(): LiveData<List<Contact>> = contactDao.observeContacts()
+    override fun observeAllContacts(): LiveData<List<Contact>> = contactDao.observeAllContacts()
+
+    override fun observeContacts(): LiveData<List<Contact>> = contactDao.observeContactsASC()
+
+    override fun observeContactsASC(): LiveData<List<Contact>> = contactDao.observeContactsASC()
 
     override suspend fun getCustomer(customerId: Long): Result<Contact> =
         withContext(ioDispatcher){
@@ -44,5 +48,7 @@ class ContactsLocalDataSource internal constructor(
     override suspend fun deleteById(contactId: Long): Int = contactDao.deleteById(contactId)
 
     override suspend fun update(contact: Contact): Int = contactDao.update(contact)
+
+    override suspend fun updateToBeDeleted(contactId: Long) = contactDao.updateToBeDeleted(contactId)
 
 }
