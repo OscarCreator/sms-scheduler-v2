@@ -23,8 +23,21 @@ class DefaultTimeTemplatesRepository(
     override suspend fun delete(vararg timeTemplate: TimeTemplate): Int =
         timeTemplatesDataSource.delete(*timeTemplate)
 
+    override suspend fun deleteById(timeTemplateId: Long): Int = timeTemplatesDataSource.deleteById(timeTemplateId)
+
     override suspend fun update(timeTemplate: TimeTemplate): Int =
         timeTemplatesDataSource.update(timeTemplate)
+
+    override suspend fun updateToBeDeleted(timeTemplateId: Long) =
+        timeTemplatesDataSource.updateToBeDeleted(timeTemplateId)
+
+    override suspend fun updateScheduledTreatmentsWithNewTimeTemplate(
+        oldTimeTemplateId: Long,
+        newTimeTemplateId: Long
+    ) = timeTemplatesDataSource.updateScheduledTreatmentsWithNewTimeTemplate(oldTimeTemplateId, newTimeTemplateId)
+
+    override fun observeAllTimeTemplates(): LiveData<List<TimeTemplate>> =
+        timeTemplatesDataSource.observeAllTimeTemplates()
 
     override fun observeTimeTemplate(id: Long): LiveData<TimeTemplate> =
         timeTemplatesDataSource.observeTimeTemplate(id)

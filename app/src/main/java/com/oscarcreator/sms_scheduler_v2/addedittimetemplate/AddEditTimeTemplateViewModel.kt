@@ -20,8 +20,8 @@ class AddEditTimeTemplateViewModel(
     var days = 0
     var switchState = true
 
-    private val _timeTemplateUpdatedEvent = MutableLiveData<Event<Unit>>()
-    val timeTemplateUpdatedEvent: LiveData<Event<Unit>> = _timeTemplateUpdatedEvent
+    private val _timeTemplateUpdatedEvent = MutableLiveData<Event<Long>>()
+    val timeTemplateUpdatedEvent: LiveData<Event<Long>> = _timeTemplateUpdatedEvent
 
     private val _timeTemplateLoadedEvent = MutableLiveData<Event<Unit>>()
     val timeTemplateLoadedEvent: LiveData<Event<Unit>> = _timeTemplateLoadedEvent
@@ -33,6 +33,8 @@ class AddEditTimeTemplateViewModel(
     val snackbarText: LiveData<Event<Int>> = _snackbarText
 
     private var timeTemplateId: Long = -1L
+    private var timeTemplateGroupId: String = ""
+    private var timeTemplateVersion: Long = -1L
     private var isNewTimeTemplate = false
     private var isDataLoaded = false
 
@@ -76,7 +78,11 @@ class AddEditTimeTemplateViewModel(
         if (isNewTimeTemplate || currentTimeTemplateId == -1L) {
             createTimeTemplate(TimeTemplate(delay = currentDelay))
         } else {
-            updateTimeTemplate(TimeTemplate(currentTimeTemplateId, currentDelay))
+            updateTimeTemplate(TimeTemplate(
+                currentDelay,
+                timeTemplateVersion = timeTemplateVersion,
+                timeTemplateGroupId = timeTemplateGroupId
+                ))
         }
     }
 
@@ -95,6 +101,9 @@ class AddEditTimeTemplateViewModel(
         tempDelay -= hours * 3_600_000L
         minutes = (tempDelay / 60_000L).toInt()
 
+        timeTemplateGroupId = timeTemplate.timeTemplateGroupId
+        timeTemplateVersion = timeTemplate.timeTemplateVersion
+
         _dataLoading.value = false
         _timeTemplateLoadedEvent.value = Event(Unit)
     }
@@ -104,12 +113,25 @@ class AddEditTimeTemplateViewModel(
     }
 
     private fun createTimeTemplate(newTimeTemplate: TimeTemplate) = viewModelScope.launch {
-        timeTemplatesRepository.insert(newTimeTemplate)
-        _timeTemplateUpdatedEvent.value = Event(Unit)
+        val newTimeTemplateId = timeTemplatesRepository.insert(newTimeTemplate)
+        _timeTemplateUpdatedEvent.value = Event(newTimeTemplateId)
     }
 
     private fun updateTimeTemplate(timeTemplate: TimeTemplate) = viewModelScope.launch {
-        timeTemplatesRepository.update(timeTemplate)
-        _timeTemplateUpdatedEvent.value = Event(Unit)
+
+        //TODO only upcoming, update()
+        // else mark as "deleted" and insert() and updateST()
+
+        try {
+            timeTemplatesRepository.deleteById(timeTemplateId)
+
+        } catch (e: Exception) {
+            timeTemplatesRepository.updateToBeDeleted(timeTemplateId)
+        }
+
+        val newTimeTemplateId = timeTemplatesRepository.insert(timeTemplate)
+        timeTemplatesRepository.updateScheduledTreatmentsWithNewTimeTemplate(timeTemplateId, newTimeTemplateId)
+
+        _timeTemplateUpdatedEvent.value = Event(newTimeTemplateId)
     }
 }

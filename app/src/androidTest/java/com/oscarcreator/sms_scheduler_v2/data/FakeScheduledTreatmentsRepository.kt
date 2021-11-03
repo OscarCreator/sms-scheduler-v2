@@ -24,7 +24,7 @@ class FakeScheduledTreatmentsRepository : ScheduledTreatmentsRepository {
     private var scheduledTreatmentCrossRefServiceData: LinkedHashMap<Pair<Long, Long>, ScheduledTreatmentContactCrossRef> = LinkedHashMap()
 
     var message = Message(1, "Some text")
-    var timeTemplate = TimeTemplate(4, 30400L)
+    var timeTemplate = TimeTemplate(4, timeTemplateId = 30400L)
     var treatment = Treatment("Some treatment", 500, 30, treatmentId = 72)
     var contacts: List<Contact> = listOf(Contact( "Name", "9383475", 200, contactId = 5))
 

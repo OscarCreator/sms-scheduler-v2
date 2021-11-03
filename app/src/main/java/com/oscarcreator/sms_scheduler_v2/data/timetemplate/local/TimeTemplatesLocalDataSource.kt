@@ -27,13 +27,27 @@ class TimeTemplatesLocalDataSource internal constructor(
             }
         }
 
-    override fun observeTimeTemplates(): LiveData<List<TimeTemplate>> = timeTemplatesDao.getTimeTemplates()
+    override fun observeTimeTemplates(): LiveData<List<TimeTemplate>> = timeTemplatesDao.observeTimeTemplates()
 
     override suspend fun insert(timeTemplate: TimeTemplate): Long = timeTemplatesDao.insert(timeTemplate)
 
     override suspend fun delete(vararg timeTemplate: TimeTemplate): Int = timeTemplatesDao.delete(*timeTemplate)
 
+    override suspend fun deleteById(timeTemplateId: Long): Int =
+        timeTemplatesDao.deleteById(timeTemplateId)
+
     override suspend fun update(timeTemplate: TimeTemplate): Int = timeTemplatesDao.update(timeTemplate)
+
+    override suspend fun updateToBeDeleted(timeTemplateId: Long) =
+        timeTemplatesDao.updateToBeDeleted(timeTemplateId)
+
+    override suspend fun updateScheduledTreatmentsWithNewTimeTemplate(
+        oldTimeTemplateId: Long,
+        newTimeTemplateId: Long
+    ) = timeTemplatesDao.updateScheduledTreatmentsWithNewTimeTemplate(oldTimeTemplateId, newTimeTemplateId)
+
+    override fun observeAllTimeTemplates(): LiveData<List<TimeTemplate>> =
+        timeTemplatesDao.observeAllTimeTemplates()
 
     override fun observeTimeTemplate(id: Long): LiveData<TimeTemplate> = timeTemplatesDao.observeTimeTemplate(id)
 

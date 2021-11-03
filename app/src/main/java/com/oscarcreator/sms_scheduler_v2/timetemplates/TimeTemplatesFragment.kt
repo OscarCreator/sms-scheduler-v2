@@ -42,7 +42,7 @@ class TimeTemplatesFragment : Fragment(), ActionMode.Callback {
                 TimeTemplateAdapter.OnTimeTemplateClickedListener { position: Int, timeTemplate: TimeTemplate ->
                     if (actionMode == null) {
                         val action = TimeTemplatesFragmentDirections
-                            .actionTimeTemplateListFragmentToTimeTemplateDetailFragment(timeTemplate.id)
+                            .actionTimeTemplateListFragmentToTimeTemplateDetailFragment(timeTemplate.timeTemplateId)
                         findNavController().navigate(action)
                     } else {
                         selectItem(it, position)

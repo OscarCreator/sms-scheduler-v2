@@ -21,7 +21,7 @@ import java.util.*
         ),
         ForeignKey(
             entity = TimeTemplate::class,
-            parentColumns = ["id"],
+            parentColumns = ["time_template_id"],
             childColumns = ["time_template_id"]
         ),
         ForeignKey(
@@ -115,7 +115,7 @@ data class ScheduledTreatmentWithMessageAndTimeTemplateAndContacts(
      */
     @Relation(
         parentColumn = "time_template_id",
-        entityColumn = "id"
+        entityColumn = "time_template_id"
     )
     val timeTemplate: TimeTemplate,
     /**

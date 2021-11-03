@@ -180,6 +180,9 @@ class AddEditScheduledTreatmentViewModel(
         timeTemplateText.value = scheduledTreatmentWithData.timeTemplate.delay.toTimeTemplateText()
         message.value = scheduledTreatmentWithData.message.message
 
+        _timeTemplateId = scheduledTreatmentWithData.timeTemplate.timeTemplateId
+        _messageId = scheduledTreatmentWithData.message.id
+
         _contacts = scheduledTreatmentWithData.contacts.toMutableList()
 
         isDataLoaded = true

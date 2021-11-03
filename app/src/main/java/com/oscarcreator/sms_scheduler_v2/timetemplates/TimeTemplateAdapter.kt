@@ -21,7 +21,7 @@ class TimeTemplateAdapter :
 
     private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<TimeTemplate>() {
         override fun areItemsTheSame(oldItem: TimeTemplate, newItem: TimeTemplate): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.timeTemplateId == newItem.timeTemplateId
         }
 
         override fun areContentsTheSame(oldItem: TimeTemplate, newItem: TimeTemplate): Boolean {
@@ -36,7 +36,7 @@ class TimeTemplateAdapter :
         setHasStableIds(true)
     }
 
-    override fun getItemId(position: Int): Long = differ.currentList[position].id
+    override fun getItemId(position: Int): Long = differ.currentList[position].timeTemplateId
 
     inner class TimeTemplateViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView), View.OnClickListener, View.OnLongClickListener {

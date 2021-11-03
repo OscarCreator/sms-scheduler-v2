@@ -9,7 +9,7 @@ class TimeTemplateTest {
 
     @Test
     fun testObject(){
-        val timeTemplate = TimeTemplate(id = 1, delay = -40)
+        val timeTemplate = TimeTemplate(timeTemplateId = 1, delay = -40)
         assertThat(timeTemplate.delay, `is`(-40))
     }
 

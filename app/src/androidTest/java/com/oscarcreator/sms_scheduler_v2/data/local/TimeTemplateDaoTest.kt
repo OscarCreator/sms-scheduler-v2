@@ -21,35 +21,35 @@ class TimeTemplateDaoTest : BaseDaoTest() {
 
     @Test
     fun timeTemplate_insertedInDatabase_returnsTimeTemplate() = runBlocking {
-        val timeTemplate = TimeTemplate(id = 4, delay = -6)
+        val timeTemplate = TimeTemplate(timeTemplateId = 4, delay = -6)
         assertThat(timeTemplateDao.insert(timeTemplate), `is`(4))
 
-        timeTemplateDao.getTimeTemplates().observeOnce {
+        timeTemplateDao.observeTimeTemplates().observeOnce {
             assertThat(it, `is`(listOf(timeTemplate)))
         }
     }
 
     @Test
-    fun message_insertedAndDeleted_returnsEmpty() = runBlocking {
-        val timeTemplate = TimeTemplate(id = 5, delay = 600)
+    fun timeTemplate_insertedAndDeleted_returnsEmpty() = runBlocking {
+        val timeTemplate = TimeTemplate(timeTemplateId = 5, delay = 600)
         assertThat(timeTemplateDao.insert(timeTemplate), `is`(5))
         assertThat(timeTemplateDao.delete(timeTemplate), `is`(1))
 
-        timeTemplateDao.getTimeTemplates().observeOnce {
+        timeTemplateDao.observeTimeTemplates().observeOnce {
             assertThat(it, `is`(emptyList()))
         }
     }
 
     @Test
-    fun message_insertedAndUpdated_returnsUpdated() = runBlocking {
-        val timeTemplate = TimeTemplate(id = 100, delay = 600)
+    fun timeTemplate_insertedAndUpdated_returnsUpdated() = runBlocking {
+        val timeTemplate = TimeTemplate(timeTemplateId = 100, delay = 600)
         assertThat(timeTemplateDao.insert(timeTemplate), `is`(100))
 
-        val updatedTimeTemplate = TimeTemplate(id = 100, delay = 600)
+        val updatedTimeTemplate = TimeTemplate(timeTemplateId = 100, delay = 600)
 
         assertThat(timeTemplateDao.update(updatedTimeTemplate), `is`(1))
 
-        timeTemplateDao.getTimeTemplates().observeOnce {
+        timeTemplateDao.observeTimeTemplates().observeOnce {
             assertThat(it, `is`(listOf(updatedTimeTemplate)))
         }
     }

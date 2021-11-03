@@ -42,7 +42,7 @@ class AddEditScheduledTreatmentViewModelTest {
     lateinit var database: AppDatabase
     private lateinit var viewModelScheduled: AddEditScheduledTreatmentViewModel
 
-    private val timeTemplate = TimeTemplate(6, 100)
+    private val timeTemplate = TimeTemplate(100, timeTemplateId = 6)
     private val message = Message(8, "some old text", true)
     private val receiver1 = Contact( "Bosse", "40602380", contactId = 4)
     private val receiver2 = Contact("Bergit", "0720934592", 4000, contactId = 2)
@@ -69,7 +69,7 @@ class AddEditScheduledTreatmentViewModelTest {
         //TODO use fake repositories
         //viewModelScheduled = AddEditScheduledTreatmentViewModel(customerRepository, treatmentsRepository, )
 
-        assertThat(database.timeTemplateDao().insert(timeTemplate), `is`(timeTemplate.id))
+        assertThat(database.timeTemplateDao().insert(timeTemplate), `is`(timeTemplate.timeTemplateId))
         assertThat(database.messageDao().insert(message), `is`(message.id))
         assertThat(database.customerDao().insert(receiver1), `is`(receiver1.contactId))
         assertThat(database.customerDao().insert(receiver2), `is`(receiver2.contactId))
@@ -125,7 +125,7 @@ class AddEditScheduledTreatmentViewModelTest {
             id = 11,
             treatmentId = treatment.treatmentId,
             treatmentTime = Calendar.getInstance().apply { timeInMillis = time },
-            timeTemplateId = timeTemplate.id,
+            timeTemplateId = timeTemplate.timeTemplateId,
             messageId = message.id
         )
         assertThat(database.scheduledTreatmentDao().insert(scheduledTreatment), `is`(11))
@@ -137,7 +137,7 @@ class AddEditScheduledTreatmentViewModelTest {
         assertThat(customerRetrieved, `is`(receiver1))
         val treatmentRetrieved = database.treatmentDao().getTreatment(treatment.treatmentId)
         assertThat(treatmentRetrieved, `is`(treatment))
-        val timeTemplates = database.timeTemplateDao().getTimeTemplates()
+        val timeTemplates = database.timeTemplateDao().observeTimeTemplates()
         assertThat(timeTemplates.getOrAwaitValue(), `is`(listOf(timeTemplate)))
         val messages = database.messageDao().observeMessages()
         assertThat(messages.getOrAwaitValue(), `is`(listOf(message)))
