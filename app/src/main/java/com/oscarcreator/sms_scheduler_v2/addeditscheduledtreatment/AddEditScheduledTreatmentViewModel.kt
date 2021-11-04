@@ -181,7 +181,7 @@ class AddEditScheduledTreatmentViewModel(
         message.value = scheduledTreatmentWithData.message.message
 
         _timeTemplateId = scheduledTreatmentWithData.timeTemplate.timeTemplateId
-        _messageId = scheduledTreatmentWithData.message.id
+        _messageId = scheduledTreatmentWithData.message.messageId
 
         _contacts = scheduledTreatmentWithData.contacts.toMutableList()
 

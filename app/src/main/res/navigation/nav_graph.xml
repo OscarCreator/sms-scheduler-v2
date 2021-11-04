@@ -69,6 +69,15 @@
         <action
             android:id="@+id/action_addEditMessageFragment_to_variableInfoFragment"
             app:destination="@id/variableInfoFragment" />
+        <action
+            android:id="@+id/action_addEditMessageFragment_to_messageDetailFragment"
+            app:destination="@id/messageDetailFragment"
+            app:popUpTo="@id/messageDetailFragment"
+            app:popUpToInclusive="true" >
+            <argument
+                android:name="message_id"
+                android:defaultValue="-1L" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/timeTemplateListFragment"

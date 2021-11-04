@@ -43,7 +43,7 @@ class AddEditScheduledTreatmentViewModelTest {
     private lateinit var viewModelScheduled: AddEditScheduledTreatmentViewModel
 
     private val timeTemplate = TimeTemplate(100, timeTemplateId = 6)
-    private val message = Message(8, "some old text", true)
+    private val message = Message( "some old text", true, messageId = 5)
     private val receiver1 = Contact( "Bosse", "40602380", contactId = 4)
     private val receiver2 = Contact("Bergit", "0720934592", 4000, contactId = 2)
     private val treatment = Treatment("Treatment 4", 400, 90, treatmentId = 9)
@@ -70,7 +70,7 @@ class AddEditScheduledTreatmentViewModelTest {
         //viewModelScheduled = AddEditScheduledTreatmentViewModel(customerRepository, treatmentsRepository, )
 
         assertThat(database.timeTemplateDao().insert(timeTemplate), `is`(timeTemplate.timeTemplateId))
-        assertThat(database.messageDao().insert(message), `is`(message.id))
+        assertThat(database.messageDao().insert(message), `is`(message.messageId))
         assertThat(database.customerDao().insert(receiver1), `is`(receiver1.contactId))
         assertThat(database.customerDao().insert(receiver2), `is`(receiver2.contactId))
         assertThat(database.treatmentDao().insert(treatment), `is`(treatment.treatmentId))
@@ -126,7 +126,7 @@ class AddEditScheduledTreatmentViewModelTest {
             treatmentId = treatment.treatmentId,
             treatmentTime = Calendar.getInstance().apply { timeInMillis = time },
             timeTemplateId = timeTemplate.timeTemplateId,
-            messageId = message.id
+            messageId = message.messageId
         )
         assertThat(database.scheduledTreatmentDao().insert(scheduledTreatment), `is`(11))
         val scheduledTreatmentCustomerCrossRef =

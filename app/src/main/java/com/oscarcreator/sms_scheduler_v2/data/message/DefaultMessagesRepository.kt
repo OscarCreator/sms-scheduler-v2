@@ -9,6 +9,9 @@ class DefaultMessagesRepository(
     private val messagesLocalDataSource: MessagesDataSource,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ): MessagesRepository {
+    override fun observeAllMessages(): LiveData<List<Message>> =
+        messagesLocalDataSource.observeAllMessages()
+
     override fun observeMessages(): LiveData<List<Message>> = messagesLocalDataSource.observeMessages()
 
     override fun observeMessage(messageId: Long): LiveData<Result<Message>> = messagesLocalDataSource.observeMessage(messageId)
@@ -21,5 +24,16 @@ class DefaultMessagesRepository(
     override suspend fun update(message: Message): Int = messagesLocalDataSource.update(message)
 
     override suspend fun delete(vararg messages: Message): Int = messagesLocalDataSource.delete(*messages)
+
+    override suspend fun deleteById(messageId: Long): Int =
+        messagesLocalDataSource.deleteById(messageId)
+
+    override suspend fun updateToBeDeleted(messageId: Long) =
+        messagesLocalDataSource.updateToBeDeleted(messageId)
+
+    override suspend fun updateScheduledTreatmentsWithNewMessage(
+        oldMessageId: Long,
+        newMessageId: Long
+    ) = messagesLocalDataSource.updateScheduledTreatmentsWithNewMessage(oldMessageId, newMessageId)
 
 }

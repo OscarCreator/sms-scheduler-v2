@@ -20,7 +20,7 @@ class MessageAdapter() :
 
     val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Message>() {
         override fun areItemsTheSame(oldItem: Message, newItem: Message): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.messageId == newItem.messageId
         }
 
         override fun areContentsTheSame(oldItem: Message, newItem: Message): Boolean {
@@ -34,7 +34,7 @@ class MessageAdapter() :
         setHasStableIds(true)
     }
 
-    override fun getItemId(position: Int) = differ.currentList[position].id
+    override fun getItemId(position: Int) = differ.currentList[position].messageId
 
     fun setOnMessageClickedListener(onMessageClickedListener: OnMessageClickedListener){
         this.onMessageClickedListener = onMessageClickedListener

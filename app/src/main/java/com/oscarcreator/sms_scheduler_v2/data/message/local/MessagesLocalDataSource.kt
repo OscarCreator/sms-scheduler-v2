@@ -13,6 +13,8 @@ class MessagesLocalDataSource internal constructor(
     private val messagesDao: MessagesDao,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ): MessagesDataSource {
+    override fun observeAllMessages(): LiveData<List<Message>> =
+        messagesDao.observeAllMessages()
 
     override fun observeMessages() = messagesDao.observeMessages()
 
@@ -41,5 +43,14 @@ class MessagesLocalDataSource internal constructor(
     override suspend fun update(message: Message): Int = messagesDao.update(message)
 
     override suspend fun delete(vararg messages: Message): Int = messagesDao.delete(*messages)
+
+    override suspend fun deleteById(messageId: Long): Int = messagesDao.deleteById(messageId)
+
+    override suspend fun updateToBeDeleted(messageId: Long) = messagesDao.updateToBeDeleted(messageId)
+
+    override suspend fun updateScheduledTreatmentsWithNewMessage(
+        oldMessageId: Long,
+        newMessageId: Long
+    ) = messagesDao.updateScheduledTreatmentsWithNewMessage(oldMessageId, newMessageId)
 
 }

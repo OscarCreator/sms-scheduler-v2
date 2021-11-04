@@ -28,7 +28,13 @@ class AddEditMessageFragment : Fragment() {
         viewModel.messageUpdateEvent.observe(viewLifecycleOwner, EventObserver {
             //close keyboard
             binding.etMessage.clearFocus()
-            findNavController().navigateUp()
+            if (it != -1L) {
+                val action = AddEditMessageFragmentDirections.actionAddEditMessageFragmentToMessageDetailFragment(it)
+                findNavController().navigate(action)
+            } else {
+                // created
+                findNavController().navigateUp()
+            }
 
         })
     }
@@ -45,12 +51,7 @@ class AddEditMessageFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
-            R.id.complete -> {
-                //TODO this could be removed with databinding
-                viewModel.message.value = binding.etMessage.text.toString()
-                viewModel.saveMessage()
-                return true
-            }
+
             R.id.info_variables -> {
                 //TODO navigate
                 val action = AddEditMessageFragmentDirections.actionAddEditMessageFragmentToVariableInfoFragment()
@@ -77,6 +78,12 @@ class AddEditMessageFragment : Fragment() {
         viewModel.message.observe(viewLifecycleOwner, {
             binding.etMessage.setText(it)
         })
+
+        binding.fabSaveMessage.setOnClickListener {
+            viewModel.message.value = binding.etMessage.text.toString()
+            viewModel.saveMessage()
+        }
+
         return binding.root
     }
 

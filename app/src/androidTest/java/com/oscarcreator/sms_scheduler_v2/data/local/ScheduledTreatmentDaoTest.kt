@@ -37,7 +37,7 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
         timeTemplate = TimeTemplate(timeTemplateId = 1, delay = 50)
         assertThat(database.timeTemplateDao().insert(timeTemplate), `is`(1))
 
-        message = Message(id = 5, message = "hey this is a message")
+        message = Message(messageId = 5, message = "hey this is a message")
         assertThat(database.messageDao().insert(message), `is`(5))
 
         contact = Contact(contactId = 8, name = "Bengt burger", phoneNumber = "07839402787", money = 10)
@@ -55,7 +55,7 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
             id = 10,
             treatmentId = treatment.treatmentId,
             timeTemplateId = timeTemplate.timeTemplateId,
-            messageId = message.id,
+            messageId = message.messageId,
             treatmentTime = Calendar.getInstance().apply { set(Calendar.YEAR, 2021) },
         )
         val scheduledTreatmentId = scheduledTreatmentDao.insert(scheduledTreatment)
@@ -83,7 +83,7 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
             id = 10,
             treatmentId = treatment.treatmentId,
             timeTemplateId = timeTemplate.timeTemplateId,
-            messageId = message.id,
+            messageId = message.messageId,
             treatmentTime = Calendar.getInstance().apply { set(Calendar.YEAR, 2021) },
         )
         val scheduledTreatmentId = scheduledTreatmentDao.insert(scheduledTreatment)
@@ -96,7 +96,7 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
         val updatedTimeTemplate = TimeTemplate(timeTemplateId = 1, delay = 50)
         assertThat(database.timeTemplateDao().update(updatedTimeTemplate), `is`(1))
 
-        val updatedMessage = Message(id = 5, message = "updated message", isTemplate = true)
+        val updatedMessage = Message(messageId = 5, message = "updated message")
         assertThat(database.messageDao().update(updatedMessage), `is`(1))
 
         val updatedCustomer = Contact(contactId = 8, name = "Bengt Burger with big b's", phoneNumber = contact.phoneNumber, money = 5)
@@ -122,7 +122,7 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
             id = 10,
             treatmentId = treatment.treatmentId,
             timeTemplateId = timeTemplate.timeTemplateId,
-            messageId = message.id,
+            messageId = message.messageId,
             treatmentTime = Calendar.getInstance().apply { set(Calendar.YEAR, 2021) },
         )
         val scheduledTreatmentId = scheduledTreatmentDao.insert(scheduledTreatment)
@@ -155,7 +155,7 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
             id = 10,
             treatmentId = treatment.treatmentId,
             timeTemplateId = timeTemplate.timeTemplateId,
-            messageId = message.id,
+            messageId = message.messageId,
             treatmentTime = Calendar.getInstance().apply { set(Calendar.YEAR, 2021) },
         )
         val scheduledTreatmentId = scheduledTreatmentDao.insert(scheduledTreatment)
@@ -186,7 +186,7 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
             id = 10,
             treatmentId = treatment.treatmentId,
             timeTemplateId = timeTemplate.timeTemplateId,
-            messageId = message.id,
+            messageId = message.messageId,
             treatmentTime = Calendar.getInstance().apply { set(Calendar.YEAR, 2021) },
         )
         val scheduledTreatmentId = scheduledTreatmentDao.insert(scheduledTreatment)
@@ -225,7 +225,7 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
             id = 10,
             treatmentId = treatment.treatmentId,
             timeTemplateId = timeTemplate.timeTemplateId,
-            messageId = message.id,
+            messageId = message.messageId,
             treatmentTime = Calendar.getInstance().apply { set(Calendar.YEAR, 2021) },
         )
         val scheduledTreatmentId = scheduledTreatmentDao.insert(scheduledTreatment)
@@ -259,7 +259,7 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
             id = 10,
             treatmentId = treatment.treatmentId,
             timeTemplateId = timeTemplate.timeTemplateId,
-            messageId = message.id,
+            messageId = message.messageId,
             treatmentTime = Calendar.getInstance().apply { set(Calendar.YEAR, 2021) },
         )
         val scheduledTreatmentId = scheduledTreatmentDao.insert(scheduledTreatment)

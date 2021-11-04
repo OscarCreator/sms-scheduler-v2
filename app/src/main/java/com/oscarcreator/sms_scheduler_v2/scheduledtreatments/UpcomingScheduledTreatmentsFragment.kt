@@ -194,8 +194,7 @@ fun PreviewScheduledTreatmentCard() {
         ScheduledTreatmentCard(
                 ScheduledTreatmentWithMessageAndTimeTemplateAndContacts(
                         ScheduledTreatment(0, 1, Calendar.getInstance(), 1, 1),
-                        Message(1,
-                                "Hello, welcome to treatment tomorrow 5/4 12:00 at our location. If you want to unbook then you can do that until 24h before your treatment."),
+                        Message("Hello, welcome to treatment tomorrow 5/4 12:00 at our location. If you want to unbook then you can do that until 24h before your treatment.", messageId = 1),
                         TimeTemplate( 1000L * 60L * 60L),
                         Treatment("Treatmentpi", 100, 40),
                         listOf(Contact( "Anders Andersson, Bengt bengtsson", "070205302", 600))

@@ -117,7 +117,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         (requireContext().applicationContext as SmsSchedulerApplication).messagesRepository.observeMessages().observe(viewLifecycleOwner) {
 
-            val mutableMap = it.map { message -> Pair(message.id, message.message) }.toMutableList()
+            val mutableMap = it.map { message -> Pair(message.messageId, message.message) }.toMutableList()
             mutableMap.add(0, Pair(-1L, getString(R.string.none)))
 
             messageMap = mutableMap.toMap()
@@ -161,7 +161,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         (requireContext().applicationContext as SmsSchedulerApplication).timeTemplatesRepository.observeTimeTemplates().observe(viewLifecycleOwner) {
 
-            timeTemplateMap = it.map { timeTemplate -> Pair(timeTemplate.id, timeTemplate.delay.toTimeTemplateText()) }.toMutableList().let { list ->
+            timeTemplateMap = it.map { timeTemplate -> Pair(timeTemplate.timeTemplateId, timeTemplate.delay.toTimeTemplateText()) }.toMutableList().let { list ->
                 list.add(0, Pair(-1, getString(R.string.none)))
                 list
             }.toMap()

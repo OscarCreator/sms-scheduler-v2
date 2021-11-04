@@ -42,10 +42,10 @@ class AddEditMessageFragmentTest {
 
     @Test
     fun message_displayedInUi() = runBlockingTest {
-        val message = Message(1, "Some kind of message text")
+        val message = Message( "Some kind of message text", messageId = 1)
         repository.insert(message)
 
-        val bundle = AddEditMessageFragmentArgs(message.id).toBundle()
+        val bundle = AddEditMessageFragmentArgs(message.messageId).toBundle()
         val navController = TestNavHostController(ApplicationProvider.getApplicationContext())
         launchFragment(navController, bundle)
 

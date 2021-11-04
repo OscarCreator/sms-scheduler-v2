@@ -17,8 +17,8 @@ class AddEditMessageViewModel(
 
     val message = MutableLiveData<String>()
 
-    private val _messageUpdateEvent = MutableLiveData<Event<Unit>>()
-    val messageUpdateEvent: LiveData<Event<Unit>> = _messageUpdateEvent
+    private val _messageUpdateEvent = MutableLiveData<Event<Long>>()
+    val messageUpdateEvent: LiveData<Event<Long>> = _messageUpdateEvent
 
     private val _snackbarText = MutableLiveData<Event<Int>>()
     val snackbarText: LiveData<Event<Int>> = _snackbarText
@@ -26,13 +26,13 @@ class AddEditMessageViewModel(
     private val _dataLoading = MutableLiveData<Boolean>()
     val dataLoading: LiveData<Boolean> = _dataLoading
 
+    private var messageId: Long = -1L
+    private var messageGroupId: String = ""
+    private var messageVersion: Long = -1L
     private var isNewMessage: Boolean = false
-
     private var isDataLoaded = false
 
-    private var messageId: Long = -1L
-
-    fun start(messageId: Long) {
+    fun start(messageId: Long = -1L) {
         if (_dataLoading.value == true) {
             return
         }
@@ -64,6 +64,8 @@ class AddEditMessageViewModel(
 
     private fun onMessageLoaded(message: Message) {
         this.message.value = message.message
+        messageGroupId = message.messageGroupId
+        messageVersion = message.messageVersion
         _dataLoading.value = false
         isDataLoaded = true
     }
@@ -84,23 +86,30 @@ class AddEditMessageViewModel(
         if (isNewMessage || currentMessageId == -1L) {
             createMessage(Message(message = currentMessage))
         } else {
-            updateMessage(Message(currentMessageId, currentMessage))
+            updateMessage(Message(currentMessage, messageVersion = messageVersion + 1, messageGroupId = messageGroupId))
         }
     }
 
     private fun createMessage(message: Message) = viewModelScope.launch {
         messagesRepository.insert(message)
-        _messageUpdateEvent.value = Event(Unit)
+        _messageUpdateEvent.value = Event(-1)
     }
 
-    private fun updateMessage(message: Message) {
-        if (isNewMessage){
-            throw RuntimeException("updateMessage() was called but message is new.")
+    private fun updateMessage(message: Message) = viewModelScope.launch {
+
+        //TODO only upcoming, update()
+        // else mark as "deleted" and insert() and updateST()
+
+        try {
+            messagesRepository.deleteById(messageId)
+        } catch (e: Exception) {
+            messagesRepository.updateToBeDeleted(messageId)
         }
-        viewModelScope.launch {
-            messagesRepository.update(message)
-            _messageUpdateEvent.value = Event(Unit)
-        }
+        val newMessageId = messagesRepository.insert(message)
+
+        messagesRepository.updateScheduledTreatmentsWithNewMessage(messageId, newMessageId)
+        _messageUpdateEvent.value = Event(newMessageId)
+
     }
 
 

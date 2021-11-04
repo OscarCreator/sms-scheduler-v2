@@ -37,6 +37,7 @@ class MessagesViewModel(
         _openMessageEvent.value = Event(messageId)
     }
 
+    //TODO will fail if has references
     suspend fun deleteMessages(vararg messages: Message): Int = messagesRepository.delete(*messages)
 
 }

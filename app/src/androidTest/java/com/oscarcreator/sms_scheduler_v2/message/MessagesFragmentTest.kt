@@ -1,4 +1,4 @@
-package com.oscarcreator.sms_scheduler_v2.messages
+package com.oscarcreator.sms_scheduler_v2.message
 
 import android.os.Bundle
 import androidx.fragment.app.testing.launchFragmentInContainer
@@ -15,7 +15,7 @@ import androidx.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiT
 import com.oscarcreator.sms_scheduler_v2.R
 import com.oscarcreator.sms_scheduler_v2.data.FakeMessagesRepository
 import com.oscarcreator.sms_scheduler_v2.data.message.Message
-import com.oscarcreator.sms_scheduler_v2.data.message.MessagesRepository
+import com.oscarcreator.sms_scheduler_v2.messages.MessagesFragment
 import com.oscarcreator.sms_scheduler_v2.util.ServiceLocator
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
@@ -33,7 +33,7 @@ import org.junit.runner.RunWith
 @ExperimentalCoroutinesApi
 class MessagesFragmentTest {
 
-    private lateinit var repository: MessagesRepository
+    private lateinit var repository: FakeMessagesRepository
 
     @Before
     fun initRepository(){
@@ -48,7 +48,7 @@ class MessagesFragmentTest {
 
     @Test
     fun messageItem_isClicked_returnsToAddEditScheduledTreatment() = runBlockingTest {
-        val message = Message(1, "Test string")
+        val message = Message( "Test string", messageId = 1)
         repository.insert(message)
 
         val navController = TestNavHostController(ApplicationProvider.getApplicationContext())
@@ -62,7 +62,7 @@ class MessagesFragmentTest {
 
     @Test
     fun messageItem_isLongPressed_showsActionMenu_And_returnsWhenXisClicked() = runBlockingTest {
-        val message = Message(3, "Lorry is my lord")
+        val message = Message( "Test string", messageId = 1)
         repository.insert(message)
 
         val navController = TestNavHostController(ApplicationProvider.getApplicationContext())
@@ -113,7 +113,7 @@ class MessagesFragmentTest {
 
     @Test
     fun actionMode_messageItem_isSelected_deleteButtonClicked_removesSelectedMessage() = runBlockingTest {
-        val message = Message(5, "3tgret43ewretg wrewfretg rtdfe")
+        val message = Message( "Test string", messageId = 1)
         repository.insert(message)
 
         val navController = TestNavHostController(
@@ -127,7 +127,8 @@ class MessagesFragmentTest {
             .perform(ViewActions.click())
 
         //message is deleted
-        assertThat(repository.observeMessages().value?.size, `is`(0))
+
+        assertThat(repository.messagesServiceData.size, `is`(0))
         //and not displayed
         Espresso.onView(ViewMatchers.withId(R.id.rv_message_list))
             .check(ViewAssertions.matches(ViewMatchers.hasChildCount(0)))

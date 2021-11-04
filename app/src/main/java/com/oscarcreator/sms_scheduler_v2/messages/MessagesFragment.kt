@@ -1,7 +1,6 @@
 package com.oscarcreator.sms_scheduler_v2.messages
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -33,32 +32,6 @@ class MessagesFragment : Fragment(), ActionMode.Callback {
         MessagesViewModelFactory((requireContext().applicationContext as SmsSchedulerApplication).messagesRepository)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
-
-    //example https://www.androidhive.info/2017/02/android-creating-gmail-like-inbox-using-recyclerview/
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.messages_fragment_menu, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
-        when (item.itemId) {
-            R.id.new_message -> {
-                actionMode?.finish()
-                val action =
-                    MessagesFragmentDirections.actionMessageListFragmentToAddEditMessageFragment()
-                findNavController().navigate(action)
-            }
-        }
-
-        return super.onOptionsItemSelected(item)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -70,22 +43,14 @@ class MessagesFragment : Fragment(), ActionMode.Callback {
             it.setOnMessageClickedListener(
                 MessageAdapter.OnMessageClickedListener { position: Int, message: Message ->
                     if (actionMode == null) {
-//                    val dialog = MessageBottomSheetDialogFragment()
-//                    dialog.setOnCompleteButtonClicked {
-//                        findNavController().previousBackStackEntry?.savedStateHandle?.set("key",
-//                            message.id)
-//                        findNavController().popBackStack()
-//                    }
-//                    dialog.arguments = Bundle().apply { putString("message-key", message.message) }
-//                    dialog.show(childFragmentManager, "bottom-sheet")
+
                         val action =
                             MessagesFragmentDirections.actionMessageListFragmentToMessageDetailFragment(
-                                message.id
+                                message.messageId
                             )
                         findNavController().navigate(action)
                     } else {
                         selectItem(it, position)
-                        Log.d("TEST", "is selected: ${it.selectionList[position]}")
                     }
 
                 })
@@ -101,13 +66,18 @@ class MessagesFragment : Fragment(), ActionMode.Callback {
                         }
                         else -> false
                     }
-
                 })
-
         }
 
         binding.rvMessageList.layoutManager = LinearLayoutManager(activity)
         binding.rvMessageList.adapter = this.adapter
+
+        binding.fabAddMessage.setOnClickListener {
+            actionMode?.finish()
+            val action =
+                MessagesFragmentDirections.actionMessageListFragmentToAddEditMessageFragment()
+            findNavController().navigate(action)
+        }
 
         viewModel.messages.observe(viewLifecycleOwner, {
             //show all messages
@@ -125,7 +95,6 @@ class MessagesFragment : Fragment(), ActionMode.Callback {
         actionMode?.title = "$selectedCount Selected"
     }
 
-    //https://developer.android.com/guide/topics/ui/menus.html#CAB
     override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
         val inflater = mode.menuInflater
         inflater.inflate(R.menu.messages_context_fragment_menu, menu)
@@ -134,7 +103,8 @@ class MessagesFragment : Fragment(), ActionMode.Callback {
 
     override fun onPrepareActionMode(mode: ActionMode, menu: Menu): Boolean {
         //return false if nothing is done
-        mode.title = "$selectedCount Selected"
+
+        mode.title = getString(R.string.selected_count, selectedCount)
         return false
     }
 

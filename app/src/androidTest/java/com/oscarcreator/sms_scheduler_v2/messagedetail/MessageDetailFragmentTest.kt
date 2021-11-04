@@ -42,10 +42,10 @@ class MessageDetailFragmentTest {
 
     @Test
     fun message_displayedInUi() = runBlockingTest {
-        val message = Message(2, "A Unique message")
+        val message = Message( "A Unique message", messageId = 2)
         repository.insert(message)
 
-        val bundle = MessageDetailFragmentArgs(message.id).toBundle()
+        val bundle = MessageDetailFragmentArgs(message.messageId).toBundle()
         val navController = TestNavHostController(ApplicationProvider.getApplicationContext())
         launchFragment(navController, bundle)
 

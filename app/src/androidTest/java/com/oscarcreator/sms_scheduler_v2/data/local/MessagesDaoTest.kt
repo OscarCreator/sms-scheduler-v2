@@ -26,7 +26,7 @@ class MessagesDaoTest : BaseDaoTest() {
 
     @Test
     fun message_insertedInDatabase_returnsMessage() = runBlocking {
-        val message = Message(id = 1, message = "test message", isTemplate = false)
+        val message = Message(messageId = 1, message = "test message")
         assertThat(messagesDao.insert(message), `is`(1))
 
         messagesDao.observeMessages().observeOnce {
@@ -36,7 +36,7 @@ class MessagesDaoTest : BaseDaoTest() {
 
     @Test
     fun message_insertedAndDeleted_returnsEmpty() = runBlocking {
-        val message = Message(id = 5, message = "test message2", isTemplate = true)
+        val message = Message(messageId = 5, message = "test message2")
         assertThat(messagesDao.insert(message), `is`(5))
         assertThat(messagesDao.delete(message), `is`(1))
 
@@ -47,10 +47,10 @@ class MessagesDaoTest : BaseDaoTest() {
 
     @Test
     fun message_insertedAndUpdated_returnsUpdated() = runBlocking {
-        val message = Message(id = 100, message = "test message3", isTemplate = true)
+        val message = Message(messageId = 100, message = "test message3")
         assertThat(messagesDao.insert(message), `is`(100))
 
-        val updatedMessage = Message(id = 100, message = "test message3 updated", isTemplate = false)
+        val updatedMessage = Message(messageId = 100, message = "test message3 updated")
         assertThat(messagesDao.update(updatedMessage), `is`(1))
 
         messagesDao.observeMessages().observeOnce {
