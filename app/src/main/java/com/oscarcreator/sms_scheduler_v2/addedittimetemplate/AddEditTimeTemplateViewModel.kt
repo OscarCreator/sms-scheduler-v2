@@ -80,7 +80,7 @@ class AddEditTimeTemplateViewModel(
         } else {
             updateTimeTemplate(TimeTemplate(
                 currentDelay,
-                timeTemplateVersion = timeTemplateVersion,
+                timeTemplateVersion = timeTemplateVersion + 1,
                 timeTemplateGroupId = timeTemplateGroupId
                 ))
         }

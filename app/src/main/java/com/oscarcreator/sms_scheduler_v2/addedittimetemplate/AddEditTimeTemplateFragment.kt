@@ -2,7 +2,6 @@ package com.oscarcreator.sms_scheduler_v2.addedittimetemplate
 
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -101,11 +100,11 @@ class AddEditTimeTemplateFragment : Fragment() {
         })
 
         viewModel.timeTemplateUpdatedEvent.observe(viewLifecycleOwner, EventObserver {
-            // Temporary
             if (it != -1L) {
-                findNavController().navigateUp()
+                val action = AddEditTimeTemplateFragmentDirections.actionAddEditTimeTemplateFragmentToTimeTemplateDetailFragment(it)
+                findNavController().navigate(action)
             } else {
-                Toast.makeText(requireContext(), R.string.temp_delete_exception_text, Toast.LENGTH_LONG).show()
+                findNavController().navigateUp()
             }
         })
 
