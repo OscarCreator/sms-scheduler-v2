@@ -98,6 +98,7 @@ class AddEditTreatmentViewModel(
         duration.value = treatment.duration.toString()
         treatmentGroupId = treatment.treatmentGroupId
         treatmentVersion = treatment.treatmentVersion
+        isDataLoaded = true
         _dataLoading.value = false
     }
 

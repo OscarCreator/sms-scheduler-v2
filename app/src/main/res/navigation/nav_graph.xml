@@ -126,6 +126,15 @@
             android:name="contactId"
             app:argType="long"
             android:defaultValue="-1L" />
+        <action
+            android:id="@+id/action_addEditContactFragment_to_detailContactFragment"
+            app:destination="@id/detailContactFragment"
+            app:popUpTo="@id/detailContactFragment"
+            app:popUpToInclusive="true">
+            <argument
+                android:name="contactId"
+                android:defaultValue="-1L" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
