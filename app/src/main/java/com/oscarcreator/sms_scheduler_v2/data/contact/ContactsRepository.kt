@@ -11,11 +11,11 @@ interface ContactsRepository {
 
     fun observeContactsASC(): LiveData<List<Contact>>
 
-    suspend fun getCustomerById(customerId: Long): Result<Contact>
+    suspend fun getContact(customerId: Long): Result<Contact>
 
-    fun observeCustomer(customerId: Long): LiveData<Result<Contact>>
+    fun observeContact(customerId: Long): LiveData<Result<Contact>>
 
-    suspend fun getCustomersLike(text: String): List<Contact>
+    suspend fun getContactsLike(text: String): List<Contact>
 
     suspend fun insert(contact: Contact): Long
 

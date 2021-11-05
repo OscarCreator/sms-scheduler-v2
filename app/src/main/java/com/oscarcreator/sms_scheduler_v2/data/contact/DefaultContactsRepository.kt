@@ -16,11 +16,11 @@ class DefaultContactsRepository(
 
     override fun observeContactsASC(): LiveData<List<Contact>> = contactsDataSource.observeContactsASC()
 
-    override suspend fun getCustomerById(id: Long): Result<Contact> = contactsDataSource.getCustomer(id)
+    override suspend fun getContact(id: Long): Result<Contact> = contactsDataSource.getCustomer(id)
 
-    override fun observeCustomer(customerId: Long): LiveData<Result<Contact>> = contactsDataSource.observeCustomer(customerId)
+    override fun observeContact(customerId: Long): LiveData<Result<Contact>> = contactsDataSource.observeCustomer(customerId)
 
-    override suspend fun getCustomersLike(text: String): List<Contact> =
+    override suspend fun getContactsLike(text: String): List<Contact> =
         contactsDataSource.getCustomersLike(text)
 
     override suspend fun insert(contact: Contact): Long = contactsDataSource.insert(contact)

@@ -3,7 +3,7 @@ package com.oscarcreator.sms_scheduler_v2.data
 import com.oscarcreator.sms_scheduler_v2.data.contact.Contact
 import com.oscarcreator.sms_scheduler_v2.data.message.Message
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatment
-import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentWithMessageAndTimeTemplateAndContacts
+import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentWithMessageTimeTemplateAndContact
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.TreatmentStatus
 import com.oscarcreator.sms_scheduler_v2.data.timetemplate.TimeTemplate
 import com.oscarcreator.sms_scheduler_v2.data.treatment.Treatment
@@ -22,6 +22,7 @@ class ScheduledTreatmentTest {
             treatmentTime = Calendar.getInstance(),
             timeTemplateId = 2,
             messageId = 4,
+            contactId = 3
         )
 
         assertThat(scheduledTreatment.id, `is`(0))
@@ -37,14 +38,15 @@ class ScheduledTreatmentTest {
             treatmentTime = Calendar.getInstance(),
             timeTemplateId = 2,
             messageId = 4,
+            contactId = 3
         )
         val message = Message(message = "some text")
         val timeTemplate  = TimeTemplate(delay = 10)
-        val customers = listOf(Contact(name = "Ferd", phoneNumber = "0723849064"))
+        val customer = Contact(name = "Ferd", phoneNumber = "0723849064")
         val treatment = Treatment(name = "something", price = 40, duration = 1)
 
-        val scheduledTreatmentWithData = ScheduledTreatmentWithMessageAndTimeTemplateAndContacts(
-            scheduledTreatment, message, timeTemplate, treatment, customers
+        val scheduledTreatmentWithData = ScheduledTreatmentWithMessageTimeTemplateAndContact(
+            scheduledTreatment, message, timeTemplate, treatment, customer
         )
 
         assertThat(scheduledTreatmentWithData.getSendTime(),
@@ -52,55 +54,6 @@ class ScheduledTreatmentTest {
 
     }
 
-    @Test
-    fun getFormattedMessages_is_scheduledTreatmentMessage(){
-        val scheduledTreatment = ScheduledTreatment(
-            treatmentId = 1,
-            treatmentTime = Calendar.getInstance(),
-            timeTemplateId = 2,
-            messageId = 4,
-        )
-        val message = Message(message = "some text")
-        val timeTemplate  = TimeTemplate(delay = 10)
-        val customers = listOf(
-            Contact(name = "Ferd", phoneNumber = "0723849064"),
-            Contact(name = "Ferd2", phoneNumber = "1723849065")
-        )
-        val treatment = Treatment(name = "something", price = 40, duration = 1)
-
-        val scheduledTreatmentWithData = ScheduledTreatmentWithMessageAndTimeTemplateAndContacts(
-            scheduledTreatment, message, timeTemplate, treatment, customers
-        )
-
-        assertThat(scheduledTreatmentWithData.getFormattedMessages(),
-            `is`(listOf(message.message, message.message)))
-
-    }
-
-    @Test
-    fun getPhoneNumbers_returnsAllPhoneNumbers(){
-        val scheduledTreatment = ScheduledTreatment(
-            treatmentId = 1,
-            treatmentTime = Calendar.getInstance(),
-            timeTemplateId = 2,
-            messageId = 4,
-        )
-        val message = Message(message = "some text")
-        val timeTemplate  = TimeTemplate(delay = 10)
-        val customers = listOf(
-            Contact(name = "Ferd", phoneNumber = "0723849064"),
-            Contact(name = "Ferd2", phoneNumber = "1723849065")
-        )
-        val treatment = Treatment(name = "something", price = 40, duration = 1)
-
-        val scheduledTreatmentWithData = ScheduledTreatmentWithMessageAndTimeTemplateAndContacts(
-            scheduledTreatment, message, timeTemplate, treatment, customers
-        )
-
-        assertThat(scheduledTreatmentWithData.getPhoneNumbers(),
-            `is`(listOf(customers[0].phoneNumber, customers[1].phoneNumber)))
-
-    }
 
 
 

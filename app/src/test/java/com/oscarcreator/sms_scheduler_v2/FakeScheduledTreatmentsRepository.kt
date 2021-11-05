@@ -1,4 +1,4 @@
-package com.oscarcreator.sms_scheduler_v2.data
+package com.oscarcreator.sms_scheduler_v2
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,6 +9,7 @@ import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentWithMe
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentsRepository
 import com.oscarcreator.sms_scheduler_v2.data.timetemplate.TimeTemplate
 import com.oscarcreator.sms_scheduler_v2.data.treatment.Treatment
+import kotlinx.coroutines.runBlocking
 import java.util.*
 import kotlin.collections.LinkedHashMap
 
@@ -27,7 +28,7 @@ class FakeScheduledTreatmentsRepository : ScheduledTreatmentsRepository {
     var contact: Contact = Contact( "Name", "9383475", 200, contactId = 5)
 
     override fun getScheduledTreatments(): LiveData<List<ScheduledTreatment>> {
-        observableScheduledTreatments.value = scheduledTreatmentsServiceData.values.toList()
+        runBlocking { observableScheduledTreatments.value = scheduledTreatmentsServiceData.values.toList() }
         return observableScheduledTreatments
     }
 
@@ -58,7 +59,6 @@ class FakeScheduledTreatmentsRepository : ScheduledTreatmentsRepository {
 
     override suspend fun insert(scheduledTreatment: ScheduledTreatment): Long {
         scheduledTreatmentsServiceData[scheduledTreatment.id] = scheduledTreatment
-        observableScheduledTreatments.value = scheduledTreatmentsServiceData.values.toList()
         return scheduledTreatment.id
     }
 
@@ -72,4 +72,3 @@ class FakeScheduledTreatmentsRepository : ScheduledTreatmentsRepository {
     }
 
 }
-

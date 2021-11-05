@@ -53,7 +53,7 @@ class AddEditContactViewModel(
         _dataLoading.value = true
 
         viewModelScope.launch {
-            contactsRepository.getCustomerById(contactId).let {
+            contactsRepository.getContact(contactId).let {
                 if (it is Result.Success) {
                     onContactLoaded(it.data)
                 } else {

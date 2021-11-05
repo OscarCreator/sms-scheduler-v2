@@ -37,8 +37,7 @@ class UpcomingTreatmentCardListFragment : Fragment() {
         val upcomingTreatmentCardListViewModel = UpcomingTreatmentCardListViewModel(
                 DefaultScheduledTreatmentsRepository(
                     ScheduledTreatmentsLocalDataSource(
-                    database.scheduledTreatmentDao(),
-                    database.scheduledTreatmentCrossRefDao()
+                    database.scheduledTreatmentDao()
                     )
                 )
             )

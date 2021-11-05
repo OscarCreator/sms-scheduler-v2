@@ -7,28 +7,22 @@ interface ScheduledTreatmentsDataSource {
 
     fun getScheduledTreatments(): LiveData<List<ScheduledTreatment>>
 
-    fun getScheduledTreatmentsWithMessageAndTimeTemplateAndContacts(): LiveData<List<ScheduledTreatmentWithMessageAndTimeTemplateAndContacts>>
+    fun getScheduledTreatmentsWithMessageAndTimeTemplateAndContacts(): LiveData<List<ScheduledTreatmentWithMessageTimeTemplateAndContact>>
 
-    fun getUpcomingScheduledTreatmentsWithData(currentDay: Calendar): LiveData<List<ScheduledTreatmentWithMessageAndTimeTemplateAndContacts>>
+    fun getUpcomingScheduledTreatmentsWithData(currentDay: Calendar): LiveData<List<ScheduledTreatmentWithMessageTimeTemplateAndContact>>
 
-    fun getOldScheduledTreatmentsWithData(currentDay: Calendar): LiveData<List<ScheduledTreatmentWithMessageAndTimeTemplateAndContacts>>
+    fun getOldScheduledTreatmentsWithData(currentDay: Calendar): LiveData<List<ScheduledTreatmentWithMessageTimeTemplateAndContact>>
 
-    fun getScheduledTreatment(scheduledTreatmentId: Long): LiveData<ScheduledTreatmentWithMessageAndTimeTemplateAndContacts>
+    fun getScheduledTreatment(scheduledTreatmentId: Long): LiveData<ScheduledTreatmentWithMessageTimeTemplateAndContact>
 
-    suspend fun getScheduledTreatmentWithData(scheduledTreatmentId: Long): ScheduledTreatmentWithMessageAndTimeTemplateAndContacts?
+    suspend fun getScheduledTreatmentWithData(scheduledTreatmentId: Long): ScheduledTreatmentWithMessageTimeTemplateAndContact?
 
-    suspend fun getUpcomingScheduledTreatmentsWithData(): List<ScheduledTreatmentWithMessageAndTimeTemplateAndContacts>
+    suspend fun getUpcomingScheduledTreatmentsWithData(): List<ScheduledTreatmentWithMessageTimeTemplateAndContact>
 
     suspend fun insert(scheduledTreatment: ScheduledTreatment): Long
 
     suspend fun update(scheduledTreatment: ScheduledTreatment): Int
 
     suspend fun delete(scheduledTreatmentId: Long): Int
-
-    suspend fun insertCrossRef(scheduledTreatmentContactCrossRef: ScheduledTreatmentContactCrossRef): Long
-
-    suspend fun updateCrossRef(scheduledTreatmentContactCrossRef: ScheduledTreatmentContactCrossRef): Int
-
-    suspend fun deleteCrossRefs(scheduledTreatmentId: Long)
 
 }

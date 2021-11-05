@@ -9,7 +9,6 @@ import org.junit.runners.Suite
     TreatmentTest::class,
     MessageTest::class,
     TimeTemplateTest::class,
-    ScheduledTreatmentTest::class,
-    ScheduledTreatmentContactCrossRefTest::class
+    ScheduledTreatmentTest::class
 )
 class EntityTestSuit

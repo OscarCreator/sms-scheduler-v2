@@ -11,8 +11,6 @@ import com.oscarcreator.sms_scheduler_v2.data.contact.local.ContactDao
 import com.oscarcreator.sms_scheduler_v2.data.message.Message
 import com.oscarcreator.sms_scheduler_v2.data.message.local.MessagesDao
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatment
-import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentContactCrossRef
-import com.oscarcreator.sms_scheduler_v2.data.scheduled.local.ScheduledTreatmentCustomerCrossRefDao
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.local.ScheduledTreatmentDao
 import com.oscarcreator.sms_scheduler_v2.data.timetemplate.TimeTemplate
 import com.oscarcreator.sms_scheduler_v2.data.timetemplate.local.TimeTemplateDao
@@ -28,8 +26,7 @@ import kotlinx.coroutines.launch
         Treatment::class,
         Message::class,
         TimeTemplate::class,
-        ScheduledTreatment::class,
-        ScheduledTreatmentContactCrossRef::class
+        ScheduledTreatment::class
     ],
     version = 1,
     exportSchema = false
@@ -37,12 +34,11 @@ import kotlinx.coroutines.launch
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 
-    abstract fun customerDao(): ContactDao
+    abstract fun contactDao(): ContactDao
     abstract fun treatmentDao(): TreatmentDao
     abstract fun messageDao(): MessagesDao
     abstract fun timeTemplateDao(): TimeTemplateDao
     abstract fun scheduledTreatmentDao(): ScheduledTreatmentDao
-    abstract fun scheduledTreatmentCrossRefDao(): ScheduledTreatmentCustomerCrossRefDao
 
     private class TaskDatabaseCallback(
         private val scope: CoroutineScope

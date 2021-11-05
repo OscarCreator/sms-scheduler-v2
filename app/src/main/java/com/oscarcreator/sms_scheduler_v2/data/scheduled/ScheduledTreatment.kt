@@ -28,13 +28,19 @@ import java.util.*
             entity = Message::class,
             parentColumns = ["message_id"],
             childColumns = ["message_id"]
+        ),
+        ForeignKey(
+            entity = Contact::class,
+            parentColumns = ["contact_id"],
+            childColumns = ["contact_id"]
         )
     ],
     indices = [
         Index("scheduled_treatment_id"),
         Index("treatment_id"),
         Index("time_template_id"),
-        Index("message_id")
+        Index("message_id"),
+        Index("contact_id")
     ]
 )
 data class ScheduledTreatment(
@@ -50,8 +56,11 @@ data class ScheduledTreatment(
     /** [TimeTemplate] which modifies the send time */
     @ColumnInfo(name = "time_template_id") val timeTemplateId: Long,
 
-    /** id of [Message] to be sent to the [Contact]s */
+    /** id of [Message] to be sent to the [Contact] */
     @ColumnInfo(name = "message_id") val messageId: Long,
+
+    /** id of [Contact] to be sent to*/
+    @ColumnInfo(name = "contact_id") val contactId: Long,
 
     @ColumnInfo(name = "sms_status") var smsStatus: SmsStatus = SmsStatus.SCHEDULED,
 
@@ -97,7 +106,7 @@ enum class SmsStatus(val code: Int) {
 /**
  * A data class which combines the relations with the [ScheduledTreatment]
  * */
-data class ScheduledTreatmentWithMessageAndTimeTemplateAndContacts(
+data class ScheduledTreatmentWithMessageTimeTemplateAndContact(
     /**
      * The [ScheduledTreatment]
      * */
@@ -130,11 +139,10 @@ data class ScheduledTreatmentWithMessageAndTimeTemplateAndContacts(
      * The [Contact]s which will receive a notification sms
      */
     @Relation(
-        parentColumn = "scheduled_treatment_id",
+        parentColumn = "contact_id",
         entityColumn = "contact_id",
-        associateBy = Junction(ScheduledTreatmentContactCrossRef::class)
     )
-    val contacts: List<Contact>
+    val contact: Contact
 
 ){
 
@@ -145,52 +153,6 @@ data class ScheduledTreatmentWithMessageAndTimeTemplateAndContacts(
         return scheduledTreatment.treatmentTime.timeInMillis + timeTemplate.delay
     }
 
-    /**
-     * Returns the formatted messages
-     */
-    fun getFormattedMessages(): List<String> {
-        val messages = contacts.map { message.message }
-        //TODO format
-        return messages
-    }
-
-    /**
-     * Returns all the phone numbers
-     */
-    fun getPhoneNumbers(): List<String> {
-        return contacts.map { it.phoneNumber  }
-    }
-
 }
 
-/**
- * Relation between [ScheduledTreatment] and [Contact]
- */
-@Entity(
-    tableName = "scheduled_treatment_cross_ref",
-    primaryKeys = [
-        "scheduled_treatment_id",
-        "contact_id"
-    ],
-    foreignKeys = [
-        ForeignKey(
-            entity = ScheduledTreatment::class,
-            parentColumns = ["scheduled_treatment_id"],
-            childColumns = ["scheduled_treatment_id"],
-            onDelete = ForeignKey.CASCADE
-        ),
-        ForeignKey(
-            entity = Contact::class,
-            parentColumns = ["contact_id"],
-            childColumns = ["contact_id"],
-            onDelete = ForeignKey.RESTRICT
-        )
-    ]
-)
-data class ScheduledTreatmentContactCrossRef(
-    @ColumnInfo(name = "scheduled_treatment_id") val scheduledTreatmentId: Long,
-    @ColumnInfo(name = "contact_id") val contactId: Long,
-    /** Time of the delivered */
-    @ColumnInfo(name = "delivered_time") val deliveredTime: Calendar? = null
-)
 

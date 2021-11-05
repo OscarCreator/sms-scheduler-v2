@@ -8,6 +8,7 @@ import android.text.InputFilter
 import android.util.Log
 import android.view.*
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -82,11 +83,9 @@ class AddEditScheduledTreatmentFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        for (receiver in viewModel.contacts) {
-            addNewChip(receiver)
-        }
 
-        Log.d(TAG, "onResume, loading: ${binding.flContacts.childCount}, ${viewModel.contacts.size}")
+
+        Log.d(TAG, "onResume, loading: ${binding.flContacts.childCount}, ${viewModel.contact.value?.name}")
         //binding.tvTreatments.setText(viewModel.treatment.value?.name, false)
 
     }
@@ -96,9 +95,6 @@ class AddEditScheduledTreatmentFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-        Log.d(TAG, "onCreateView")
-
         _binding = FragmentAddeditScheduledTreatmentBinding.inflate(inflater, container, false)
 
         viewModel.scheduledTreatmentUpdatedEvent.observe(viewLifecycleOwner, EventObserver {
@@ -106,6 +102,34 @@ class AddEditScheduledTreatmentFragment : Fragment() {
         })
 
         viewModel.start(if (args.scheduledTreatmentId == -1L) null else args.scheduledTreatmentId, requireContext())
+
+        viewModel.contact.observe(viewLifecycleOwner) {
+            if (it != null) {
+                //ere r
+                binding.flContacts.apply {
+                    if (childCount > 1) {
+                        binding.flContacts.removeViewAt(binding.flContacts.childCount - 2)
+                    }
+                }
+                addNewChip(it)
+
+                binding.etContactInput.text.clear()
+                binding.etContactInput.clearFocus()
+                binding.etContactInput.visibility = View.GONE
+
+                val imm = requireActivity().getSystemService(InputMethodManager::class.java)
+                imm.hideSoftInputFromWindow(binding.etContactInput.windowToken, 0)
+
+            } else {
+                binding.flContacts.apply {
+                    if (childCount > 1) {
+                        binding.flContacts.removeViewAt(binding.flContacts.childCount - 2)
+                    }
+                    binding.etContactInput.visibility = View.VISIBLE
+                }
+            }
+
+        }
 
         //TODO replace with a custom adapter
         val adapter = ArrayAdapter(requireContext(), R.layout.dropdown_menu_list_item, mutableListOf<String>())
@@ -200,10 +224,10 @@ class AddEditScheduledTreatmentFragment : Fragment() {
         setUpContactInput()
 
         viewModel.customersLoadedEvent.observe(viewLifecycleOwner, EventObserver {
-            for (receiver in viewModel.contacts) {
-                addNewChip(receiver)
-            }
-            Log.d(TAG, "${binding.flContacts.childCount}, ${viewModel.contacts.size}")
+
+            viewModel.contact.value?.let { it1 -> addNewChip(it1) }
+
+            Log.d(TAG, "${binding.flContacts.childCount}, ${viewModel.contact.value?.name}")
         })
 
         setUpSendSmsPermission()
@@ -307,16 +331,6 @@ class AddEditScheduledTreatmentFragment : Fragment() {
                     }
                 })
 
-            //remove chip if hitting del
-            setOnKeyListener { _, keyCode, keyEvent ->
-                if (keyEvent.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_DEL) {
-                    removeReceiver()
-                    return@setOnKeyListener true
-                }
-
-                false
-            }
-
             // Remove the ability to write a space as first character
             filters = arrayOf(
                 InputFilter { source, _, _, _, dstart, _ ->
@@ -329,18 +343,13 @@ class AddEditScheduledTreatmentFragment : Fragment() {
     }
 
     private fun addReceiver(contact: Contact) {
-        binding.etContactInput.text.clear()
-        addNewChip(contact)
-        viewModel.addReceiver(contact)
-    }
-
-    private fun removeReceiver(){
-        binding.flContacts.run {
-            if (childCount > 1) {
-                viewModel.removeReceiver(childCount - 2)
-                removeViewAt(childCount - 2)
-            }
+        lifecycleScope.launch {
+            viewModel.setContactById(contact.contactId)
         }
+        //addNewChip(contact)
+
+
+
     }
 
     private fun addNewChip(contact: Contact) {
@@ -350,9 +359,9 @@ class AddEditScheduledTreatmentFragment : Fragment() {
             isClickable = true
             isCheckable = false
             setOnCloseIconClickListener {
-                binding.flContacts.removeView(this)
-                //better to delete with index
-                viewModel.removeReceiver(contact)
+                //binding.flContacts.removeView(this)
+                //binding.etContactInput.visibility = View.VISIBLE
+                viewModel.removeContact()
             }
         }
 

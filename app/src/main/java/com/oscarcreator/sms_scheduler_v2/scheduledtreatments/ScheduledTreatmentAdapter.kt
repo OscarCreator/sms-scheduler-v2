@@ -7,12 +7,12 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.composethemeadapter.MdcTheme
 import com.oscarcreator.sms_scheduler_v2.R
-import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentWithMessageAndTimeTemplateAndContacts
+import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentWithMessageTimeTemplateAndContact
 
 class ScheduledTreatmentAdapter :
     RecyclerView.Adapter<ScheduledTreatmentAdapter.ScheduledTreatmentListViewHolder>() {
 
-    private var list: List<ScheduledTreatmentWithMessageAndTimeTemplateAndContacts> = listOf()
+    private var list: List<ScheduledTreatmentWithMessageTimeTemplateAndContact> = listOf()
 
     private var onScheduledTreatmentClickedListener: OnScheduledTreatmentClickedListener? = null
 
@@ -63,7 +63,7 @@ class ScheduledTreatmentAdapter :
 
     override fun getItemId(position: Int): Long = list[position].scheduledTreatment.id
 
-    fun setScheduledTreatments(scheduledTreatments: List<ScheduledTreatmentWithMessageAndTimeTemplateAndContacts>) {
+    fun setScheduledTreatments(scheduledTreatments: List<ScheduledTreatmentWithMessageTimeTemplateAndContact>) {
         list = scheduledTreatments
     }
 
@@ -73,12 +73,12 @@ class ScheduledTreatmentAdapter :
 
 
     interface OnScheduledTreatmentClickedListener {
-        fun onScheduledTreatmentClicked(position: Int, scheduledTreatment: ScheduledTreatmentWithMessageAndTimeTemplateAndContacts)
+        fun onScheduledTreatmentClicked(position: Int, scheduledTreatment: ScheduledTreatmentWithMessageTimeTemplateAndContact)
 
         companion object {
-            inline operator fun invoke(crossinline function: (Int, ScheduledTreatmentWithMessageAndTimeTemplateAndContacts) -> Unit) =
+            inline operator fun invoke(crossinline function: (Int, ScheduledTreatmentWithMessageTimeTemplateAndContact) -> Unit) =
                 object : OnScheduledTreatmentClickedListener {
-                    override fun onScheduledTreatmentClicked(position: Int, scheduledTreatment: ScheduledTreatmentWithMessageAndTimeTemplateAndContacts) = function(position, scheduledTreatment)
+                    override fun onScheduledTreatmentClicked(position: Int, scheduledTreatment: ScheduledTreatmentWithMessageTimeTemplateAndContact) = function(position, scheduledTreatment)
                 }
         }
     }

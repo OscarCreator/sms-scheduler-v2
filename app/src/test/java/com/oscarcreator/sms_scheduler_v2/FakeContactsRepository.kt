@@ -35,7 +35,7 @@ class FakeContactsRepository : ContactsRepository {
         }
     }
 
-    override suspend fun getCustomerById(customerId: Long): Result<Contact> {
+    override suspend fun getContact(customerId: Long): Result<Contact> {
         val contact = contactsServiceData[customerId]
         return if (contact == null) {
             Result.Error(Exception("Did not find contact"))
@@ -44,7 +44,7 @@ class FakeContactsRepository : ContactsRepository {
         }
     }
 
-    override fun observeCustomer(customerId: Long): LiveData<Result<Contact>> {
+    override fun observeContact(customerId: Long): LiveData<Result<Contact>> {
         runBlocking { observableContacts.value = contactsServiceData.values.toList() }
         return observableContacts.map { customers ->
             val customer = customers.find { it.contactId == customerId }
@@ -56,7 +56,7 @@ class FakeContactsRepository : ContactsRepository {
         }
     }
 
-    override suspend fun getCustomersLike(text: String): List<Contact> {
+    override suspend fun getContactsLike(text: String): List<Contact> {
         return contactsServiceData
             .map { it.value }
             .filter { it.name.contains(text) }

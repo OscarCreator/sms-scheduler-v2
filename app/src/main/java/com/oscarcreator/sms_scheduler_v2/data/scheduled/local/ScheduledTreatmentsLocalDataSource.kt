@@ -1,7 +1,6 @@
 package com.oscarcreator.sms_scheduler_v2.data.scheduled.local
 
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatment
-import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentContactCrossRef
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentsDataSource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -9,7 +8,6 @@ import java.util.*
 
 class ScheduledTreatmentsLocalDataSource internal constructor(
     private val scheduledTreatmentsDao: ScheduledTreatmentDao,
-    private val scheduledTreatmentContactCrossRefDao: ScheduledTreatmentCustomerCrossRefDao,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ): ScheduledTreatmentsDataSource {
 
@@ -41,15 +39,4 @@ class ScheduledTreatmentsLocalDataSource internal constructor(
 
     override suspend fun delete(scheduledTreatmentId: Long): Int =
         scheduledTreatmentsDao.delete(scheduledTreatmentId)
-
-    override suspend fun insertCrossRef(scheduledTreatmentContactCrossRef: ScheduledTreatmentContactCrossRef) =
-        scheduledTreatmentContactCrossRefDao.insert(scheduledTreatmentContactCrossRef)
-
-    override suspend fun updateCrossRef(scheduledTreatmentContactCrossRef: ScheduledTreatmentContactCrossRef) =
-        scheduledTreatmentContactCrossRefDao.update(scheduledTreatmentContactCrossRef)
-
-    override suspend fun deleteCrossRefs(scheduledTreatmentId: Long) =
-        scheduledTreatmentContactCrossRefDao.delete(scheduledTreatmentId)
-
-
 }

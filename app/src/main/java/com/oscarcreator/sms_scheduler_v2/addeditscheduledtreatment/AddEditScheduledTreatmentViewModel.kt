@@ -11,8 +11,7 @@ import com.oscarcreator.sms_scheduler_v2.data.contact.Contact
 import com.oscarcreator.sms_scheduler_v2.data.contact.ContactsRepository
 import com.oscarcreator.sms_scheduler_v2.data.message.MessagesRepository
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatment
-import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentContactCrossRef
-import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentWithMessageAndTimeTemplateAndContacts
+import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentWithMessageTimeTemplateAndContact
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentsRepository
 import com.oscarcreator.sms_scheduler_v2.data.timetemplate.TimeTemplatesRepository
 import com.oscarcreator.sms_scheduler_v2.data.treatment.Treatment
@@ -40,10 +39,6 @@ class AddEditScheduledTreatmentViewModel(
 
     val timeTemplateText = MutableLiveData<String>()
 
-    private var _contacts: MutableList<Contact> = mutableListOf()
-    val contacts: List<Contact>
-        get() = _contacts
-
     private val _customersLoadedEvent = MutableLiveData<Event<Unit>>()
     val customersLoadedEvent: LiveData<Event<Unit>> = _customersLoadedEvent
 
@@ -55,16 +50,18 @@ class AddEditScheduledTreatmentViewModel(
 
     private var _messageId = -1L
     private var _timeTemplateId = -1L
+    private var _contactId = -1L
 
     val time = MutableLiveData<Long>()
     val treatment = MutableLiveData<Treatment>()
+    val contact = MutableLiveData<Contact?>()
 
     private var scheduledTreatmentId: Long? = 1
     private var isNewScheduledTreatment = false
     private var isDataLoaded = false
 
     suspend fun getCustomersLike(text: String): List<Contact> {
-        return contactsRepository.getCustomersLike(text)
+        return contactsRepository.getContactsLike(text)
     }
 
     suspend fun setMessageById(messageId: Long) {
@@ -109,16 +106,25 @@ class AddEditScheduledTreatmentViewModel(
         this.treatment.value = treatment
     }
 
-    fun addReceiver(receiver: Contact) {
-        _contacts.add(receiver)
+    suspend fun setContactById(contactId: Long) {
+        contactsRepository.getContact(contactId).let {
+            if (it is Result.Success) {
+                onContactLoaded(it.data)
+            } else {
+                //TODO
+                //onDataNotAvailable()
+            }
+        }
     }
 
-    fun removeReceiver(index: Int) {
-        _contacts.removeAt(index)
+    fun removeContact() {
+        contact.value = null
+        _contactId = -1L
     }
 
-    fun removeReceiver(contact: Contact){
-        _contacts.remove(contact)
+    private fun onContactLoaded(contact: Contact) {
+        this.contact.value = contact
+        _contactId = contact.contactId
     }
 
     fun start(scheduledTreatmentId: Long? = null, context: Context) {
@@ -173,7 +179,7 @@ class AddEditScheduledTreatmentViewModel(
     }
 
     private fun onScheduledTreatmentLoaded(
-        scheduledTreatmentWithData: ScheduledTreatmentWithMessageAndTimeTemplateAndContacts
+        scheduledTreatmentWithData: ScheduledTreatmentWithMessageTimeTemplateAndContact
     ) {
         time.value = scheduledTreatmentWithData.scheduledTreatment.treatmentTime.timeInMillis
         treatment.value = scheduledTreatmentWithData.treatment
@@ -183,24 +189,25 @@ class AddEditScheduledTreatmentViewModel(
         _timeTemplateId = scheduledTreatmentWithData.timeTemplate.timeTemplateId
         _messageId = scheduledTreatmentWithData.message.messageId
 
-        _contacts = scheduledTreatmentWithData.contacts.toMutableList()
+        _contactId = scheduledTreatmentWithData.contact.contactId
 
         isDataLoaded = true
         _customersLoadedEvent.value = Event(Unit)
     }
 
     fun saveScheduledTreatment(context: Context) {
-        val currentReceivers = _contacts
+        val currentContact = contact.value
         val currentTime = time.value
         val currentTreatment = treatment.value
         val currentTimeTemplate = timeTemplateText.value
         val currentMessage = message.value
         //Why not?
-        Log.d(TAG, "receivers: ${currentReceivers.isEmpty()}")
+        Log.d(TAG, "receivers: ${currentContact != null} && ${_contactId != -1L}")
         Log.d(TAG, "currenttime: ${currentTime != null} && ${currentTime != 0L}")
         Log.d(TAG, "treatment: ${currentTreatment != null}")
-        Log.d(TAG, "timeTemplate: ${currentTimeTemplate != null}")
-        if (currentReceivers.isNotEmpty()
+        Log.d(TAG, "timeTemplate: ${currentTimeTemplate != null} && ${currentTimeTemplate?.isNotEmpty()} && ${_timeTemplateId != -1L}")
+        Log.d(TAG, "message: ${currentMessage != null} && ${currentMessage?.isNotEmpty()} && ${_messageId != -1L}")
+        if (currentContact != null && _contactId != -1L
             && currentTime != null && currentTime != 0L
             && currentTreatment != null
             && currentTimeTemplate != null && currentTimeTemplate.isNotEmpty() && _timeTemplateId != -1L
@@ -213,9 +220,9 @@ class AddEditScheduledTreatmentViewModel(
                         treatmentTime = Calendar.getInstance(Locale.getDefault())
                             .apply { timeInMillis = currentTime },
                         timeTemplateId = _timeTemplateId,
-                        messageId = _messageId
-                    ),
-                    currentReceivers
+                        messageId = _messageId,
+                        contactId = _contactId
+                    )
                 )
             } else {
                 updateScheduledTreatment(context,
@@ -225,9 +232,9 @@ class AddEditScheduledTreatmentViewModel(
                         treatmentTime = Calendar.getInstance(Locale.getDefault())
                             .apply { timeInMillis = currentTime },
                         timeTemplateId = _timeTemplateId,
-                        messageId = _messageId
-                    ),
-                    currentReceivers
+                        messageId = _messageId,
+                        contactId = _contactId
+                    )
                 )
             }
 
@@ -244,14 +251,13 @@ class AddEditScheduledTreatmentViewModel(
      * */
     private fun createScheduledTreatment(
         context: Context,
-        newScheduledTreatment: ScheduledTreatment,
-        receivers: List<Contact>
-    ) =
-        viewModelScope.launch {
+        newScheduledTreatment: ScheduledTreatment
+    ) = viewModelScope.launch {
+        //TODO redo
+
             // launch is used to run it in a coroutine for communicating with database through repository
             val newId = scheduledTreatmentsRepository.insert(newScheduledTreatment)
 
-            createScheduledTreatmentCustomerCrossRef(newId, receivers)
             scheduleAlarm(context, scheduledTreatmentsRepository.getScheduledTreatmentWithData(newId)!!)
 
             _scheduledTreatmentUpdatedEvent.value = Event(Unit)
@@ -260,35 +266,18 @@ class AddEditScheduledTreatmentViewModel(
     private fun updateScheduledTreatment(
         context: Context,
         scheduledTreatment: ScheduledTreatment,
-        receivers: List<Contact>
     ) {
+
+        //TODO redo
         if (isNewScheduledTreatment) {
             throw RuntimeException("update() was callled but scheduledTreatment is new")
         }
         viewModelScope.launch {
             scheduledTreatmentsRepository.update(scheduledTreatment)
-            updateScheduledTreatmentCustomerCrossRef(scheduledTreatment.id, receivers)
 
             scheduleAlarm(context, scheduledTreatmentsRepository.getScheduledTreatmentWithData(scheduledTreatment.id)!!)
             _scheduledTreatmentUpdatedEvent.value = Event(Unit)
         }
-    }
-
-    private suspend fun createScheduledTreatmentCustomerCrossRef(scheduledTreatmentId: Long, receivers: List<Contact>){
-        for (receiver in receivers) {
-            scheduledTreatmentsRepository.insertCrossRef(
-                ScheduledTreatmentContactCrossRef(scheduledTreatmentId, receiver.contactId))
-        }
-    }
-
-    private suspend fun updateScheduledTreatmentCustomerCrossRef(
-        scheduledTreatmentId: Long,
-        receivers: List<Contact>
-    ) {
-        // Delete all old receivers
-        scheduledTreatmentsRepository.deleteCrossRefs(scheduledTreatmentId)
-        // Insert all new recievers
-        createScheduledTreatmentCustomerCrossRef(scheduledTreatmentId, receivers)
     }
 
 }

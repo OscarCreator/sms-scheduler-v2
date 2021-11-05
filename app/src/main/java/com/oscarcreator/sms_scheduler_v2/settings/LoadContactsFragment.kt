@@ -54,7 +54,7 @@ class LoadContactsFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
                 requireActivity().lifecycleScope.launch {
                     val list = adapter.getSelected()
                     for (pair in list){
-                        database.customerDao().insert(
+                        database.contactDao().insert(
                             Contact(name = pair.first, phoneNumber = pair.second))
                     }
                 }

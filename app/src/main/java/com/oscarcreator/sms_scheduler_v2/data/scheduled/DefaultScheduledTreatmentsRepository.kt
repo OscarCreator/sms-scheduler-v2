@@ -38,14 +38,4 @@ class DefaultScheduledTreatmentsRepository(
     override suspend fun delete(scheduledTreatmentId: Long): Int =
         scheduledTreatmentsDataSource.delete(scheduledTreatmentId)
 
-
-    override suspend fun insertCrossRef(scheduledTreatmentContactCrossRef: ScheduledTreatmentContactCrossRef) =
-        scheduledTreatmentsDataSource.insertCrossRef(scheduledTreatmentContactCrossRef)
-
-    override suspend fun updateCrossRef(scheduledTreatmentContactCrossRef: ScheduledTreatmentContactCrossRef) =
-        scheduledTreatmentsDataSource.updateCrossRef(scheduledTreatmentContactCrossRef)
-
-    override suspend fun deleteCrossRefs(scheduledTreatmentId: Long) =
-        scheduledTreatmentsDataSource.deleteCrossRefs(scheduledTreatmentId)
-
 }

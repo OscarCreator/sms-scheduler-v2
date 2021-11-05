@@ -33,7 +33,7 @@ import com.oscarcreator.sms_scheduler_v2.data.AppDatabase
 import com.oscarcreator.sms_scheduler_v2.data.contact.Contact
 import com.oscarcreator.sms_scheduler_v2.data.message.Message
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatment
-import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentWithMessageAndTimeTemplateAndContacts
+import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentWithMessageTimeTemplateAndContact
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.SmsStatus
 import com.oscarcreator.sms_scheduler_v2.data.timetemplate.TimeTemplate
 import com.oscarcreator.sms_scheduler_v2.data.treatment.Treatment
@@ -90,7 +90,7 @@ class UpcomingScheduledTreatmentsFragment : Fragment() {
 }
 
 @Composable
-fun ScheduledTreatmentCard(scheduledTreatment: ScheduledTreatmentWithMessageAndTimeTemplateAndContacts, onClick: () -> Unit = {}) {
+fun ScheduledTreatmentCard(scheduledTreatment: ScheduledTreatmentWithMessageTimeTemplateAndContact, onClick: () -> Unit = {}) {
 
     val calendarSendTime by remember { mutableStateOf(
         Calendar.getInstance().apply {
@@ -124,7 +124,7 @@ fun ScheduledTreatmentCard(scheduledTreatment: ScheduledTreatmentWithMessageAndT
                             centerVerticallyTo(parent)
                             width = Dimension.fillToConstraints
                         },
-                    text = scheduledTreatment.contacts[0].name,
+                    text = scheduledTreatment.contact.name,
                     style = MaterialTheme.typography.h6,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
@@ -192,12 +192,12 @@ fun ScheduledTreatmentCard(scheduledTreatment: ScheduledTreatmentWithMessageAndT
 fun PreviewScheduledTreatmentCard() {
     MdcTheme {
         ScheduledTreatmentCard(
-                ScheduledTreatmentWithMessageAndTimeTemplateAndContacts(
-                        ScheduledTreatment(0, 1, Calendar.getInstance(), 1, 1),
+                ScheduledTreatmentWithMessageTimeTemplateAndContact(
+                        ScheduledTreatment(0, 1, Calendar.getInstance(), 1, 1, 1),
                         Message("Hello, welcome to treatment tomorrow 5/4 12:00 at our location. If you want to unbook then you can do that until 24h before your treatment.", messageId = 1),
                         TimeTemplate( 1000L * 60L * 60L),
                         Treatment("Treatmentpi", 100, 40),
-                        listOf(Contact( "Anders Andersson, Bengt bengtsson", "070205302", 600))
+                        Contact( "Anders Andersson, Bengt bengtsson", "070205302", 600)
                 )
         )
     }

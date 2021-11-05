@@ -13,7 +13,11 @@
         >
         <action
             android:id="@+id/action_dashboardFragment_to_addEditTreatmentFragment"
-            app:destination="@id/addEditScheduledTreatmentFragment" />
+            app:destination="@id/addEditScheduledTreatmentFragment" >
+            <argument
+                android:name="scheduledTreatmentId"
+                android:defaultValue="-1L" />
+        </action>
         <action
             android:id="@+id/action_dashboardFragment_to_contactListFragment"
             app:destination="@id/contactListFragment" />

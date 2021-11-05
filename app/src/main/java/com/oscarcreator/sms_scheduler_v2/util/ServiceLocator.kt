@@ -76,7 +76,7 @@ object ServiceLocator {
 
     private fun createCustomersLocalDataSource(context: Context, scope: CoroutineScope): ContactsDataSource {
         val database = provideDatabase(context, scope)
-        return ContactsLocalDataSource(database.customerDao())
+        return ContactsLocalDataSource(database.contactDao())
     }
 
     fun provideScheduledTreatmentsRepository(context: Context, scope: CoroutineScope): ScheduledTreatmentsRepository {
@@ -95,9 +95,7 @@ object ServiceLocator {
 
     private fun createScheduledTreatmentsLocalDataSource(context: Context, scope: CoroutineScope): ScheduledTreatmentsDataSource {
         val database = provideDatabase(context, scope)
-        return ScheduledTreatmentsLocalDataSource(
-            database.scheduledTreatmentDao(),
-            database.scheduledTreatmentCrossRefDao())
+        return ScheduledTreatmentsLocalDataSource(database.scheduledTreatmentDao())
     }
 
     fun provideTreatmentsRepository(

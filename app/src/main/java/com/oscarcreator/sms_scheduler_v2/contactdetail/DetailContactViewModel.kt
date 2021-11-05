@@ -15,7 +15,7 @@ class DetailContactViewModel(
     private val _contactId = MutableLiveData<Long>()
 
     private val _contact = _contactId.switchMap { contactId ->
-        contactsRepository.observeCustomer(contactId)
+        contactsRepository.observeContact(contactId)
             .map { computeResult(it) }
     }
     val contact: LiveData<Contact?> = _contact

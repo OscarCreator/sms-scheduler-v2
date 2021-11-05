@@ -19,7 +19,7 @@ class ContactDaoTest : BaseDaoTest() {
     @Before
     override fun inititalizeDatabase() {
         super.inititalizeDatabase()
-        contactDao = database.customerDao()
+        contactDao = database.contactDao()
     }
 
     @Test

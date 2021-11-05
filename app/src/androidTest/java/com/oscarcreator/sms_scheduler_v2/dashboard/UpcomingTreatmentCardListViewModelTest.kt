@@ -33,8 +33,7 @@ class UpcomingTreatmentCardListViewModelTest {
         database = Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java).build()
         viewModel = UpcomingTreatmentCardListViewModel(
             DefaultScheduledTreatmentsRepository(ScheduledTreatmentsLocalDataSource(
-                database.scheduledTreatmentDao(),
-                database.scheduledTreatmentCrossRefDao())))
+                database.scheduledTreatmentDao())))
     }
 
     @After
