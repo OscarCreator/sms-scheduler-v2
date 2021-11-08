@@ -10,6 +10,7 @@ import com.oscarcreator.sms_scheduler_v2.data.scheduled.SmsStatus
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.util.*
 
 class DeliveredSmsReceiver : BroadcastReceiver() {
 
@@ -35,6 +36,7 @@ class DeliveredSmsReceiver : BroadcastReceiver() {
                         val scheduledTreatment = database.scheduledTreatmentDao().getScheduledTreatmentWithData(id)
                         if (scheduledTreatment != null) {
                             scheduledTreatment.scheduledTreatment.smsStatus = SmsStatus.RECEIVED
+                            scheduledTreatment.scheduledTreatment.smsDeliveredTime = Calendar.getInstance()
 
                             when (database.scheduledTreatmentDao().update(scheduledTreatment.scheduledTreatment)) {
                                 1 -> Log.i(TAG, "Sms delivered, scheduled treatment updated. ID = $id")

@@ -2,6 +2,7 @@ package com.oscarcreator.sms_scheduler_v2.data.message
 
 import androidx.lifecycle.LiveData
 import com.oscarcreator.sms_scheduler_v2.data.Result
+import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentWithMessageTimeTemplateAndContact
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 
@@ -35,5 +36,8 @@ class DefaultMessagesRepository(
         oldMessageId: Long,
         newMessageId: Long
     ) = messagesLocalDataSource.updateScheduledTreatmentsWithNewMessage(oldMessageId, newMessageId)
+
+    override fun getScheduledTreatmentsWithMessageId(messageId: Long): List<ScheduledTreatmentWithMessageTimeTemplateAndContact> =
+        messagesLocalDataSource.getScheduledTreatmentsWithMessageId(messageId)
 
 }

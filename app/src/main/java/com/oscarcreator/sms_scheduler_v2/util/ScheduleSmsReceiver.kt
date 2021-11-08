@@ -52,18 +52,18 @@ fun scheduleAlarm(context: Context, scheduledTreatment: ScheduledTreatmentWithMe
     //TODO "extend" Bundle to make a custom
     intent.putExtra("customer", scheduledTreatment.contact.name)
     intent.putExtra("phone_num", scheduledTreatment.contact.phoneNumber)
-    intent.putExtra("id", scheduledTreatment.scheduledTreatment.id)
+    intent.putExtra("id", scheduledTreatment.scheduledTreatment.scheduledTreatmentId)
     intent.putExtra("message", scheduledTreatment.replaceVariables())
     val pendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
         PendingIntent.getBroadcast(
             context,
-            scheduledTreatment.scheduledTreatment.id.toInt() * 4,
+            scheduledTreatment.scheduledTreatment.scheduledTreatmentId.toInt() * 4,
             intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE)
     } else {
         PendingIntent.getBroadcast(
             context,
-            scheduledTreatment.scheduledTreatment.id.toInt() * 4,
+            scheduledTreatment.scheduledTreatment.scheduledTreatmentId.toInt() * 4,
             intent,
             PendingIntent.FLAG_UPDATE_CURRENT)
     }
@@ -79,19 +79,19 @@ fun deleteAlarm(context: Context, scheduledTreatment: ScheduledTreatmentWithMess
     //TODO "extend" Bundle to make a custom
     intent.putExtra("customer", scheduledTreatment.contact.name)
     intent.putExtra("phone_num", scheduledTreatment.contact.phoneNumber)
-    intent.putExtra("id", scheduledTreatment.scheduledTreatment.id)
+    intent.putExtra("id", scheduledTreatment.scheduledTreatment.scheduledTreatmentId)
     intent.putExtra("message", scheduledTreatment.replaceVariables())
 
     val pendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
         PendingIntent.getBroadcast(
             context,
-            scheduledTreatment.scheduledTreatment.id.toInt() * 4,
+            scheduledTreatment.scheduledTreatment.scheduledTreatmentId.toInt() * 4,
             intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE)
     } else {
         PendingIntent.getBroadcast(
             context,
-            scheduledTreatment.scheduledTreatment.id.toInt() * 4,
+            scheduledTreatment.scheduledTreatment.scheduledTreatmentId.toInt() * 4,
             intent,
             PendingIntent.FLAG_UPDATE_CURRENT)
     }
@@ -103,7 +103,7 @@ fun sendSmsNow(context: Context, scheduledTreatment: ScheduledTreatmentWithMessa
     val intent = Intent(context, ScheduleSmsReceiver::class.java)
     intent.putExtra("customer", scheduledTreatment.contact.name)
     intent.putExtra("phone_num", scheduledTreatment.contact.phoneNumber)
-    intent.putExtra("id", scheduledTreatment.scheduledTreatment.id)
+    intent.putExtra("id", scheduledTreatment.scheduledTreatment.scheduledTreatmentId)
     intent.putExtra("message", scheduledTreatment.replaceVariables())
 
     sendSms(context, intent)

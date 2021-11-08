@@ -71,23 +71,9 @@ class AddEditScheduledTreatmentFragment : Fragment() {
             R.id.menu_check_done -> {
                 viewModel.saveScheduledTreatment(requireActivity())
             }
-            //TODO remove?
-            R.id.menu_clear -> {
-                //viewModel.clearData()
-            }
         }
 
         return super.onOptionsItemSelected(item)
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-
-
-        Log.d(TAG, "onResume, loading: ${binding.flContacts.childCount}, ${viewModel.contact.value?.name}")
-        //binding.tvTreatments.setText(viewModel.treatment.value?.name, false)
-
     }
 
     override fun onCreateView(

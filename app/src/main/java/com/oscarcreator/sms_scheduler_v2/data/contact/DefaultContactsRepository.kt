@@ -32,4 +32,9 @@ class DefaultContactsRepository(
     override suspend fun update(contact: Contact): Int = contactsDataSource.update(contact)
 
     override suspend fun updateToBeDeleted(contactId: Long) = contactsDataSource.updateToBeDeleted(contactId)
+
+    override suspend fun updateScheduledTreatmentsWithNewContact(
+        oldContactId: Long,
+        newContactId: Long
+    ) = contactsDataSource.updateScheduledTreatmentsWithNewContact(oldContactId, newContactId)
 }

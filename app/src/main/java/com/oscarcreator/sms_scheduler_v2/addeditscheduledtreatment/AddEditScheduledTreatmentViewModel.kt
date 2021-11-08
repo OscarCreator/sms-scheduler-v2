@@ -227,7 +227,7 @@ class AddEditScheduledTreatmentViewModel(
             } else {
                 updateScheduledTreatment(context,
                     ScheduledTreatment(
-                        id = scheduledTreatmentId!!,
+                        scheduledTreatmentId = scheduledTreatmentId!!,
                         treatmentId = currentTreatment.treatmentId,
                         treatmentTime = Calendar.getInstance(Locale.getDefault())
                             .apply { timeInMillis = currentTime },
@@ -275,7 +275,7 @@ class AddEditScheduledTreatmentViewModel(
         viewModelScope.launch {
             scheduledTreatmentsRepository.update(scheduledTreatment)
 
-            scheduleAlarm(context, scheduledTreatmentsRepository.getScheduledTreatmentWithData(scheduledTreatment.id)!!)
+            scheduleAlarm(context, scheduledTreatmentsRepository.getScheduledTreatmentWithData(scheduledTreatment.scheduledTreatmentId)!!)
             _scheduledTreatmentUpdatedEvent.value = Event(Unit)
         }
     }

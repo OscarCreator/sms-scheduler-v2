@@ -4,6 +4,8 @@ import android.database.sqlite.SQLiteConstraintException
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.oscarcreator.sms_scheduler_v2.data.contact.Contact
+import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatment
+import com.oscarcreator.sms_scheduler_v2.data.scheduled.SmsStatus
 
 /**
  * A Data access object (Dao) for [Contact] object.
@@ -99,7 +101,20 @@ interface ContactDao {
     @Update(onConflict = OnConflictStrategy.IGNORE)
     suspend fun update(contact: Contact): Int
 
-    @Query("UPDATE contacts SET to_be_deleted = :bool WHERE contact_id = :id")
-    suspend fun updateToBeDeleted(id: Long, bool: Boolean = true)
+    /**
+     * Updates the specified [Contact.toBeDeleted] to true
+     * @param contactId the [Contact] to update
+     * */
+    @Query("UPDATE contacts SET to_be_deleted = :bool WHERE contact_id = :contactId")
+    suspend fun updateToBeDeleted(contactId: Long, bool: Boolean = true)
+
+    /**
+     * Updates all [ScheduledTreatment] which is not sent with updated contact.
+     *
+     * @param oldContactId the old contact which was used before.
+     * @param newContactId the new contact which should be used.
+     * */
+    @Query("UPDATE scheduled_treatment SET contact_id = :newContactId WHERE contact_id = :oldContactId AND sms_status = :smsStatus")
+    suspend fun updateScheduledTreatmentsWithNewContact(oldContactId: Long, newContactId: Long, smsStatus: SmsStatus = SmsStatus.SCHEDULED)
 
 }

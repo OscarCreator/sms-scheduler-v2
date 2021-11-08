@@ -41,7 +41,7 @@ class ScheduledTreatmentViewModel(
     fun delete(context: Context) = viewModelScope.launch {
         _scheduledTreatment.value?.let {
             deleteAlarm(context, it)
-            scheduledTreatmentsRepository.delete(it.scheduledTreatment.id)
+            scheduledTreatmentsRepository.delete(it.scheduledTreatment.scheduledTreatmentId)
             _deleteScheduledTreatmentEvent.value = Event(Unit)
         }
     }

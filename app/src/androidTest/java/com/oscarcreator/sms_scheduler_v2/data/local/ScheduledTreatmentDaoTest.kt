@@ -51,7 +51,7 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
     fun scheduledTreatment_insert_returnsScheduledTreatmentWithRelationData() = runBlocking {
 
         val scheduledTreatment = ScheduledTreatment(
-            id = 10,
+            scheduledTreatmentId = 10,
             treatmentId = treatment.treatmentId,
             timeTemplateId = timeTemplate.timeTemplateId,
             messageId = message.messageId,
@@ -77,7 +77,7 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
     fun scheduledTreatment_insertAndUpdated_returnsUpdated(): Unit = runBlocking {
 
         val scheduledTreatment = ScheduledTreatment(
-            id = 10,
+            scheduledTreatmentId = 10,
             treatmentId = treatment.treatmentId,
             timeTemplateId = timeTemplate.timeTemplateId,
             messageId = message.messageId,
@@ -111,7 +111,7 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
     @Test
     fun scheduledTreatment_insertAndDeleted_removesScheduledTreatmentAndCrossRefButKeepsCustomers() = runBlocking {
         val scheduledTreatment = ScheduledTreatment(
-            id = 10,
+            scheduledTreatmentId = 10,
             treatmentId = treatment.treatmentId,
             timeTemplateId = timeTemplate.timeTemplateId,
             messageId = message.messageId,
@@ -137,7 +137,7 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
     @Test
     fun scheduledTreatment_insertAndDeletedCrossRef_keepsScheduledTreatmentAndCustomer() = runBlocking {
         val scheduledTreatment = ScheduledTreatment(
-            id = 10,
+            scheduledTreatmentId = 10,
             treatmentId = treatment.treatmentId,
             timeTemplateId = timeTemplate.timeTemplateId,
             messageId = message.messageId,
@@ -159,7 +159,7 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
     @Test
     fun scheduledTreatment_insertAndDeletedCustomer_keepsCustomer() = runBlocking {
         val scheduledTreatment = ScheduledTreatment(
-            id = 10,
+            scheduledTreatmentId = 10,
             treatmentId = treatment.treatmentId,
             timeTemplateId = timeTemplate.timeTemplateId,
             messageId = message.messageId,
@@ -190,7 +190,7 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
     @Test
     fun scheduledTreatment_insertYear2021_returnsScheduledTreatment() = runBlocking {
         val scheduledTreatment = ScheduledTreatment(
-            id = 10,
+            scheduledTreatmentId = 10,
             treatmentId = treatment.treatmentId,
             timeTemplateId = timeTemplate.timeTemplateId,
             messageId = message.messageId,
@@ -214,7 +214,7 @@ class ScheduledTreatmentDaoTest : BaseDaoTest() {
     @Test
     fun scheduledTreatment_insertYear2021_returnsEmpty() = runBlocking {
         val scheduledTreatment = ScheduledTreatment(
-            id = 10,
+            scheduledTreatmentId = 10,
             treatmentId = treatment.treatmentId,
             timeTemplateId = timeTemplate.timeTemplateId,
             messageId = message.messageId,

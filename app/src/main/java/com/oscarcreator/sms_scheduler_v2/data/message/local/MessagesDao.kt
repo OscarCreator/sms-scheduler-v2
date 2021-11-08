@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.oscarcreator.sms_scheduler_v2.data.message.Message
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatment
+import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentWithMessageTimeTemplateAndContact
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.SmsStatus
 
 /**
@@ -96,4 +97,12 @@ interface MessagesDao {
      * */
     @Query("UPDATE scheduled_treatment SET message_id = :newMessageId WHERE message_id = :oldMessageId and sms_status = :smsStatus")
     suspend fun updateScheduledTreatmentsWithNewMessage(oldMessageId: Long, newMessageId: Long, smsStatus: SmsStatus = SmsStatus.SCHEDULED)
+
+    /**
+     * @param messageId the message to check for references
+     * @return all [ScheduledTreatmentWithMessageTimeTemplateAndContact] which has the associated message and is not sent.
+     * */
+    @Transaction
+    @Query("SELECT * FROM scheduled_treatment WHERE message_id = :messageId AND sms_status = :smsStatus")
+    fun getScheduledTreatmentsWithMessageId(messageId: Long, smsStatus: SmsStatus = SmsStatus.SCHEDULED): List<ScheduledTreatmentWithMessageTimeTemplateAndContact>
 }

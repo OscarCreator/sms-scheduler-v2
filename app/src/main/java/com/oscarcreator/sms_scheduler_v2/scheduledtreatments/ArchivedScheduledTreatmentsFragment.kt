@@ -36,7 +36,7 @@ class ArchivedScheduledTreatmentsFragment: Fragment() {
         adapter.setOnScheduledTreatmentClickedListener(ScheduledTreatmentAdapter.OnScheduledTreatmentClickedListener {position, scheduledTreatment ->
             val action = ScheduledTreatmentsFragmentDirections
                 .actionScheduledTreatmentsFragmentToScheduledTreatmentDetailFragment(
-                    scheduledTreatment.scheduledTreatment.id)
+                    scheduledTreatment.scheduledTreatment.scheduledTreatmentId)
             findNavController().navigate(action)
         })
 

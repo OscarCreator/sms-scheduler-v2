@@ -51,4 +51,7 @@ class ContactsLocalDataSource internal constructor(
 
     override suspend fun updateToBeDeleted(contactId: Long) = contactDao.updateToBeDeleted(contactId)
 
+    override suspend fun updateScheduledTreatmentsWithNewContact(oldContactId: Long, newContactId: Long) =
+        contactDao.updateScheduledTreatmentsWithNewContact(oldContactId, newContactId)
+
 }

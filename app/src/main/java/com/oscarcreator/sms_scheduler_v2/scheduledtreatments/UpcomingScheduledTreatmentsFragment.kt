@@ -62,7 +62,7 @@ class UpcomingScheduledTreatmentsFragment : Fragment() {
 
                     val action = ScheduledTreatmentsFragmentDirections
                             .actionScheduledTreatmentsFragmentToScheduledTreatmentDetailFragment(
-                                    scheduledTreatment.scheduledTreatment.id)
+                                    scheduledTreatment.scheduledTreatment.scheduledTreatmentId)
                     findNavController().navigate(action)
 
                 })
@@ -193,7 +193,7 @@ fun PreviewScheduledTreatmentCard() {
     MdcTheme {
         ScheduledTreatmentCard(
                 ScheduledTreatmentWithMessageTimeTemplateAndContact(
-                        ScheduledTreatment(0, 1, Calendar.getInstance(), 1, 1, 1),
+                        ScheduledTreatment(0, 1, 1, 1, Calendar.getInstance()),
                         Message("Hello, welcome to treatment tomorrow 5/4 12:00 at our location. If you want to unbook then you can do that until 24h before your treatment.", messageId = 1),
                         TimeTemplate( 1000L * 60L * 60L),
                         Treatment("Treatmentpi", 100, 40),

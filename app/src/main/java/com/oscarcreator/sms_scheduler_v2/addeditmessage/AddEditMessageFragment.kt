@@ -4,12 +4,17 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.oscarcreator.sms_scheduler_v2.R
 import com.oscarcreator.sms_scheduler_v2.SmsSchedulerApplication
 import com.oscarcreator.sms_scheduler_v2.databinding.FragmentAddeditMessageBinding
 import com.oscarcreator.sms_scheduler_v2.util.EventObserver
+import com.oscarcreator.sms_scheduler_v2.util.scheduleAlarm
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class AddEditMessageFragment : Fragment() {
 
@@ -26,16 +31,27 @@ class AddEditMessageFragment : Fragment() {
 
     private fun setupNavigation(){
         viewModel.messageUpdateEvent.observe(viewLifecycleOwner, EventObserver {
-            //close keyboard
-            binding.etMessage.clearFocus()
+
             if (it != -1L) {
-                val action = AddEditMessageFragmentDirections.actionAddEditMessageFragmentToMessageDetailFragment(it)
-                findNavController().navigate(action)
+                // updated
+                //TODO loading animation ??
+                lifecycleScope.launch(Dispatchers.IO) {
+
+                    val scheduledTreatments = viewModel.getScheduledTreatmentsWithMessageId(it)
+                    for (scheduledTreatment in scheduledTreatments) {
+                        scheduleAlarm(requireContext(), scheduledTreatment)
+                    }
+
+                    withContext(Dispatchers.Main) {
+                        val action = AddEditMessageFragmentDirections.actionAddEditMessageFragmentToMessageDetailFragment(it)
+                        findNavController().navigate(action)
+                    }
+                }
+
             } else {
                 // created
                 findNavController().navigateUp()
             }
-
         })
     }
 

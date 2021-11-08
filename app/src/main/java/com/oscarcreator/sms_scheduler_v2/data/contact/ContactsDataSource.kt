@@ -26,4 +26,6 @@ interface ContactsDataSource {
     suspend fun update(contact: Contact): Int
 
     suspend fun updateToBeDeleted(contactId: Long)
+
+    suspend fun updateScheduledTreatmentsWithNewContact(oldContactId: Long, newContactId: Long)
 }

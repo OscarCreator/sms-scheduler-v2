@@ -4,9 +4,9 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.oscarcreator.sms_scheduler_v2.*
+import com.oscarcreator.sms_scheduler_v2.data.*
 import com.oscarcreator.sms_scheduler_v2.data.FakeContactsRepository
 import com.oscarcreator.sms_scheduler_v2.data.FakeMessagesRepository
-import com.oscarcreator.sms_scheduler_v2.data.FakeScheduledTreatmentsRepository
 import com.oscarcreator.sms_scheduler_v2.data.FakeTimeTemplateRepository
 import com.oscarcreator.sms_scheduler_v2.data.FakeTreatmentsRepository
 import com.oscarcreator.sms_scheduler_v2.data.contact.Contact
@@ -83,12 +83,12 @@ class AddEditScheduledTreatmentViewModelTest {
     @Test
     fun saveScheduledTreatmentToRepository_STSaved() {
         val scheduledTreatment = ScheduledTreatment(
-            0,
-            treatment.treatmentId,
+            treatmentId = treatment.treatmentId,
             timeTemplateId = timeTemplate.timeTemplateId,
             messageId = message.messageId,
             contactId = contact1.contactId,
-            treatmentTime = Calendar.getInstance()
+            treatmentTime = Calendar.getInstance(),
+            scheduledTreatmentId = 0
         )
         runBlocking {
             contactsRepository.insert(contact1)

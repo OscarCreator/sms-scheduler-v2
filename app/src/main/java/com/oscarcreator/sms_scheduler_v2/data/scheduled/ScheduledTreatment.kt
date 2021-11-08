@@ -44,33 +44,39 @@ import java.util.*
     ]
 )
 data class ScheduledTreatment(
-    /** id of the scheduled treatment */
-    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "scheduled_treatment_id") val id: Long = 0,
+
+    /** id of [Contact] to be sent to*/
+    @ColumnInfo(name = "contact_id") val contactId: Long,
 
     /** id of the associated [Treatment] */
     @ColumnInfo(name = "treatment_id") val treatmentId: Long,
 
-    /** time which the treatment is booked */
-    @ColumnInfo(name = "treatment_time") val treatmentTime: Calendar,
+    /** id of [Message] to be sent to the [Contact] */
+    @ColumnInfo(name = "message_id") val messageId: Long,
 
     /** [TimeTemplate] which modifies the send time */
     @ColumnInfo(name = "time_template_id") val timeTemplateId: Long,
 
-    /** id of [Message] to be sent to the [Contact] */
-    @ColumnInfo(name = "message_id") val messageId: Long,
-
-    /** id of [Contact] to be sent to*/
-    @ColumnInfo(name = "contact_id") val contactId: Long,
+    /** time which the treatment is booked */
+    @ColumnInfo(name = "treatment_time") val treatmentTime: Calendar,
 
     @ColumnInfo(name = "sms_status") var smsStatus: SmsStatus = SmsStatus.SCHEDULED,
 
     /** status of the treatment */
     @ColumnInfo(name = "treatment_status") var treatmentStatus: TreatmentStatus = TreatmentStatus.SCHEDULED,
 
+    /** The time the sms was sent. */
+    @ColumnInfo(name = "sms_sent_time") var smsSentTime: Calendar? = null,
+
+    /** The time the sms was delivered. */
+    @ColumnInfo(name = "sms_delivered_time") var smsDeliveredTime: Calendar? = null,
+
+    /** id of the scheduled treatment */
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "scheduled_treatment_id") val scheduledTreatmentId: Long = 0,
+
     /** cause of canceled treatment */
     var cause: String? = null,
-
-    )
+)
 
 /**
  * The status of the scheduled treatment

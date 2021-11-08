@@ -109,16 +109,21 @@ class AddEditContactViewModel(
     }
 
     private fun updateContact(contact: Contact) = viewModelScope.launch {
+
+        //TODO only upcoming, update()
+        // else mark as "deleted" and insert() and updateST()
+
         try {
             contactsRepository.deleteById(contactId)
-            val newContactId = contactsRepository.insert(contact)
 
-            _contactUpdatedEvent.value = Event(newContactId)
         } catch (e: Exception) {
-            _contactUpdatedEvent.value = Event(-1L)
+            contactsRepository.updateToBeDeleted(contactId)
         }
 
-        //TODO update scheduled treatment with new contact
+        val newContactId = contactsRepository.insert(contact)
+        contactsRepository.updateScheduledTreatmentsWithNewContact(contactId, newContactId)
+        _contactUpdatedEvent.value = Event(newContactId)
+
     }
 
 }

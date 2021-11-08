@@ -57,13 +57,13 @@ class FakeScheduledTreatmentsRepository : ScheduledTreatmentsRepository {
     }
 
     override suspend fun insert(scheduledTreatment: ScheduledTreatment): Long {
-        scheduledTreatmentsServiceData[scheduledTreatment.id] = scheduledTreatment
+        scheduledTreatmentsServiceData[scheduledTreatment.scheduledTreatmentId] = scheduledTreatment
         observableScheduledTreatments.value = scheduledTreatmentsServiceData.values.toList()
-        return scheduledTreatment.id
+        return scheduledTreatment.scheduledTreatmentId
     }
 
     override suspend fun update(scheduledTreatment: ScheduledTreatment): Int {
-        scheduledTreatmentsServiceData[scheduledTreatment.id] = scheduledTreatment
+        scheduledTreatmentsServiceData[scheduledTreatment.scheduledTreatmentId] = scheduledTreatment
         return 1
     }
 

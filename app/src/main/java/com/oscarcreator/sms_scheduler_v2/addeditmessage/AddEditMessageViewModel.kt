@@ -8,6 +8,7 @@ import com.oscarcreator.sms_scheduler_v2.R
 import com.oscarcreator.sms_scheduler_v2.data.Result
 import com.oscarcreator.sms_scheduler_v2.data.message.Message
 import com.oscarcreator.sms_scheduler_v2.data.message.MessagesRepository
+import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentWithMessageTimeTemplateAndContact
 import com.oscarcreator.sms_scheduler_v2.util.Event
 import kotlinx.coroutines.launch
 
@@ -89,6 +90,9 @@ class AddEditMessageViewModel(
             updateMessage(Message(currentMessage, messageVersion = messageVersion + 1, messageGroupId = messageGroupId))
         }
     }
+
+    fun getScheduledTreatmentsWithMessageId(messageId: Long): List<ScheduledTreatmentWithMessageTimeTemplateAndContact> =
+        messagesRepository.getScheduledTreatmentsWithMessageId(messageId)
 
     private fun createMessage(message: Message) = viewModelScope.launch {
         messagesRepository.insert(message)

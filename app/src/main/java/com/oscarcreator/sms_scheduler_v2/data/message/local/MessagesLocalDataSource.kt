@@ -5,6 +5,7 @@ import androidx.lifecycle.map
 import com.oscarcreator.sms_scheduler_v2.data.Result
 import com.oscarcreator.sms_scheduler_v2.data.message.Message
 import com.oscarcreator.sms_scheduler_v2.data.message.MessagesDataSource
+import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentWithMessageTimeTemplateAndContact
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -52,5 +53,8 @@ class MessagesLocalDataSource internal constructor(
         oldMessageId: Long,
         newMessageId: Long
     ) = messagesDao.updateScheduledTreatmentsWithNewMessage(oldMessageId, newMessageId)
+
+    override fun getScheduledTreatmentsWithMessageId(messageId: Long): List<ScheduledTreatmentWithMessageTimeTemplateAndContact> =
+        messagesDao.getScheduledTreatmentsWithMessageId(messageId)
 
 }

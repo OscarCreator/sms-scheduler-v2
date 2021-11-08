@@ -61,7 +61,7 @@ class ScheduledTreatmentAdapter :
 
     override fun getItemCount(): Int = list.size
 
-    override fun getItemId(position: Int): Long = list[position].scheduledTreatment.id
+    override fun getItemId(position: Int): Long = list[position].scheduledTreatment.scheduledTreatmentId
 
     fun setScheduledTreatments(scheduledTreatments: List<ScheduledTreatmentWithMessageTimeTemplateAndContact>) {
         list = scheduledTreatments

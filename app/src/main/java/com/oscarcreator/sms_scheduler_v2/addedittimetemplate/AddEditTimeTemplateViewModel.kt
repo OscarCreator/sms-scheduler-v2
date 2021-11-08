@@ -114,7 +114,7 @@ class AddEditTimeTemplateViewModel(
 
     private fun createTimeTemplate(newTimeTemplate: TimeTemplate) = viewModelScope.launch {
         val newTimeTemplateId = timeTemplatesRepository.insert(newTimeTemplate)
-        _timeTemplateUpdatedEvent.value = Event(newTimeTemplateId)
+        _timeTemplateUpdatedEvent.value = Event(-1)
     }
 
     private fun updateTimeTemplate(timeTemplate: TimeTemplate) = viewModelScope.launch {
