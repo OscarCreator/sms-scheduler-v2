@@ -187,12 +187,13 @@ fun sendNotificationToScheduledTreatment(context: Context, intent: Intent, title
         .setSmallIcon(R.drawable.ic_contacts)
         .setContentIntent(
             NavDeepLinkBuilder(context)
+
                 .setGraph(R.navigation.nav_graph)
                 .setDestination(R.id.scheduledTreatmentDetailFragment)
                 .setArguments(Bundle().apply {
                     putLong("scheduledTreatmentId", id)
                 })
-                .createPendingIntent()
+                .createTaskStackBuilder().getPendingIntent(id.toInt(), PendingIntent.FLAG_IMMUTABLE)
         ).setAutoCancel(true)
 
     with(NotificationManagerCompat.from(context)) {

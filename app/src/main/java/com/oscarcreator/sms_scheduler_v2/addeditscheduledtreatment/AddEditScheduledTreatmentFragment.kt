@@ -209,13 +209,6 @@ class AddEditScheduledTreatmentFragment : Fragment() {
 
         setUpContactInput()
 
-        viewModel.customersLoadedEvent.observe(viewLifecycleOwner, EventObserver {
-
-            viewModel.contact.value?.let { it1 -> addNewChip(it1) }
-
-            Log.d(TAG, "${binding.flContacts.childCount}, ${viewModel.contact.value?.name}")
-        })
-
         setUpSendSmsPermission()
 
         return binding.root

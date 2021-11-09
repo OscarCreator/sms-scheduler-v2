@@ -25,4 +25,9 @@ interface ScheduledTreatmentsDataSource {
 
     suspend fun delete(scheduledTreatmentId: Long): Int
 
+    fun getUpcomingFailedScheduledTreatmentsWithData(calendar: Calendar): LiveData<List<ScheduledTreatmentWithMessageTimeTemplateAndContact>>
+
+    suspend fun setScheduledTreatmentTreatmentStatus(scheduledTreatmentId: Long, treatmentStatus: TreatmentStatus)
+
+    suspend fun setScheduledTreatmentSmsStatus(scheduledTreatmentId: Long, smsStatus: SmsStatus)
 }

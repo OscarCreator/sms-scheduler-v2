@@ -39,9 +39,6 @@ class AddEditScheduledTreatmentViewModel(
 
     val timeTemplateText = MutableLiveData<String>()
 
-    private val _customersLoadedEvent = MutableLiveData<Event<Unit>>()
-    val customersLoadedEvent: LiveData<Event<Unit>> = _customersLoadedEvent
-
     private val _allTreatments = treatmentsRepository.observeTreatments()
     val allTreatment = _allTreatments
 
@@ -189,10 +186,10 @@ class AddEditScheduledTreatmentViewModel(
         _timeTemplateId = scheduledTreatmentWithData.timeTemplate.timeTemplateId
         _messageId = scheduledTreatmentWithData.message.messageId
 
+        contact.value = scheduledTreatmentWithData.contact
         _contactId = scheduledTreatmentWithData.contact.contactId
 
         isDataLoaded = true
-        _customersLoadedEvent.value = Event(Unit)
     }
 
     fun saveScheduledTreatment(context: Context) {

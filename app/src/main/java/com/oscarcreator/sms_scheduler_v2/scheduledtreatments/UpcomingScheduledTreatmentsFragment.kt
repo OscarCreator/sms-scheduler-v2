@@ -143,6 +143,9 @@ fun ScheduledTreatmentCard(scheduledTreatment: ScheduledTreatmentWithMessageTime
                             SmsStatus.RECEIVED -> {
                                 painterResource(R.drawable.ic_done_all)
                             }
+                            SmsStatus.ERROR -> {
+                                painterResource(R.drawable.ic_close)
+                            }
                             else -> {
                                 painterResource(R.drawable.ic_schedule_send)
                             }
@@ -150,8 +153,8 @@ fun ScheduledTreatmentCard(scheduledTreatment: ScheduledTreatmentWithMessageTime
                         },
                         contentDescription = null,
                         modifier = Modifier
-                                .size(20.dp)
-                                .align(Alignment.CenterVertically)
+                            .size(20.dp)
+                            .align(Alignment.CenterVertically)
                 )
                 if (scheduledTreatment.scheduledTreatment.smsStatus == SmsStatus.SCHEDULED) {
 

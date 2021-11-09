@@ -7,6 +7,7 @@ import androidx.navigation.fragment.findNavController
 import com.oscarcreator.sms_scheduler_v2.R
 import com.oscarcreator.sms_scheduler_v2.data.TreatmentsStatsRepository
 import com.oscarcreator.sms_scheduler_v2.databinding.FragmentDashboardBinding
+import com.oscarcreator.sms_scheduler_v2.notifications.NotificationsFragment
 
 class DashboardFragment : Fragment() {
 
@@ -54,7 +55,9 @@ class DashboardFragment : Fragment() {
     ): View {
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
 
-        //setUpStatisticsView()
+        childFragmentManager.beginTransaction()
+            .replace(R.id.fc_notifications, NotificationsFragment())
+            .commit()
 
         binding.fabAddTreatment.setOnClickListener{
             val action = DashboardFragmentDirections.actionDashboardFragmentToAddEditTreatmentFragment()

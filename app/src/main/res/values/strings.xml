@@ -65,6 +65,16 @@
     <string name="temp_delete_exception_text">Not possible to delete currently.</string>
     <string name="treatment_time">%1$d min</string>
     <string name="treatment_price">%1$d SEK</string>
+    <string name="retry_send">RETRY SEND</string>
+    <string name="view">VIEW</string>
+    <string name="dismiss">DISMISS</string>
+    <string name="sms_failed_known">Sms failed to be sent to %1$s at %2$s.\nMake sure you have service turned on.</string>
+    <string name="sms_not_sent">Sms not sent</string>
+    <string name="cancel">CANCEL</string>
+    <string name="mark_and_close">MARK AND CLOSE</string>
+    <string name="sent">Sent</string>
+    <string name="done">Done</string>
+    <string name="mark_treatment_as">Mark treatment as</string>
 
     <string-array name="message_variable_descriptions">
         <item>The name of the person for the treatment.</item>
