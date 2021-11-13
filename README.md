@@ -1,5 +1,7 @@
 # SMS Scheduler V2 (Soon to be released)
 
+<img src="app/src/release/ic_launcher-playstore.png" width="20%" align="right" />
+
 An app made to easily schedule treatments for small companies. You choose a customer and time and the app will automatically send a SMS to the customer. The SMS text is made as an template which you can get variables such as name, time and date of treatment replaced in the SMS text. You can choose when the SMS should be sent relative to the treatment date with a time template.
 
 ### Automatic updates from template
