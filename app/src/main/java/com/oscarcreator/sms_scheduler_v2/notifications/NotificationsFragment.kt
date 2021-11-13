@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
@@ -141,7 +142,7 @@ fun NotificationCard(
     onDismiss: (id: Long) -> Unit = {}
 ) {
 
-    Card(onClick = { /*TODO*/ }, modifier = Modifier) {
+    Card(onClick = { /*TODO*/ }, modifier = Modifier.width(344.dp)) {
         Column(modifier = Modifier.padding(8.dp)) {
             Column(modifier = Modifier.padding(8.dp)) {
                 // title
@@ -165,7 +166,7 @@ fun NotificationCard(
                 Text(
                     stringResource(R.string.sms_failed_known, scheduledTreatment.contact.name, sendTimeText),
                     modifier = Modifier.padding(top = 16.dp),
-                    color = MaterialTheme.colors.secondary,
+                    color = MaterialTheme.colors.onSecondary,
                     style = MaterialTheme.typography.body2,
                     softWrap = true,
 

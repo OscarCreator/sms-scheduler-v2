@@ -2,23 +2,18 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-
+        <item name="colorPrimary">@color/navy_700</item>
+        <item name="colorPrimaryDark">@color/navy_900</item>
+        <item name="colorPrimaryVariant">@color/navy_500</item>
+        <item name="colorSecondary">@color/light_blue_500</item>
+        <item name="colorSecondaryVariant">@color/light_blue_700</item>
 
         <item name="actionModeCloseDrawable">@drawable/ic_close</item>
         <item name="actionModeStyle">@style/Widget.App.ActionMode</item>
     </style>
 
     <style name="Widget.App.ActionMode" parent="Widget.AppCompat.ActionMode">
-        <item name="background">@color/grey_900</item>
+        <item name="background">@color/navy_900</item>
     </style>
-
-    <style name="App.Widget.ExposedDropdownMenu" parent="Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
-
-
-    </style>
-
 
 </resources>

@@ -57,7 +57,7 @@
                 android:id="@+id/upcoming_treatment_list_fragment_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:background="@color/colorAccent"
+                tools:background="?attr/colorSurface"
                 />
 
         </LinearLayout>
