@@ -82,7 +82,7 @@ interface ScheduledTreatmentDao {
     suspend fun getUpcomingScheduledTreatmentsWithData(smsStatus: SmsStatus = SmsStatus.SCHEDULED): List<ScheduledTreatmentWithMessageTimeTemplateAndContact>
 
     @Transaction
-    @Query("SELECT * FROM  scheduled_treatment, time_templates WHERE (treatment_time + delay) < :calendar AND sms_status == :smsStatus1 OR sms_status == :smsStatus2 AND treatment_status == :treatmentStatus")
+    @Query("SELECT * FROM scheduled_treatment JOIN time_templates USING (time_template_id) WHERE (treatment_time + delay) < :calendar AND sms_status == :smsStatus1 OR sms_status == :smsStatus2 AND treatment_status == :treatmentStatus")
     fun getUpcomingFailedScheduledTreatmentsWithData(calendar: Calendar, smsStatus1: SmsStatus = SmsStatus.SCHEDULED, smsStatus2: SmsStatus = SmsStatus.ERROR, treatmentStatus: TreatmentStatus = TreatmentStatus.SCHEDULED): LiveData<List<ScheduledTreatmentWithMessageTimeTemplateAndContact>>
 
     @Query("UPDATE scheduled_treatment SET sms_status = :smsStatus WHERE scheduled_treatment_id = :scheduledTreatmentId ")

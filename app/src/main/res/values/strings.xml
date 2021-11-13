@@ -68,7 +68,7 @@
     <string name="retry_send">RETRY SEND</string>
     <string name="view">VIEW</string>
     <string name="dismiss">DISMISS</string>
-    <string name="sms_failed_known">Sms failed to be sent to %1$s at %2$s.\nMake sure you have service turned on.</string>
+    <string name="sms_failed_known">Sms failed to be sent to %1$s at %2$s. Make sure you have service turned on.</string>
     <string name="sms_not_sent">Sms not sent</string>
     <string name="cancel">CANCEL</string>
     <string name="mark_and_close">MARK AND CLOSE</string>

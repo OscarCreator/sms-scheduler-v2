@@ -12,7 +12,7 @@ class NotificationsViewModel(
     private val scheduledTreatmentsRepository: ScheduledTreatmentsRepository
 ) : ViewModel() {
     fun markScheduledTreatmentAsSent(scheduledTreatmentId: Long) = viewModelScope.launch {
-        scheduledTreatmentsRepository.setScheduledTreatmentSmsStatus(scheduledTreatmentId, SmsStatus.SENT)
+        scheduledTreatmentsRepository.setScheduledTreatmentSmsStatus(scheduledTreatmentId, SmsStatus.RECEIVED)
     }
 
     fun markScheduledTreatmentAsDone(scheduledTreatmentId: Long) = viewModelScope.launch {

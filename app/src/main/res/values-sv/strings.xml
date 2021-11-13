@@ -72,7 +72,7 @@
     <string name="retry_send">FÖRSÖK IGEN</string>
     <string name="view">GRANSKA</string>
     <string name="dismiss">AVFÄRDA</string>
-    <string name="sms_failed_known">Misslyckades att skicka sms till %1$s vid %2$s.\nSe till att du har täckning innan du försöker igen.</string>
+    <string name="sms_failed_known">Misslyckades att skicka sms till %1$s vid %2$s. Se till att du har täckning innan du försöker igen.</string>
     <string name="sms_not_sent">Sms ej sickats</string>
     <string name="cancel">AVBRYT</string>
     <string name="mark_and_close">MARKERA OCH STÄNG</string>
