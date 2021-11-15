@@ -75,6 +75,10 @@
     <string name="sent">Sent</string>
     <string name="done">Done</string>
     <string name="mark_treatment_as">Mark treatment as</string>
+    <string name="sms_not_sent_title">Sms not sent to %1$s</string>
+    <string name="sms_not_delivered_title">Sms not delivered to %1$s</string>
+    <string name="permission_not_granted_title">Permission send sms not granted</string>
+    <string name="permission_not_granted_description">SMS permission needs to be enabled to send sms.</string>
 
     <string-array name="message_variable_descriptions">
         <item>The name of the person for the treatment.</item>
