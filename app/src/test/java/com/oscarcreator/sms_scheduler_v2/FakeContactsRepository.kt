@@ -91,6 +91,13 @@ class FakeContactsRepository : ContactsRepository {
         }
     }
 
+    override suspend fun updateScheduledTreatmentsWithNewContact(
+        oldContactId: Long,
+        newContactId: Long
+    ) {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun update(contact: Contact): Int {
         contactsServiceData[contact.contactId] = contact
         return 1

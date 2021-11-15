@@ -98,6 +98,13 @@ class FakeContactsRepository : ContactsRepository {
         }
     }
 
+    override suspend fun updateScheduledTreatmentsWithNewContact(
+        oldContactId: Long,
+        newContactId: Long
+    ) {
+        TODO("Not yet implemented")
+    }
+
     private fun refreshTreatments() {
         observableContacts.value = contactsServiceData.values.toList()
     }

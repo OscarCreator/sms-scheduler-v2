@@ -83,5 +83,8 @@
     <string name="sms_not_delivered_title">Sms ej mottaget till %1$s</string>
     <string name="permission_not_granted_title">Permission send sms not granted</string>
     <string name="permission_not_granted_description">SMS permission needs to be enabled to send sms.</string>
+    <string name="contact_updated">Kontakt har uppdaterats</string>
+    <string name="contact_saved">Kontakt har sparats</string>
+    <string name="contact_deleted">Kontakt har raderats</string>
 
 </resources>

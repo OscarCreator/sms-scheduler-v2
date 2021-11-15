@@ -2,15 +2,16 @@ package com.oscarcreator.sms_scheduler_v2.contactdetail
 
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.snackbar.Snackbar
 import com.oscarcreator.sms_scheduler_v2.R
 import com.oscarcreator.sms_scheduler_v2.SmsSchedulerApplication
 import com.oscarcreator.sms_scheduler_v2.databinding.FragmentDetailContactBinding
 import com.oscarcreator.sms_scheduler_v2.util.EventObserver
+import com.oscarcreator.sms_scheduler_v2.util.setupSnackbar
 
 class DetailContactFragment : Fragment() {
 
@@ -34,10 +35,7 @@ class DetailContactFragment : Fragment() {
 
         when (item.itemId) {
             R.id.delete -> {
-                //TODO redo for the possibility to remove contacts
-                viewModel.deleteContact {
-                    Toast.makeText(requireContext(), getString(R.string.temp_delete_exception_text), Toast.LENGTH_LONG).show()
-                }
+                viewModel.deleteContact()
                 return true
             }
         }
@@ -64,12 +62,22 @@ class DetailContactFragment : Fragment() {
         })
 
         binding.fabEditContact.setOnClickListener {
+            viewModel.editContact()
+        }
+
+        viewModel.editContactEvent.observe(viewLifecycleOwner, EventObserver {
             val action = DetailContactFragmentDirections
                 .actionDetailContactFragmentToAddEditContactFragment(args.contactId)
             findNavController().navigate(action)
-        }
+        })
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        view.setupSnackbar(this, viewModel.snackbarText, Snackbar.LENGTH_SHORT, binding.fabEditContact)
     }
 
 }

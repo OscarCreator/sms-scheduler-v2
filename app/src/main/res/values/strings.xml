@@ -79,6 +79,9 @@
     <string name="sms_not_delivered_title">Sms not delivered to %1$s</string>
     <string name="permission_not_granted_title">Permission send sms not granted</string>
     <string name="permission_not_granted_description">SMS permission needs to be enabled to send sms.</string>
+    <string name="contact_updated">Contact successfully updated</string>
+    <string name="contact_saved">Contact successfully saved</string>
+    <string name="contact_deleted">Contact successfully deleted</string>
 
     <string-array name="message_variable_descriptions">
         <item>The name of the person for the treatment.</item>
