@@ -88,7 +88,14 @@ class MessagesFragment : Fragment(), ActionMode.Callback {
     }
 
     private fun selectItem(adapter: MessageAdapter, position: Int) {
-        if (adapter.selectionList[position]) selectedCount-- else selectedCount++
+        if (adapter.selectionList[position]) {
+            selectedCount--
+            if (selectedCount == 0) {
+                actionMode?.finish()
+                return
+            }
+
+        } else selectedCount++
         adapter.selectionList[position] = !adapter.selectionList[position]
         adapter.notifyItemChanged(position)
 

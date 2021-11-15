@@ -81,8 +81,13 @@ class TimeTemplatesFragment : Fragment(), ActionMode.Callback {
 
 
     private fun selectItem(adapter: TimeTemplateAdapter, position: Int) {
-        if (adapter.selectionList[position]) viewModel.selectedCount--
-        else viewModel.selectedCount++
+        if (adapter.selectionList[position]) {
+            viewModel.selectedCount--
+            if (viewModel.selectedCount == 0) {
+                actionMode?.finish()
+                return
+            }
+        } else viewModel.selectedCount++
 
         adapter.selectionList[position] = !adapter.selectionList[position]
         adapter.notifyItemChanged(position)
