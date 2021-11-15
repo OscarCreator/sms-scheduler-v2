@@ -6,10 +6,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.snackbar.Snackbar
 import com.oscarcreator.sms_scheduler_v2.R
 import com.oscarcreator.sms_scheduler_v2.SmsSchedulerApplication
 import com.oscarcreator.sms_scheduler_v2.databinding.FragmentDetailTreatmentBinding
 import com.oscarcreator.sms_scheduler_v2.util.EventObserver
+import com.oscarcreator.sms_scheduler_v2.util.setupSnackbar
 
 class TreatmentDetailFragment : Fragment() {
 
@@ -56,10 +58,14 @@ class TreatmentDetailFragment : Fragment() {
         viewModel.start(args.treatmentId)
 
         binding.fabEditTreatment.setOnClickListener {
+            viewModel.editTreatment()
+        }
+
+        viewModel.editTreatmentEvent.observe(viewLifecycleOwner, EventObserver {
             val action = TreatmentDetailFragmentDirections
                 .actionTreatmentDetailFragmentToAddEditTreatment(args.treatmentId)
             findNavController().navigate(action)
-        }
+        })
 
         viewModel.deleteTreatmentEvent.observe(viewLifecycleOwner, EventObserver {
             findNavController().navigateUp()
@@ -68,6 +74,12 @@ class TreatmentDetailFragment : Fragment() {
         setHasOptionsMenu(true)
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        view.setupSnackbar(this, viewModel.snackbarText, Snackbar.LENGTH_SHORT, binding.fabEditTreatment)
     }
 
 }

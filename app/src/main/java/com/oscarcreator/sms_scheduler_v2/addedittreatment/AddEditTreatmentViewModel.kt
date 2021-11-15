@@ -108,6 +108,7 @@ class AddEditTreatmentViewModel(
 
     private fun createTreatment(newTreatment: Treatment) = viewModelScope.launch {
         treatmentsRepository.insert(newTreatment)
+        _snackbarText.value = Event(R.string.treatment_saved)
         _treatmentUpdatedEvent.value = Event(-1)
     }
 
@@ -124,7 +125,7 @@ class AddEditTreatmentViewModel(
         val newTreatmentId = treatmentsRepository.insert(treatment)
 
         treatmentsRepository.updateScheduledTreatmentsWithNewTreatment(treatmentId, newTreatmentId)
-
+        _snackbarText.value = Event(R.string.treatment_updated)
         _treatmentUpdatedEvent.value = Event(newTreatmentId)
 
     }

@@ -43,10 +43,10 @@
     <string name="empty_message">Message cannot be empty</string>
     <string name="sms_error_channel">Sms error</string>
     <string name="sms_error_description">When a scheduled sms failed to be delivered or sent</string>
-    <string name="empty_treatment_message">empty treatment text</string>
+    <string name="empty_treatment_message">Empty treatment text</string>
     <string name="loading_treatment_error">Error while loading treatment</string>
     <string name="delete">delete</string>
-    <string name="empty_contact_message">empty contact text</string>
+    <string name="empty_contact_message">Empty contact text</string>
     <string name="loading_contact_error">Error while loading contact</string>
     <string name="default_message">Default message</string>
     <string name="default_timetemplate">Default time template</string>
@@ -82,6 +82,9 @@
     <string name="contact_updated">Contact successfully updated</string>
     <string name="contact_saved">Contact successfully saved</string>
     <string name="contact_deleted">Contact successfully deleted</string>
+    <string name="treatment_deleted">Treatment successfully deleted</string>
+    <string name="treatment_updated">Treatment successfully updated</string>
+    <string name="treatment_saved">Treatment successfully saved</string>
 
     <string-array name="message_variable_descriptions">
         <item>The name of the person for the treatment.</item>

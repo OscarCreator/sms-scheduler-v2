@@ -39,10 +39,10 @@
     <string name="empty_message">Meddelandet kan inte vara tomt</string>
     <string name="sms_error_channel">Sms error</string>
     <string name="sms_error_description">När ett schemalagt sms inte kunde bli skickat eller mottagit</string>
-    <string name="empty_treatment_message">tom behandling text</string>
+    <string name="empty_treatment_message">Tom behandling text</string>
     <string name="loading_treatment_error">Fel vid laddning av behandlingen</string>
     <string name="delete">radera</string>
-    <string name="empty_contact_message">tom contact text</string>
+    <string name="empty_contact_message">Tom contact text</string>
     <string name="loading_contact_error">Fel vid laddning av contact</string>
     <string name="default_message">Förvalt meddelande</string>
     <string name="default_timetemplate">Förvald tidsmall</string>
@@ -86,5 +86,8 @@
     <string name="contact_updated">Kontakt har uppdaterats</string>
     <string name="contact_saved">Kontakt har sparats</string>
     <string name="contact_deleted">Kontakt har raderats</string>
+    <string name="treatment_deleted">Behandling har raderats</string>
+    <string name="treatment_updated">Behandling har uppdaterats</string>
+    <string name="treatment_saved">Behandling har sparats</string>
 
 </resources>

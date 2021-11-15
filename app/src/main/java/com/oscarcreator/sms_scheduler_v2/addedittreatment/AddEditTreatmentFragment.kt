@@ -9,9 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.snackbar.Snackbar
 import com.oscarcreator.sms_scheduler_v2.SmsSchedulerApplication
 import com.oscarcreator.sms_scheduler_v2.databinding.FragmentAddeditTreatmentBinding
 import com.oscarcreator.sms_scheduler_v2.util.EventObserver
+import com.oscarcreator.sms_scheduler_v2.util.setupSnackbar
 
 class AddEditTreatmentFragment : Fragment() {
 
@@ -26,16 +28,6 @@ class AddEditTreatmentFragment : Fragment() {
             (requireContext().applicationContext as SmsSchedulerApplication).treatmentsRepository)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel.start(args.treatmentId)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -46,6 +38,8 @@ class AddEditTreatmentFragment : Fragment() {
         }
         binding.lifecycleOwner = this.viewLifecycleOwner
 
+        viewModel.start(args.treatmentId)
+
         viewModel.treatmentUpdatedEvent.observe(viewLifecycleOwner, EventObserver {
             if (it != -1L) {
                 //updated
@@ -55,10 +49,6 @@ class AddEditTreatmentFragment : Fragment() {
                 //created
                 findNavController().navigateUp()
             }
-
-        })
-
-        viewModel.snackbarText.observe(viewLifecycleOwner, EventObserver {
 
         })
 
@@ -75,5 +65,10 @@ class AddEditTreatmentFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        view.setupSnackbar(this, viewModel.snackbarText, Snackbar.LENGTH_SHORT, binding.fabSaveTreatment)
     }
 }

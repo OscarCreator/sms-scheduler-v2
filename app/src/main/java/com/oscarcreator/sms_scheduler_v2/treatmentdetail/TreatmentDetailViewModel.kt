@@ -41,6 +41,10 @@ class TreatmentDetailViewModel(
         _treatmentId.value = treatmentId
     }
 
+    fun editTreatment() {
+        _editTreatmentEvent.value = Event(Unit)
+    }
+
     fun deleteTreatment() = viewModelScope.launch {
         _treatmentId.value?.let {
             try {
@@ -48,6 +52,7 @@ class TreatmentDetailViewModel(
             } catch (e: Exception) {
                 treatmentsRepository.updateToBeDeleted(it)
             }
+            _snackbarText.value = Event(R.string.treatment_deleted)
             _deleteTreatmentEvent.value = Event(Unit)
         }
 
