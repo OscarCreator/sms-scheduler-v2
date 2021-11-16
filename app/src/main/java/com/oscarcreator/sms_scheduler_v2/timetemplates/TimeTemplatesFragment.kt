@@ -2,17 +2,16 @@ package com.oscarcreator.sms_scheduler_v2.timetemplates
 
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.oscarcreator.sms_scheduler_v2.R
 import com.oscarcreator.sms_scheduler_v2.SmsSchedulerApplication
 import com.oscarcreator.sms_scheduler_v2.data.timetemplate.TimeTemplate
 import com.oscarcreator.sms_scheduler_v2.databinding.FragmentTimetemplateListBinding
-import kotlinx.coroutines.launch
+import com.oscarcreator.sms_scheduler_v2.util.EventObserver
 
 class TimeTemplatesFragment : Fragment(), ActionMode.Callback {
 
@@ -76,6 +75,16 @@ class TimeTemplatesFragment : Fragment(), ActionMode.Callback {
             adapter.setTimeTemplates(it)
         }
 
+        viewModel.deleteMessageEvent.observe(viewLifecycleOwner, EventObserver {
+            actionMode?.finish()
+        })
+
+        viewModel.snackbarText.observe(viewLifecycleOwner, EventObserver {
+            Snackbar.make(binding.root, getString(it), Snackbar.LENGTH_SHORT)
+                .setAnchorView(binding.fabAddTimetemplate)
+                .show()
+        })
+
         return binding.root
     }
 
@@ -109,16 +118,7 @@ class TimeTemplatesFragment : Fragment(), ActionMode.Callback {
     override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.delete -> {
-                for(timetemplate in adapter.getSelectedItems()) {
-                    lifecycleScope.launch {
-                        try {
-                            viewModel.deleteTimeTemplates(timetemplate)
-                        } catch (e: Exception) {
-                            Toast.makeText(requireContext(), getString(R.string.temp_delete_exception_text), Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                }
-                mode.finish()
+                viewModel.deleteTimeTemplates(*adapter.getSelectedItems())
                 true
             }
             else -> false

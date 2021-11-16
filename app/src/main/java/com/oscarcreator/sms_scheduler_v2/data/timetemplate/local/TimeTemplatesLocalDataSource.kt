@@ -2,6 +2,7 @@ package com.oscarcreator.sms_scheduler_v2.data.timetemplate.local
 
 import androidx.lifecycle.LiveData
 import com.oscarcreator.sms_scheduler_v2.data.Result
+import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentWithMessageTimeTemplateAndContact
 import com.oscarcreator.sms_scheduler_v2.data.timetemplate.TimeTemplate
 import com.oscarcreator.sms_scheduler_v2.data.timetemplate.TimeTemplatesDataSource
 import kotlinx.coroutines.CoroutineDispatcher
@@ -51,5 +52,6 @@ class TimeTemplatesLocalDataSource internal constructor(
 
     override fun observeTimeTemplate(id: Long): LiveData<TimeTemplate> = timeTemplatesDao.observeTimeTemplate(id)
 
-
+    override fun getScheduledTreatmentsWithTimeTemplateId(timeTemplateId: Long): List<ScheduledTreatmentWithMessageTimeTemplateAndContact> =
+        timeTemplatesDao.getScheduledTreatmentsWithTimeTemplateId(timeTemplateId)
 }

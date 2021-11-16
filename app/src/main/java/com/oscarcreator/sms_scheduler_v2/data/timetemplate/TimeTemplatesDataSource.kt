@@ -2,6 +2,7 @@ package com.oscarcreator.sms_scheduler_v2.data.timetemplate
 
 import androidx.lifecycle.LiveData
 import com.oscarcreator.sms_scheduler_v2.data.Result
+import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentWithMessageTimeTemplateAndContact
 
 interface TimeTemplatesDataSource {
 
@@ -24,4 +25,6 @@ interface TimeTemplatesDataSource {
     suspend fun updateToBeDeleted(timeTemplateId: Long)
 
     suspend fun updateScheduledTreatmentsWithNewTimeTemplate(oldTimeTemplateId: Long, newTimeTemplateId: Long)
+
+    fun getScheduledTreatmentsWithTimeTemplateId(timeTemplateId: Long): List<ScheduledTreatmentWithMessageTimeTemplateAndContact>
 }

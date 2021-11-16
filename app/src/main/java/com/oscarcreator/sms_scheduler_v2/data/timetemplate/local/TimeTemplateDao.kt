@@ -2,6 +2,7 @@ package com.oscarcreator.sms_scheduler_v2.data.timetemplate.local
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentWithMessageTimeTemplateAndContact
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.SmsStatus
 import com.oscarcreator.sms_scheduler_v2.data.timetemplate.TimeTemplate
 
@@ -80,4 +81,8 @@ interface TimeTemplateDao {
 
     @Query("UPDATE scheduled_treatment SET time_template_id = :newTimeTemplateId WHERE time_template_id = :oldTimeTemplateId AND sms_status = :smsStatus")
     suspend fun updateScheduledTreatmentsWithNewTimeTemplate(oldTimeTemplateId: Long, newTimeTemplateId: Long, smsStatus: SmsStatus = SmsStatus.SCHEDULED)
+
+    @Transaction
+    @Query("SELECT * FROM scheduled_treatment WHERE time_template_id = :timeTemplateId AND sms_status = :smsStatus")
+    fun getScheduledTreatmentsWithTimeTemplateId(timeTemplateId: Long, smsStatus: SmsStatus = SmsStatus.SCHEDULED): List<ScheduledTreatmentWithMessageTimeTemplateAndContact>
 }

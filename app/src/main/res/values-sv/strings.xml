@@ -94,5 +94,9 @@
     <string name="message_deleted">Meddelandet har raderats</string>
     <string name="message_saved">Meddelandet har sparats</string>
     <string name="message_updated">Meddelandet har uppdaterats</string>
+    <string name="time_templates_deleted">Tidsmallarna har raderats</string>
+    <string name="time_template_delete">Tidsmallen har raderats</string>
+    <string name="time_template_saved">Tidsmallen har sparats</string>
+    <string name="time_template_updated">Tidsmallen har uppdaterats</string>
 
 </resources>

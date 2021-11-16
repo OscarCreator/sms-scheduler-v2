@@ -91,6 +91,10 @@
     <string name="message_deleted">Message successfully deleted</string>
     <string name="message_saved">Message successfully saved</string>
     <string name="message_updated">Message successfully updated</string>
+    <string name="time_templates_deleted">Time templates successfully deleted</string>
+    <string name="time_template_delete">Time template deleted</string>
+    <string name="time_template_saved">Time template successfully saved</string>
+    <string name="time_template_updated">Time template successfully updated</string>
 
     <string-array name="message_variable_descriptions">
         <item>The name of the person for the treatment.</item>

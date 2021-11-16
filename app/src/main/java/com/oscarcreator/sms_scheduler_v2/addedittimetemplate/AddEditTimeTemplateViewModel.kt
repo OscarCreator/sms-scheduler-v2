@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.oscarcreator.sms_scheduler_v2.R
 import com.oscarcreator.sms_scheduler_v2.data.Result
+import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentWithMessageTimeTemplateAndContact
 import com.oscarcreator.sms_scheduler_v2.data.timetemplate.TimeTemplate
 import com.oscarcreator.sms_scheduler_v2.data.timetemplate.TimeTemplatesRepository
 import com.oscarcreator.sms_scheduler_v2.util.Event
@@ -86,6 +87,10 @@ class AddEditTimeTemplateViewModel(
         }
     }
 
+    fun getScheduledTreatmentsWithTimeTemplateId(timeTemplateId: Long): List<ScheduledTreatmentWithMessageTimeTemplateAndContact> {
+        return timeTemplatesRepository.getScheduledTreatmentsWithTimeTemplateId(timeTemplateId)
+    }
+
     private fun onTimeTemplateLoaded(timeTemplate: TimeTemplate) {
         var tempDelay = timeTemplate.delay
         if (tempDelay < 0) {
@@ -114,6 +119,8 @@ class AddEditTimeTemplateViewModel(
 
     private fun createTimeTemplate(newTimeTemplate: TimeTemplate) = viewModelScope.launch {
         val newTimeTemplateId = timeTemplatesRepository.insert(newTimeTemplate)
+
+        _snackbarText.value = Event(R.string.time_template_saved)
         _timeTemplateUpdatedEvent.value = Event(-1)
     }
 
@@ -132,6 +139,7 @@ class AddEditTimeTemplateViewModel(
         val newTimeTemplateId = timeTemplatesRepository.insert(timeTemplate)
         timeTemplatesRepository.updateScheduledTreatmentsWithNewTimeTemplate(timeTemplateId, newTimeTemplateId)
 
+        _snackbarText.value = Event(R.string.time_template_updated)
         _timeTemplateUpdatedEvent.value = Event(newTimeTemplateId)
     }
 }
