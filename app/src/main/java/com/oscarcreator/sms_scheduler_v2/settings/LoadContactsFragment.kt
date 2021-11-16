@@ -1,5 +1,6 @@
 package com.oscarcreator.sms_scheduler_v2.settings
 
+import android.annotation.SuppressLint
 import android.database.Cursor
 import android.os.Bundle
 import android.provider.ContactsContract
@@ -62,8 +63,6 @@ class LoadContactsFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
                 return true
             }
         }
-
-
         return super.onOptionsItemSelected(item)
     }
 
@@ -84,19 +83,13 @@ class LoadContactsFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
             adapter = this@LoadContactsFragment.adapter
 
         }
-
-
         return binding.root
     }
-
 
     private val PROJECTION: Array<out String> = arrayOf(
         ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME_PRIMARY,
         ContactsContract.CommonDataKinds.Phone.NUMBER
     )
-
-    //TODO only select the contacts with phone number
-    //ContactsContract.CommonDataKinds.Phone.HAS_PHONE_NUMBER
 
     //Only get the contacts with at least one number
     private val SELECTION: String =
@@ -107,20 +100,6 @@ class LoadContactsFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
 
     // Defines the array to hold values that replace the ?
     private val selectionArgs = arrayOf(searchString)
-
-
-    //for adapter
-//    private val FROM_COLUMNS: Array<String> =
-//        arrayOf(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME_PRIMARY,
-//            ContactsContract.CommonDataKinds.Phone.NUMBER)
-//    private val TO_IDS: IntArray = intArrayOf(android.R.id.text1)
-
-
-
-    // An adapter that binds the result Cursor to the ListView
-//    private val cursorAdapter: SimpleCursorAdapter? = null
-
-
 
 
     override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor> {
@@ -137,8 +116,8 @@ class LoadContactsFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
     }
 
     //TODO display that contact is already added. ex with a different name.
+    @SuppressLint("Range")
     override fun onLoadFinished(loader: Loader<Cursor>, data: Cursor?) {
-       // cursorAdapter?.swapCursor(data)
 
 
         //TODO make it not skip frames by using the cursor in the adapter
