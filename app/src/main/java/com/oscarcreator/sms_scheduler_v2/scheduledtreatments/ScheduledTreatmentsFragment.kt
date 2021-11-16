@@ -30,6 +30,8 @@ class ScheduledTreatmentsFragment : Fragment() {
         val viewPager = binding.viewPager
         val tabLayout = binding.tabLayout
 
+        viewPager.offscreenPageLimit = 1
+
         val adapter = ScheduledTreatmentsViewPagerAdapter(childFragmentManager, lifecycle)
         viewPager.adapter = adapter
 

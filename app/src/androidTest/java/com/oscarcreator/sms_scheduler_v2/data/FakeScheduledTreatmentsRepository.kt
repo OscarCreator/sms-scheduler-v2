@@ -4,9 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.oscarcreator.sms_scheduler_v2.data.contact.Contact
 import com.oscarcreator.sms_scheduler_v2.data.message.Message
-import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatment
-import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentWithMessageTimeTemplateAndContact
-import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentsRepository
+import com.oscarcreator.sms_scheduler_v2.data.scheduled.*
 import com.oscarcreator.sms_scheduler_v2.data.timetemplate.TimeTemplate
 import com.oscarcreator.sms_scheduler_v2.data.treatment.Treatment
 import java.util.*
@@ -68,6 +66,24 @@ class FakeScheduledTreatmentsRepository : ScheduledTreatmentsRepository {
     }
 
     override suspend fun delete(scheduledTreatmentId: Long): Int {
+        TODO("Not yet implemented")
+    }
+
+    override fun getUpcomingFailedScheduledTreatmentsWithData(calendar: Calendar): LiveData<List<ScheduledTreatmentWithMessageTimeTemplateAndContact>> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun setScheduledTreatmentTreatmentStatus(
+        scheduledTreatmentId: Long,
+        treatmentStatus: TreatmentStatus
+    ) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun setScheduledTreatmentSmsStatus(
+        scheduledTreatmentId: Long,
+        smsStatus: SmsStatus
+    ) {
         TODO("Not yet implemented")
     }
 

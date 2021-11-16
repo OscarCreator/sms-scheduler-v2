@@ -6,11 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -26,7 +29,6 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.composethemeadapter.MdcTheme
 import com.oscarcreator.sms_scheduler_v2.R
 import com.oscarcreator.sms_scheduler_v2.data.AppDatabase
@@ -37,13 +39,13 @@ import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentWithMe
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.SmsStatus
 import com.oscarcreator.sms_scheduler_v2.data.timetemplate.TimeTemplate
 import com.oscarcreator.sms_scheduler_v2.data.treatment.Treatment
-import com.oscarcreator.sms_scheduler_v2.databinding.FragmentScheduledtreatmentsUpcomingBinding
+import com.oscarcreator.sms_scheduler_v2.databinding.FragmentComposeViewBinding
 import com.oscarcreator.sms_scheduler_v2.util.dateToText
 import java.util.*
 
 class UpcomingScheduledTreatmentsFragment : Fragment() {
 
-    private var _binding: FragmentScheduledtreatmentsUpcomingBinding? = null
+    private var _binding: FragmentComposeViewBinding? = null
     private val binding
         get() = _binding!!
 
@@ -53,40 +55,38 @@ class UpcomingScheduledTreatmentsFragment : Fragment() {
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentScheduledtreatmentsUpcomingBinding.inflate(inflater, container, false)
-
-        val adapter = ScheduledTreatmentAdapter()
-
-        adapter.setOnScheduledTreatmentClickedListener(
-                ScheduledTreatmentAdapter.OnScheduledTreatmentClickedListener { position, scheduledTreatment ->
-
-                    val action = ScheduledTreatmentsFragmentDirections
-                            .actionScheduledTreatmentsFragmentToScheduledTreatmentDetailFragment(
-                                    scheduledTreatment.scheduledTreatment.scheduledTreatmentId)
-                    findNavController().navigate(action)
-
-                })
+        _binding = FragmentComposeViewBinding.inflate(inflater, container, false)
 
         // TODO extract to viewmodel
         val database = AppDatabase.getDatabase(requireContext(), lifecycleScope)
-        //which upcoming should it choose? upcoming treatments or sms
-        database.scheduledTreatmentDao()
-                .getUpcomingScheduledTreatmentsWithData(Calendar.getInstance(Locale.getDefault()))
-                .observe(viewLifecycleOwner) {
 
-                    adapter.setScheduledTreatments(it)
-                    adapter.notifyDataSetChanged()
+        binding.composeView.setContent {
+            MdcTheme {
+                UpcomingScheduledTreatmentsScreen(database) {
+                    val action = ScheduledTreatmentsFragmentDirections
+                        .actionScheduledTreatmentsFragmentToScheduledTreatmentDetailFragment(it)
+                    findNavController().navigate(action)
                 }
-
-
-        binding.recyclerView.apply {
-            this.adapter = adapter
-            this.layoutManager = LinearLayoutManager(requireContext())
+            }
         }
-
         return binding.root
     }
 
+}
+
+@Composable
+fun UpcomingScheduledTreatmentsScreen(database: AppDatabase, onClick: (scheduledTreatmentId: Long) -> Unit) {
+    val currentTime by remember { mutableStateOf(Calendar.getInstance()) }
+    val scheduledTreatments by database.scheduledTreatmentDao().getUpcomingScheduledTreatmentsWithData(currentTime).observeAsState()
+    LazyColumn {
+        scheduledTreatments?.let {
+            items(it) { scheduledTreatment ->
+                ScheduledTreatmentCard(scheduledTreatment) {
+                    onClick(scheduledTreatment.scheduledTreatment.scheduledTreatmentId)
+                }
+            }
+        }
+    }
 }
 
 @Composable

@@ -26,7 +26,7 @@ interface ScheduledTreatmentDao {
     fun getScheduledTreatmentsWithMessageAndTimeTemplateAndContacts(): LiveData<List<ScheduledTreatmentWithMessageTimeTemplateAndContact>>
 
     @Transaction
-    @Query("SELECT * FROM scheduled_treatment WHERE treatment_time > :currentDay")
+    @Query("SELECT * FROM scheduled_treatment WHERE treatment_time > :currentDay ORDER BY treatment_time ASC")
     fun getUpcomingScheduledTreatmentsWithData(currentDay: Calendar): LiveData<List<ScheduledTreatmentWithMessageTimeTemplateAndContact>>
 
     /**
@@ -37,7 +37,7 @@ interface ScheduledTreatmentDao {
      * @return all scheduledTreatments where [ScheduledTreatment.treatmentTime] is less than passed time
      * */
     @Transaction
-    @Query("SELECT * FROM scheduled_treatment WHERE treatment_time < :currentDay")
+    @Query("SELECT * FROM scheduled_treatment WHERE treatment_time < :currentDay ORDER BY treatment_time DESC")
     fun getOldScheduledTreatmentsWithData(currentDay: Calendar): LiveData<List<ScheduledTreatmentWithMessageTimeTemplateAndContact>>
 
     @Transaction
