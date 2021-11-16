@@ -6,6 +6,7 @@ import androidx.lifecycle.map
 import com.oscarcreator.sms_scheduler_v2.data.Result
 import com.oscarcreator.sms_scheduler_v2.data.message.Message
 import com.oscarcreator.sms_scheduler_v2.data.message.MessagesRepository
+import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentWithMessageTimeTemplateAndContact
 import kotlinx.coroutines.runBlocking
 
 class FakeMessagesRepository : MessagesRepository {
@@ -72,6 +73,10 @@ class FakeMessagesRepository : MessagesRepository {
         oldMessageId: Long,
         newMessageId: Long
     ) {
+        TODO("Not yet implemented")
+    }
+
+    override fun getScheduledTreatmentsWithMessageId(messageId: Long): List<ScheduledTreatmentWithMessageTimeTemplateAndContact> {
         TODO("Not yet implemented")
     }
 

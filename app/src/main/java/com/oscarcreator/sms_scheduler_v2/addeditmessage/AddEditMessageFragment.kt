@@ -7,11 +7,13 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.snackbar.Snackbar
 import com.oscarcreator.sms_scheduler_v2.R
 import com.oscarcreator.sms_scheduler_v2.SmsSchedulerApplication
 import com.oscarcreator.sms_scheduler_v2.databinding.FragmentAddeditMessageBinding
 import com.oscarcreator.sms_scheduler_v2.util.EventObserver
 import com.oscarcreator.sms_scheduler_v2.util.scheduleAlarm
+import com.oscarcreator.sms_scheduler_v2.util.setupSnackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -37,6 +39,7 @@ class AddEditMessageFragment : Fragment() {
                 //TODO loading animation ??
                 lifecycleScope.launch(Dispatchers.IO) {
 
+                    // reschedule scheduled treatments with new message
                     val scheduledTreatments = viewModel.getScheduledTreatmentsWithMessageId(it)
                     for (scheduledTreatment in scheduledTreatments) {
                         scheduleAlarm(requireContext(), scheduledTreatment)
@@ -107,5 +110,6 @@ class AddEditMessageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupNavigation()
         viewModel.start(args.messageId)
+        view.setupSnackbar(this, viewModel.snackbarText, Snackbar.LENGTH_SHORT, binding.fabSaveMessage)
     }
 }

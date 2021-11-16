@@ -2,17 +2,29 @@ package com.oscarcreator.sms_scheduler_v2.messages
 
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.composethemeadapter.MdcTheme
+import com.google.android.material.snackbar.Snackbar
 import com.oscarcreator.sms_scheduler_v2.R
 import com.oscarcreator.sms_scheduler_v2.SmsSchedulerApplication
 import com.oscarcreator.sms_scheduler_v2.data.message.Message
 import com.oscarcreator.sms_scheduler_v2.databinding.FragmentMessagesBinding
-import kotlinx.coroutines.launch
+import com.oscarcreator.sms_scheduler_v2.util.EventObserver
 
 class MessagesFragment : Fragment(), ActionMode.Callback {
 
@@ -84,6 +96,16 @@ class MessagesFragment : Fragment(), ActionMode.Callback {
             adapter.setMessages(it)
         })
 
+        viewModel.deleteMessageEvent.observe(viewLifecycleOwner, EventObserver {
+            actionMode?.finish()
+        })
+
+        viewModel.snackbarText.observe(viewLifecycleOwner, EventObserver {
+            Snackbar.make(binding.root, getString(it), Snackbar.LENGTH_SHORT)
+                .setAnchorView(binding.fabAddMessage)
+                .show()
+        })
+
         return binding.root
     }
 
@@ -99,7 +121,7 @@ class MessagesFragment : Fragment(), ActionMode.Callback {
         adapter.selectionList[position] = !adapter.selectionList[position]
         adapter.notifyItemChanged(position)
 
-        actionMode?.title = "$selectedCount Selected"
+        actionMode?.title = selectedCount.toString()
     }
 
     override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
@@ -118,20 +140,7 @@ class MessagesFragment : Fragment(), ActionMode.Callback {
     override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.delete -> {
-
-                //TODO how to make sure they are deleted before user exits fragment?
-                //TODO redo for the possibility to remove messages in use
-                for (message in adapter.getSelectedItems()) {
-                    lifecycleScope.launch {
-                        try {
-                            viewModel.deleteMessages(message)
-                        } catch (e: Exception) {
-                            Toast.makeText(requireContext(), getString(R.string.temp_delete_exception_text), Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                }
-                mode.finish()
-
+                viewModel.deleteMessages(*adapter.getSelectedItems())
                 true
             }
             else -> false
@@ -148,4 +157,33 @@ class MessagesFragment : Fragment(), ActionMode.Callback {
     }
 
 
+}
+
+// https://developer.android.com/jetpack/compose/tutorial
+
+@Composable
+fun MessageItem() {
+    var isSelected by remember { mutableStateOf(false) }
+
+    val surfaceColor: Color by animateColorAsState(
+        if (isSelected) MaterialTheme.colors.primary else MaterialTheme.colors.surface
+    )
+    Surface(
+        modifier = Modifier.clickable { isSelected = !isSelected }.fillMaxWidth().wrapContentHeight(),
+        elevation = 1.dp,
+        color = surfaceColor
+    ) {
+        Text(
+            "Some weird text",
+            style = MaterialTheme.typography.body2
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewMessageItem() {
+    MdcTheme {
+        MessageItem()
+    }
 }

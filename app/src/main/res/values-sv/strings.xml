@@ -43,7 +43,7 @@
     <string name="loading_treatment_error">Fel vid laddning av behandlingen</string>
     <string name="delete">radera</string>
     <string name="empty_contact_message">Tom contact text</string>
-    <string name="loading_contact_error">Fel vid laddning av contact</string>
+    <string name="loading_contact_error">Fel vid laddning av kontakt</string>
     <string name="default_message">Förvalt meddelande</string>
     <string name="default_timetemplate">Förvald tidsmall</string>
     <string name="default_treatment">Förvald behadling</string>
@@ -89,5 +89,10 @@
     <string name="treatment_deleted">Behandling har raderats</string>
     <string name="treatment_updated">Behandling har uppdaterats</string>
     <string name="treatment_saved">Behandling har sparats</string>
+    <string name="loading_message_error">Fel vid inläsningar av meddelande</string>
+    <string name="messages_deleted">Meddelandena har raderats</string>
+    <string name="message_deleted">Meddelandet har raderats</string>
+    <string name="message_saved">Meddelandet har sparats</string>
+    <string name="message_updated">Meddelandet har uppdaterats</string>
 
 </resources>

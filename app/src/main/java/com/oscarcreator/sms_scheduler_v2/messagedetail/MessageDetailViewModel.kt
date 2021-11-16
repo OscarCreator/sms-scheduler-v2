@@ -1,6 +1,7 @@
 package com.oscarcreator.sms_scheduler_v2.messagedetail
 
 import androidx.lifecycle.*
+import com.oscarcreator.sms_scheduler_v2.R
 import com.oscarcreator.sms_scheduler_v2.data.Result
 import com.oscarcreator.sms_scheduler_v2.data.message.Message
 import com.oscarcreator.sms_scheduler_v2.data.message.MessagesRepository
@@ -20,6 +21,9 @@ class MessageDetailViewModel(
 
     val message: LiveData<Message?> =_message
 
+    private val _snackbarText = MutableLiveData<Event<Int>>()
+    val snackbarText: LiveData<Event<Int>> = _snackbarText
+
     private val _editMessageEvent = MutableLiveData<Event<Unit>>()
     val editMessageEvent = _editMessageEvent
 
@@ -35,7 +39,7 @@ class MessageDetailViewModel(
         return if(messageResult is Result.Success) {
             messageResult.data
         } else {
-            //snackbartext
+            _snackbarText.value = Event(R.string.loading_message_error)
             null
         }
     }

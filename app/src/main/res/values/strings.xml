@@ -85,6 +85,12 @@
     <string name="treatment_deleted">Treatment successfully deleted</string>
     <string name="treatment_updated">Treatment successfully updated</string>
     <string name="treatment_saved">Treatment successfully saved</string>
+    <string name="loading_message_error">Error while loading message</string>
+
+    <string name="messages_deleted">Messages successfully deleted</string>
+    <string name="message_deleted">Message successfully deleted</string>
+    <string name="message_saved">Message successfully saved</string>
+    <string name="message_updated">Message successfully updated</string>
 
     <string-array name="message_variable_descriptions">
         <item>The name of the person for the treatment.</item>

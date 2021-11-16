@@ -96,6 +96,8 @@ class AddEditMessageViewModel(
 
     private fun createMessage(message: Message) = viewModelScope.launch {
         messagesRepository.insert(message)
+
+        _snackbarText.value = Event(R.string.message_saved)
         _messageUpdateEvent.value = Event(-1)
     }
 
@@ -110,8 +112,9 @@ class AddEditMessageViewModel(
             messagesRepository.updateToBeDeleted(messageId)
         }
         val newMessageId = messagesRepository.insert(message)
-
         messagesRepository.updateScheduledTreatmentsWithNewMessage(messageId, newMessageId)
+
+        _snackbarText.value = Event(R.string.message_updated)
         _messageUpdateEvent.value = Event(newMessageId)
 
     }
