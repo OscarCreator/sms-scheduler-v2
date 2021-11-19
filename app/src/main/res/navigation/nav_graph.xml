@@ -28,7 +28,7 @@
     <fragment
         android:id="@+id/addEditScheduledTreatmentFragment"
         android:name="com.oscarcreator.sms_scheduler_v2.addeditscheduledtreatment.AddEditScheduledTreatmentFragment"
-        android:label="@string/addedit_treatment_title"
+        android:label="{title}"
         tools:layout="@layout/fragment_addedit_scheduled_treatment"
         >
         <action
@@ -41,6 +41,9 @@
             android:name="scheduledTreatmentId"
             app:argType="long"
             android:defaultValue="-1L" />
+        <argument
+            android:name="title"
+            app:argType="string" />
         <action
             android:id="@+id/action_addEditScheduledTreatmentFragment_to_treatmentsFragment"
             app:destination="@id/treatmentsFragment" />

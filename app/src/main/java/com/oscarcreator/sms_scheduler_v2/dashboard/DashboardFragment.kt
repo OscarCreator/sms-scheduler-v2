@@ -49,7 +49,7 @@ class DashboardFragment : Fragment() {
             .commit()
 
         binding.fabAddTreatment.setOnClickListener{
-            val action = DashboardFragmentDirections.actionDashboardFragmentToAddEditTreatmentFragment()
+            val action = DashboardFragmentDirections.actionDashboardFragmentToAddEditTreatmentFragment(title = getString(R.string.add))
             findNavController().navigate(action)
         }
 

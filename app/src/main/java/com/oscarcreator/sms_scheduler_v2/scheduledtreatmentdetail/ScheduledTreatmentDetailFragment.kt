@@ -59,7 +59,7 @@ class ScheduledTreatmentDetailFragment : Fragment() {
 
         viewModel.editScheduledTreatmentEvent.observe(viewLifecycleOwner, EventObserver {
             val action = ScheduledTreatmentDetailFragmentDirections
-                .actionScheduledTreatmentDetailFragmentToAddEditScheduledTreatmentFragment(args.scheduledTreatmentId)
+                .actionScheduledTreatmentDetailFragmentToAddEditScheduledTreatmentFragment(args.scheduledTreatmentId, getString(R.string.edit))
             findNavController().navigate(action)
         })
 
