@@ -40,7 +40,7 @@ interface ContactDao {
      * @return the [Contact] with the passed id
      * */
     @Query("SELECT * FROM contacts WHERE contact_id = :customerId")
-    suspend fun getCustomer(customerId: Long): Contact
+    suspend fun getContact(customerId: Long): Contact?
 
     /**
      * Observes the [Contact] with the specified id

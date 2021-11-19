@@ -48,14 +48,16 @@
             tools:text="150 kr"
             />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_edit_treatment"
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/efab_choose_treatment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_margin="16dp"
-            android:src="@drawable/ic_edit"
+            app:icon="@drawable/ic_check"
+            android:text="@string/choose"
             />
 
 

@@ -35,6 +35,10 @@ class TreatmentDetailFragment : Fragment() {
                 viewModel.deleteTreatment()
 
             }
+
+            R.id.edit -> {
+                viewModel.editTreatment()
+            }
         }
 
         return super.onOptionsItemSelected(item)
@@ -57,8 +61,10 @@ class TreatmentDetailFragment : Fragment() {
 
         viewModel.start(args.treatmentId)
 
-        binding.fabEditTreatment.setOnClickListener {
-            viewModel.editTreatment()
+        binding.efabChooseTreatment.setOnClickListener {
+            findNavController().popBackStack(R.id.addEditScheduledTreatmentFragment, false)
+            findNavController().getBackStackEntry(R.id.addEditScheduledTreatmentFragment).savedStateHandle.set("treatment_id", args.treatmentId)
+
         }
 
         viewModel.editTreatmentEvent.observe(viewLifecycleOwner, EventObserver {
@@ -79,7 +85,7 @@ class TreatmentDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        view.setupSnackbar(this, viewModel.snackbarText, Snackbar.LENGTH_SHORT, binding.fabEditTreatment)
+        view.setupSnackbar(this, viewModel.snackbarText, Snackbar.LENGTH_SHORT, binding.efabChooseTreatment )
     }
 
 }

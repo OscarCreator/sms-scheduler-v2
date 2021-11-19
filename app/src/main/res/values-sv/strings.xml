@@ -98,5 +98,9 @@
     <string name="time_template_delete">Tidsmallen har raderats</string>
     <string name="time_template_saved">Tidsmallen har sparats</string>
     <string name="time_template_updated">Tidsmallen har uppdaterats</string>
+    <string name="add_contact">Välj kontakt</string>
+    <string name="choose_message">Välj meddelande</string>
+    <string name="choose_time_offset">Välj tidsförskjutning</string>
+    <string name="missing_data">Information saknas</string>
 
 </resources>

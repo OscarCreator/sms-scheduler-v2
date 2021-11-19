@@ -26,17 +26,6 @@ class DashboardFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId){
-            R.id.view_contacts -> {
-                val action = DashboardFragmentDirections.actionDashboardFragmentToContactListFragment()
-                findNavController().navigate(action)
-                return true
-            }
-
-            R.id.view_treatments -> {
-                val action = DashboardFragmentDirections.actionDashboardFragmentToTreatmentsFragment()
-                findNavController().navigate(action)
-                return true
-            }
 
             R.id.settings -> {
                 val action = DashboardFragmentDirections.actionDashboardFragmentToSettingsFragment()

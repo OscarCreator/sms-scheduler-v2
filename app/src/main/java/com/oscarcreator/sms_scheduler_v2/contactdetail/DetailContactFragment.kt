@@ -38,6 +38,10 @@ class DetailContactFragment : Fragment() {
                 viewModel.deleteContact()
                 return true
             }
+
+            R.id.edit -> {
+                viewModel.editContact()
+            }
         }
 
         return super.onOptionsItemSelected(item)
@@ -61,8 +65,9 @@ class DetailContactFragment : Fragment() {
             findNavController().navigateUp()
         })
 
-        binding.fabEditContact.setOnClickListener {
-            viewModel.editContact()
+        binding.efabChooseContact.setOnClickListener {
+            findNavController().popBackStack(R.id.addEditScheduledTreatmentFragment, false)
+            findNavController().getBackStackEntry(R.id.addEditScheduledTreatmentFragment).savedStateHandle.set("contact_id", args.contactId)
         }
 
         viewModel.editContactEvent.observe(viewLifecycleOwner, EventObserver {
@@ -77,7 +82,7 @@ class DetailContactFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        view.setupSnackbar(this, viewModel.snackbarText, Snackbar.LENGTH_SHORT, binding.fabEditContact)
+        view.setupSnackbar(this, viewModel.snackbarText, Snackbar.LENGTH_SHORT, binding.efabChooseContact)
     }
 
 }

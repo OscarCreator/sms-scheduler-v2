@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.oscarcreator.sms_scheduler_v2.R
 import com.oscarcreator.sms_scheduler_v2.data.Result
 import com.oscarcreator.sms_scheduler_v2.data.contact.Contact
 import com.oscarcreator.sms_scheduler_v2.data.contact.ContactsRepository
@@ -44,6 +45,9 @@ class AddEditScheduledTreatmentViewModel(
 
     private val _scheduledTreatmentUpdatedEvent = MutableLiveData<Event<Unit>>()
     val scheduledTreatmentUpdatedEvent: LiveData<Event<Unit>> = _scheduledTreatmentUpdatedEvent
+
+    private val _snackbarText = MutableLiveData<Event<Int>>()
+    val snackbarText: LiveData<Event<Int>> = _snackbarText
 
     private var _messageId = -1L
     private var _timeTemplateId = -1L
@@ -237,6 +241,7 @@ class AddEditScheduledTreatmentViewModel(
 
         } else {
             //notify with a text that data is missing
+            _snackbarText.value = Event(R.string.missing_data)
             return
         }
 

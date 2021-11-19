@@ -21,14 +21,18 @@ class ContactsLocalDataSource internal constructor(
 
     override fun observeContactsASC(): LiveData<List<Contact>> = contactDao.observeContactsASC()
 
-    override suspend fun getCustomer(customerId: Long): Result<Contact> =
-        withContext(ioDispatcher){
-            return@withContext try {
-                Result.Success(contactDao.getCustomer(customerId))
-            } catch (e: Exception) {
-                Result.Error(e)
+    override suspend fun getCustomer(contactId: Long): Result<Contact> = withContext(ioDispatcher) {
+        try {
+            val contact = contactDao.getContact(contactId)
+            if (contact != null) {
+                Result.Success(contact)
+            } else {
+                Result.Error(Exception("Contact not found"))
             }
+        } catch (e: Exception) {
+            Result.Error(e)
         }
+    }
 
     override fun observeCustomer(customerId: Long): LiveData<Result<Contact>> {
         return contactDao.observeCustomer(customerId).map {

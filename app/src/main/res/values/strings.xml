@@ -95,6 +95,10 @@
     <string name="time_template_delete">Time template deleted</string>
     <string name="time_template_saved">Time template successfully saved</string>
     <string name="time_template_updated">Time template successfully updated</string>
+    <string name="add_contact">Choose contact</string>
+    <string name="choose_message">Choose message</string>
+    <string name="choose_time_offset">Choose time offset</string>
+    <string name="missing_data">Missing information</string>
 
     <string-array name="message_variable_descriptions">
         <item>The name of the person for the treatment.</item>

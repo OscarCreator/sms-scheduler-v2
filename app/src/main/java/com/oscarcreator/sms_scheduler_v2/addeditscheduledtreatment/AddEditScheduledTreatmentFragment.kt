@@ -4,24 +4,19 @@ import android.Manifest
 import android.app.AlertDialog
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.text.InputFilter
 import android.util.Log
 import android.view.*
-import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
-import android.widget.ArrayAdapter
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.chip.Chip
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.oscarcreator.sms_scheduler_v2.R
@@ -29,10 +24,10 @@ import com.oscarcreator.sms_scheduler_v2.SmsSchedulerApplication
 import com.oscarcreator.sms_scheduler_v2.data.contact.Contact
 import com.oscarcreator.sms_scheduler_v2.databinding.FragmentAddeditScheduledTreatmentBinding
 import com.oscarcreator.sms_scheduler_v2.util.EventObserver
+import com.oscarcreator.sms_scheduler_v2.util.setupSnackbar
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.stream.Collectors
 
 class AddEditScheduledTreatmentFragment : Fragment() {
 
@@ -76,6 +71,11 @@ class AddEditScheduledTreatmentFragment : Fragment() {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        view.setupSnackbar(viewLifecycleOwner, viewModel.snackbarText, Snackbar.LENGTH_SHORT)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -91,7 +91,6 @@ class AddEditScheduledTreatmentFragment : Fragment() {
 
         viewModel.contact.observe(viewLifecycleOwner) {
             if (it != null) {
-                //ere r
                 binding.flContacts.apply {
                     if (childCount > 1) {
                         binding.flContacts.removeViewAt(binding.flContacts.childCount - 2)
@@ -99,43 +98,23 @@ class AddEditScheduledTreatmentFragment : Fragment() {
                 }
                 addNewChip(it)
 
-                binding.etContactInput.text.clear()
-                binding.etContactInput.clearFocus()
-                binding.etContactInput.visibility = View.GONE
-
-                val imm = requireActivity().getSystemService(InputMethodManager::class.java)
-                imm.hideSoftInputFromWindow(binding.etContactInput.windowToken, 0)
+                binding.btnContact.visibility = View.INVISIBLE
 
             } else {
                 binding.flContacts.apply {
                     if (childCount > 1) {
                         binding.flContacts.removeViewAt(binding.flContacts.childCount - 2)
                     }
-                    binding.etContactInput.visibility = View.VISIBLE
+                    binding.btnContact.visibility = View.VISIBLE
                 }
             }
 
         }
 
-        //TODO replace with a custom adapter
-        val adapter = ArrayAdapter(requireContext(), R.layout.dropdown_menu_list_item, mutableListOf<String>())
-        viewModel.allTreatment.observe(viewLifecycleOwner, { it ->
-            adapter.clear()
-
-            adapter.addAll((it
-                .stream()
-                .map { it.name }
-                .collect(Collectors.toList())))
-            binding.tvTreatments.setAdapter(adapter)
-        })
-
-        binding.tvTreatments.setOnItemClickListener { _, _, position, _ ->
-            viewModel.treatment.value = viewModel.allTreatment.value?.get(position)
+        binding.btnTreatment.setOnClickListener {
+            val action = AddEditScheduledTreatmentFragmentDirections.actionAddEditScheduledTreatmentFragmentToTreatmentsFragment()
+            findNavController().navigate(action)
         }
-
-        viewModel.treatment.observe(viewLifecycleOwner, {
-            binding.tvTreatments.setText(it.name)
-        })
 
         val formatter = SimpleDateFormat("HH:mm dd/MM/yyyy", Locale.getDefault())
         viewModel.time.observe(viewLifecycleOwner, {
@@ -182,16 +161,27 @@ class AddEditScheduledTreatmentFragment : Fragment() {
         binding.btnMessage.setOnClickListener(
             Navigation.createNavigateOnClickListener(R.id.messageListFragment))
 
-        //TODO exception in test "does not have a NavController set"
-//        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Long>("key")?.observe(viewLifecycleOwner, {
-//            viewLifecycleOwner.lifecycleScope.launch {
-//                addEditScheduledTreatmentViewModel.message.value = database.messageDao().observeMessage(it).value
-//            }
-//        })
-
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Long>("timetemplate-id-key")?.observe(viewLifecycleOwner, {
             viewLifecycleOwner.lifecycleScope.launch {
                 viewModel.setTimeTemplateById(it)
+            }
+        })
+
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Long>("treatment_id")?.observe(viewLifecycleOwner, {
+            viewLifecycleOwner.lifecycleScope.launch {
+                viewModel.setTreatmentById(it)
+            }
+        })
+
+        binding.btnContact.setOnClickListener {
+            val action = AddEditScheduledTreatmentFragmentDirections.actionAddEditScheduledTreatmentFragmentToContactListFragment()
+            findNavController().navigate(action)
+
+        }
+
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Long>("contact_id")?.observe(viewLifecycleOwner, {
+            viewLifecycleOwner.lifecycleScope.launch {
+                viewModel.setContactById(it)
             }
         })
 
@@ -204,10 +194,12 @@ class AddEditScheduledTreatmentFragment : Fragment() {
 
         })
 
+        viewModel.treatment.observe(viewLifecycleOwner, {
+            binding.btnTreatment.text = it.name
+        })
+
         binding.btnTimetemplate.setOnClickListener(
             Navigation.createNavigateOnClickListener(R.id.timeTemplateListFragment))
-
-        setUpContactInput()
 
         setUpSendSmsPermission()
 
@@ -267,70 +259,6 @@ class AddEditScheduledTreatmentFragment : Fragment() {
         }
     }
 
-    //TODO refactor flexboxlayout with editext to a view
-    private fun setUpContactInput() {
-
-        val adapter = ContactsListAdapter(
-            ContactsListAdapter.OnContactClickedListener { contact: Contact ->
-                addReceiver(contact)
-            }
-        )
-
-        binding.rvAutocompleteList.apply {
-            this.adapter = adapter
-            layoutManager = LinearLayoutManager(context)
-
-        }
-
-        binding.etContactInput.apply {
-            setOnEditorActionListener { _, keyCode, _ ->
-                // if ime action is clicked
-                if (keyCode == EditorInfo.IME_ACTION_DONE) {
-
-                    //If only one item left in recyclerview add the customer
-                    if (binding.rvAutocompleteList.visibility == View.VISIBLE &&
-                        adapter.itemCount == 1) {
-                        addReceiver(adapter.list[0])
-                        return@setOnEditorActionListener true
-                    }
-                }
-                false
-            }
-            addTextChangedListener(
-                afterTextChanged = { text ->
-                    // hide if there is no text, otherwise show and replace adapter list
-                    if (text != null && text.isEmpty()) {
-                        binding.rvAutocompleteList.visibility = View.GONE
-                    } else {
-                        lifecycleScope.launch {
-                            adapter.setContacts(
-                                viewModel.getCustomersLike(text.toString()))
-                            binding.rvAutocompleteList.visibility = View.VISIBLE
-                        }
-                    }
-                })
-
-            // Remove the ability to write a space as first character
-            filters = arrayOf(
-                InputFilter { source, _, _, _, dstart, _ ->
-                    if (source == " " && dstart == 0) {
-                        return@InputFilter ""
-                    }
-                    null
-                })
-        }
-    }
-
-    private fun addReceiver(contact: Contact) {
-        lifecycleScope.launch {
-            viewModel.setContactById(contact.contactId)
-        }
-        //addNewChip(contact)
-
-
-
-    }
-
     private fun addNewChip(contact: Contact) {
         val chip = Chip(context).apply {
             text = contact.name
@@ -338,8 +266,11 @@ class AddEditScheduledTreatmentFragment : Fragment() {
             isClickable = true
             isCheckable = false
             setOnCloseIconClickListener {
-                //binding.flContacts.removeView(this)
-                //binding.etContactInput.visibility = View.VISIBLE
+                findNavController().getBackStackEntry(R.id.addEditScheduledTreatmentFragment).savedStateHandle.set("contact_id", -1L)
+                viewModel.removeContact()
+            }
+            setOnClickListener {
+                findNavController().getBackStackEntry(R.id.addEditScheduledTreatmentFragment).savedStateHandle.set("contact_id", -1L)
                 viewModel.removeContact()
             }
         }

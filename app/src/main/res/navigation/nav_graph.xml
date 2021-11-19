@@ -19,14 +19,8 @@
                 android:defaultValue="-1L" />
         </action>
         <action
-            android:id="@+id/action_dashboardFragment_to_contactListFragment"
-            app:destination="@id/contactListFragment" />
-        <action
             android:id="@+id/action_dashboardFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
-        <action
-            android:id="@+id/action_dashboardFragment_to_treatmentsFragment"
-            app:destination="@id/treatmentsFragment" />
         <action
             android:id="@+id/action_dashboardFragment_to_scheduledTreatmentsFragment"
             app:destination="@id/scheduledTreatmentsFragment" />
@@ -47,6 +41,12 @@
             android:name="scheduledTreatmentId"
             app:argType="long"
             android:defaultValue="-1L" />
+        <action
+            android:id="@+id/action_addEditScheduledTreatmentFragment_to_treatmentsFragment"
+            app:destination="@id/treatmentsFragment" />
+        <action
+            android:id="@+id/action_addEditScheduledTreatmentFragment_to_contactListFragment"
+            app:destination="@id/contactListFragment" />
     </fragment>
     <fragment
         android:id="@+id/messageListFragment"
