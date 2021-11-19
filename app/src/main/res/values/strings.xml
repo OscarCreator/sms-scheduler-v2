@@ -99,6 +99,7 @@
     <string name="choose_message">Choose message</string>
     <string name="choose_time_offset">Choose time offset</string>
     <string name="missing_data">Missing information</string>
+    <string name="add">Add</string>
 
     <string-array name="message_variable_descriptions">
         <item>The name of the person for the treatment.</item>
