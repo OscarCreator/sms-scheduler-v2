@@ -61,14 +61,11 @@ class AddEditScheduledTreatmentViewModel(
     private var isNewScheduledTreatment = false
     private var isDataLoaded = false
 
-    suspend fun getCustomersLike(text: String): List<Contact> {
-        return contactsRepository.getContactsLike(text)
-    }
 
     suspend fun setMessageById(messageId: Long) {
         viewModelScope.launch {
             messagesRepository.getMessage(messageId).let { result ->
-                if (result is Result.Success) {
+                if (result is Result.Success && !result.data.toBeDeleted) {
                     _messageId = messageId
                     message.value = result.data.message
                 } else {
@@ -82,7 +79,7 @@ class AddEditScheduledTreatmentViewModel(
     suspend fun setTimeTemplateById(timeTemplateId: Long) {
         viewModelScope.launch {
             timeTemplatesRepository.getTimeTemplate(timeTemplateId).let { result ->
-                if (result is Result.Success) {
+                if (result is Result.Success && !result.data.toBeDeleted) {
                     _timeTemplateId = timeTemplateId
                     timeTemplateText.value = result.data.delay.toTimeTemplateText()
                 } else {
@@ -95,7 +92,7 @@ class AddEditScheduledTreatmentViewModel(
 
     suspend fun setTreatmentById(id: Long) {
         treatmentsRepository.getTreatment(id).let {
-            if (it is Result.Success) {
+            if (it is Result.Success && !it.data.toBeDeleted) {
                 onTreatmentLoaded(it.data)
             } else {
                 //onDataNotAvailable()
@@ -109,7 +106,7 @@ class AddEditScheduledTreatmentViewModel(
 
     suspend fun setContactById(contactId: Long) {
         contactsRepository.getContact(contactId).let {
-            if (it is Result.Success) {
+            if (it is Result.Success && !it.data.toBeDeleted) {
                 onContactLoaded(it.data)
             } else {
                 //TODO
