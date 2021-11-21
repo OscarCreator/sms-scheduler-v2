@@ -114,11 +114,11 @@ class TreatmentFlowTest {
             .check(matches(isDisplayed()))
             .perform(typeText(treatment.name))
 
-        onView(withId(R.id.tv_duration))
+        onView(withId(R.id.et_duration))
             .check(matches(isDisplayed()))
             .perform(typeText(treatment.duration.toString()))
 
-        onView(withId(R.id.tv_price))
+        onView(withId(R.id.et_price))
             .check(matches(isDisplayed()))
             .perform(typeText(treatment.price.toString()))
             .perform(pressImeActionButton())

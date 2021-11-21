@@ -13,6 +13,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.oscarcreator.sms_scheduler_v2.SmsSchedulerApplication
 import com.oscarcreator.sms_scheduler_v2.databinding.FragmentAddeditTreatmentBinding
 import com.oscarcreator.sms_scheduler_v2.util.EventObserver
+import com.oscarcreator.sms_scheduler_v2.util.IntInputFilter
 import com.oscarcreator.sms_scheduler_v2.util.setupSnackbar
 
 class AddEditTreatmentFragment : Fragment() {
@@ -56,13 +57,16 @@ class AddEditTreatmentFragment : Fragment() {
             viewModel.saveTreatment()
         }
 
-        binding.tvPrice.setOnEditorActionListener { textView, i, keyEvent ->
+        binding.etPrice.setOnEditorActionListener { textView, i, keyEvent ->
             if (i == EditorInfo.IME_ACTION_DONE) {
                 viewModel.saveTreatment()
                 true
             }
             false
         }
+
+        binding.etPrice.filters = arrayOf(IntInputFilter())
+        binding.etDuration.filters = arrayOf(IntInputFilter())
 
         return binding.root
     }

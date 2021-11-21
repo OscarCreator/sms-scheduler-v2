@@ -43,7 +43,7 @@
             app:suffixText="min">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/tv_duration"
+                android:id="@+id/et_duration"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@={viewmodel.duration}"
@@ -62,7 +62,7 @@
             app:suffixText="kr">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/tv_price"
+                android:id="@+id/et_price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@={viewmodel.price}"
