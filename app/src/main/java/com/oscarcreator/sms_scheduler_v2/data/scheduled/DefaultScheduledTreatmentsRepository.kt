@@ -39,8 +39,8 @@ class DefaultScheduledTreatmentsRepository(
     override suspend fun delete(scheduledTreatmentId: Long): Int =
         scheduledTreatmentsDataSource.delete(scheduledTreatmentId)
 
-    override fun getUpcomingFailedScheduledTreatmentsWithData(calendar: Calendar): LiveData<List<ScheduledTreatmentWithMessageTimeTemplateAndContact>> =
-        scheduledTreatmentsDataSource.getUpcomingFailedScheduledTreatmentsWithData(calendar)
+    override fun getUpcomingFailedScheduledTreatmentsWithData(): LiveData<List<ScheduledTreatmentWithMessageTimeTemplateAndContact>> =
+        scheduledTreatmentsDataSource.getUpcomingFailedScheduledTreatmentsWithData()
 
     override suspend fun setScheduledTreatmentTreatmentStatus(scheduledTreatmentId: Long, treatmentStatus: TreatmentStatus) =
         scheduledTreatmentsDataSource.setScheduledTreatmentTreatmentStatus(scheduledTreatmentId, treatmentStatus)

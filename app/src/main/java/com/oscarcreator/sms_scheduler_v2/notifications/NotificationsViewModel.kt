@@ -6,7 +6,6 @@ import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentsRepos
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.SmsStatus
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.TreatmentStatus
 import kotlinx.coroutines.launch
-import java.util.*
 
 class NotificationsViewModel(
     private val scheduledTreatmentsRepository: ScheduledTreatmentsRepository
@@ -19,6 +18,6 @@ class NotificationsViewModel(
         scheduledTreatmentsRepository.setScheduledTreatmentTreatmentStatus(scheduledTreatmentId, TreatmentStatus.DONE)
     }
 
-    val failedScheduleTreatmentsWithData = scheduledTreatmentsRepository.getUpcomingFailedScheduledTreatmentsWithData(Calendar.getInstance().apply { timeInMillis += 1000 * 20 })
+    val failedScheduleTreatmentsWithData = scheduledTreatmentsRepository.getUpcomingFailedScheduledTreatmentsWithData()
 
 }

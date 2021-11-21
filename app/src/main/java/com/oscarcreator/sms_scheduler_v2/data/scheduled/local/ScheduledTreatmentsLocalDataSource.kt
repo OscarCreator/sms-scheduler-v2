@@ -40,8 +40,8 @@ class ScheduledTreatmentsLocalDataSource internal constructor(
     override suspend fun delete(scheduledTreatmentId: Long): Int =
         scheduledTreatmentsDao.delete(scheduledTreatmentId)
 
-    override fun getUpcomingFailedScheduledTreatmentsWithData(calendar: Calendar): LiveData<List<ScheduledTreatmentWithMessageTimeTemplateAndContact>> =
-        scheduledTreatmentsDao.getUpcomingFailedScheduledTreatmentsWithData(calendar)
+    override fun getUpcomingFailedScheduledTreatmentsWithData(): LiveData<List<ScheduledTreatmentWithMessageTimeTemplateAndContact>> =
+        scheduledTreatmentsDao.getUpcomingFailedScheduledTreatmentsWithData()
 
     override suspend fun setScheduledTreatmentTreatmentStatus(scheduledTreatmentId: Long, treatmentStatus: TreatmentStatus) =
         scheduledTreatmentsDao.setScheduledTreatmentTreatmentStatus(scheduledTreatmentId, treatmentStatus)
