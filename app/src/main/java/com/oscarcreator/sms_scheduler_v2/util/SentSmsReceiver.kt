@@ -40,7 +40,10 @@ class SentSmsReceiver : BroadcastReceiver() {
 
                             when (database.scheduledTreatmentDao().update(scheduledTreatment.scheduledTreatment)) {
                                 //Everything as normal
-                                1 -> Log.i(TAG, "SMS SENT, Scheduled treatment updated (id = $id)")
+                                1 -> {
+                                    Log.i(TAG, "SMS SENT, Scheduled treatment updated (id = $id)")
+                                    removeNotification(context, id)
+                                }
 
                                 else -> {
                                     Log.e(TAG, "SMS SENT, Scheduled treatment not updated (id = $id)")

@@ -235,3 +235,10 @@ fun sendNotificationToScheduledTreatment(context: Context, intent: Intent, title
         notify(id.toInt(), builder.build())
     }
 }
+
+
+fun removeNotification(context: Context, id: Long) {
+    with(NotificationManagerCompat.from(context)) {
+        cancel(id.toInt())
+    }
+}
