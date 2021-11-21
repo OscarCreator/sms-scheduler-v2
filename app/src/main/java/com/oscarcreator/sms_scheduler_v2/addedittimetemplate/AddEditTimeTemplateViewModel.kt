@@ -120,7 +120,7 @@ class AddEditTimeTemplateViewModel(
     private fun createTimeTemplate(newTimeTemplate: TimeTemplate) = viewModelScope.launch {
         val newTimeTemplateId = timeTemplatesRepository.insert(newTimeTemplate)
 
-        _snackbarText.value = Event(R.string.time_template_saved)
+        //_snackbarText.value = Event(R.string.time_template_saved)
         _timeTemplateUpdatedEvent.value = Event(-1)
     }
 
@@ -139,7 +139,7 @@ class AddEditTimeTemplateViewModel(
         val newTimeTemplateId = timeTemplatesRepository.insert(timeTemplate)
         timeTemplatesRepository.updateScheduledTreatmentsWithNewTimeTemplate(timeTemplateId, newTimeTemplateId)
 
-        _snackbarText.value = Event(R.string.time_template_updated)
+        //_snackbarText.value = Event(R.string.time_template_updated)
         _timeTemplateUpdatedEvent.value = Event(newTimeTemplateId)
     }
 }

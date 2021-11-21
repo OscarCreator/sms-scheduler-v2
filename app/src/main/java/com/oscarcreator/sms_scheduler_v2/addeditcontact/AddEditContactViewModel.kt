@@ -105,7 +105,7 @@ class AddEditContactViewModel(
 
     private fun createContact(newContact: Contact) = viewModelScope.launch {
         val newContactId = contactsRepository.insert(newContact)
-        _snackbarText.value = Event(R.string.contact_saved)
+        //_snackbarText.value = Event(R.string.contact_saved)
         _contactUpdatedEvent.value = Event(-1)
     }
 
@@ -123,7 +123,7 @@ class AddEditContactViewModel(
 
         val newContactId = contactsRepository.insert(contact)
         contactsRepository.updateScheduledTreatmentsWithNewContact(contactId, newContactId)
-        _snackbarText.value = Event(R.string.contact_updated)
+        //_snackbarText.value = Event(R.string.contact_updated)
         _contactUpdatedEvent.value = Event(newContactId)
 
     }
