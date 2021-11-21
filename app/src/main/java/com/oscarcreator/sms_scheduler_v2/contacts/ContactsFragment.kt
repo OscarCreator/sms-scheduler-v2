@@ -5,22 +5,18 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.*
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.widget.SearchView
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -111,6 +107,20 @@ class ContactsFragment : Fragment() {
                     }
                 }
             }
+
+            R.id.action_search -> {
+                (item.actionView as SearchView).setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                    override fun onQueryTextSubmit(query: String?): Boolean {
+                        viewModel.searchText.value = query
+                        return true
+                    }
+
+                    override fun onQueryTextChange(newText: String?): Boolean {
+                        viewModel.searchText.value = newText
+                        return false
+                    }
+                })
+            }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -167,34 +177,8 @@ fun ContactsScreen(contactsViewModel: ContactsViewModel) {
 
         Column {
 
-            var searchText by rememberSaveable { mutableStateOf("") }
-
-            Row {
-
-                val focusRequester = FocusRequester()
-
-                DisposableEffect(Unit) {
-                    focusRequester.requestFocus()
-                    onDispose { }
-                }
-
-                TextField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .focusRequester(focusRequester),
-                    value = searchText,
-                    onValueChange = { searchText = it },
-                    singleLine = true,
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Filled.Search,
-                            contentDescription = null
-                        )
-                    }
-                )
-            }
-
-            val contacts by contactsViewModel.getContactsLike(searchText).observeAsState()
+            val searchText by contactsViewModel.searchText.observeAsState()
+            val contacts by contactsViewModel.getContactsLike(searchText ?: "").observeAsState()
 
             contacts?.let { items ->
                 ContactList(

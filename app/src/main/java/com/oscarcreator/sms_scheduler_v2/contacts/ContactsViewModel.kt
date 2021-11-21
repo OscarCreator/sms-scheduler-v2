@@ -21,6 +21,8 @@ class ContactsViewModel(
     private val _openContactEvent = MutableLiveData<Event<Long>>()
     val openContactEvent: LiveData<Event<Long>> = _openContactEvent
 
+    val searchText = MutableLiveData("")
+
     fun getContactsLike(textLike: String): LiveData<List<Contact>> {
         return contacts.map {
             it.filter { contact ->

@@ -103,5 +103,6 @@
     <string name="choose_time_offset">Välj tidsförskjutning</string>
     <string name="missing_data">Information saknas</string>
     <string name="add">Lägg till</string>
+    <string name="search">Sök</string>
 
 </resources>
