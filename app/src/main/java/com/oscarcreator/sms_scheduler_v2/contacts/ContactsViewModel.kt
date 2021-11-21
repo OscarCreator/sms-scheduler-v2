@@ -3,6 +3,7 @@ package com.oscarcreator.sms_scheduler_v2.contacts
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
 import com.oscarcreator.sms_scheduler_v2.data.contact.Contact
 import com.oscarcreator.sms_scheduler_v2.data.contact.ContactsRepository
 import com.oscarcreator.sms_scheduler_v2.util.Event
@@ -19,6 +20,14 @@ class ContactsViewModel(
 
     private val _openContactEvent = MutableLiveData<Event<Long>>()
     val openContactEvent: LiveData<Event<Long>> = _openContactEvent
+
+    fun getContactsLike(textLike: String): LiveData<List<Contact>> {
+        return contacts.map {
+            it.filter { contact ->
+                contact.name.contains(textLike, true)
+            }
+        }
+    }
 
     /**
      * Is called when add contact FAB is clicked.

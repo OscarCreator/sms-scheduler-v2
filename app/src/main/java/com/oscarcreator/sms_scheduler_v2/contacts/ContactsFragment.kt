@@ -6,15 +6,21 @@ import android.os.Bundle
 import android.view.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -150,18 +156,51 @@ fun ContactsScreen(contactsViewModel: ContactsViewModel) {
 
     Scaffold(
         floatingActionButton = {
-            FloatingActionButton(onClick = { contactsViewModel.addNewContact() }) {
+            FloatingActionButton(
+                onClick = { contactsViewModel.addNewContact() }
+            ) {
                 Icon(Icons.Filled.Add, "Add new contact")
             }
 
         }
     ) {
-        val contacts by contactsViewModel.contacts.observeAsState()
 
-        contacts?.let { items ->
-            ContactList(
-                contacts = items,
-                onClick = { contactId -> contactsViewModel.openContact(contactId) })
+        Column {
+
+            var searchText by rememberSaveable { mutableStateOf("") }
+
+            Row {
+
+                val focusRequester = FocusRequester()
+
+                DisposableEffect(Unit) {
+                    focusRequester.requestFocus()
+                    onDispose { }
+                }
+
+                TextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .focusRequester(focusRequester),
+                    value = searchText,
+                    onValueChange = { searchText = it },
+                    singleLine = true,
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Filled.Search,
+                            contentDescription = null
+                        )
+                    }
+                )
+            }
+
+            val contacts by contactsViewModel.getContactsLike(searchText).observeAsState()
+
+            contacts?.let { items ->
+                ContactList(
+                    contacts = items,
+                    onClick = { contactId -> contactsViewModel.openContact(contactId) })
+            }
         }
     }
 
