@@ -6,15 +6,13 @@
     <string name="increase_procent_treatments">%d%% this month</string>
     <string name="view_all">View all</string>
     <string name="upcoming">Upcoming</string>
-    <string name="seperator" translatable="false">●</string>
-
     <string name="today">Today</string>
     <string name="tomorrow">Tomorrow</string>
-    <string name="treatments">Treatments</string>
-    <string name="treatment">Treatment</string>
+    <string name="services">Services</string>
+    <string name="service">Service</string>
     <string name="to">To</string>
     <string name="time">Time</string>
-    <string name="time_template">Time template</string>
+    <string name="time_template">Time offset</string>
     <string name="message">Message</string>
     <string name="clear_fields">Clear fields</string>
     <string name="complete">Complete</string>
@@ -23,9 +21,9 @@
     <string name="addedit_treatment_title">AddEdit</string>
     <string name="before_time">Before chosen time</string>
     <string name="after_time">After chosen time</string>
-    <string name="time_template_missing_data">Time template must be at least one minute.</string>
+    <string name="time_template_missing_data">Time offset must be at least one minute.</string>
     <string name="view_contacts">Contacts</string>
-    <string name="view_treatments">Treatments</string>
+    <string name="view_treatments">Services</string>
     <string name="money">Money</string>
     <string name="phone_number">Phone number</string>
     <string name="name">Name</string>
@@ -43,21 +41,21 @@
     <string name="empty_message">Message cannot be empty</string>
     <string name="sms_error_channel">Sms error</string>
     <string name="sms_error_description">When a scheduled sms failed to be delivered or sent</string>
-    <string name="empty_treatment_message">Empty treatment text</string>
-    <string name="loading_treatment_error">Error while loading treatment</string>
+    <string name="empty_treatment_message">Empty services text</string>
+    <string name="loading_treatment_error">Error while loading service</string>
     <string name="delete">delete</string>
     <string name="empty_contact_message">Empty contact text</string>
     <string name="loading_contact_error">Error while loading contact</string>
     <string name="default_message">Default message</string>
-    <string name="default_timetemplate">Default time template</string>
-    <string name="default_treatment">Default treatment</string>
+    <string name="default_timetemplate">Default time offset</string>
+    <string name="default_treatment">Default service</string>
     <string name="none">none</string>
     <string name="messages">Messages</string>
     <string name="dashboard">Dashboard</string>
-    <string name="time_templates">Time Templates</string>
+    <string name="time_offsets">Time offsets</string>
     <string name="addedit_timetemplate_title">AddEdit</string>
     <string name="contacts">Contacts</string>
-    <string name="scheduled_treatments">Scheduled Treatments</string>
+    <string name="appointments">Appointments</string>
     <string name="archived">Archived</string>
     <string name="variables_info">Variables Info</string>
     <string name="selected_count">%1$d Selected</string>
@@ -74,7 +72,7 @@
     <string name="mark_and_close">MARK AND CLOSE</string>
     <string name="sent">Sent</string>
     <string name="done">Done</string>
-    <string name="mark_treatment_as">Mark treatment as</string>
+    <string name="mark_treatment_as">Mark service as</string>
     <string name="sms_not_sent_title">Sms not sent to %1$s</string>
     <string name="sms_not_delivered_title">Sms not delivered to %1$s</string>
     <string name="permission_not_granted_title">Permission send sms not granted</string>
@@ -82,19 +80,19 @@
     <string name="contact_updated">Contact successfully updated</string>
     <string name="contact_saved">Contact successfully saved</string>
     <string name="contact_deleted">Contact successfully deleted</string>
-    <string name="treatment_deleted">Treatment successfully deleted</string>
-    <string name="treatment_updated">Treatment successfully updated</string>
-    <string name="treatment_saved">Treatment successfully saved</string>
+    <string name="treatment_deleted">Service successfully deleted</string>
+    <string name="treatment_updated">Service successfully updated</string>
+    <string name="treatment_saved">Service successfully saved</string>
     <string name="loading_message_error">Error while loading message</string>
 
     <string name="messages_deleted">Messages successfully deleted</string>
     <string name="message_deleted">Message successfully deleted</string>
     <string name="message_saved">Message successfully saved</string>
     <string name="message_updated">Message successfully updated</string>
-    <string name="time_templates_deleted">Time templates successfully deleted</string>
-    <string name="time_template_delete">Time template deleted</string>
-    <string name="time_template_saved">Time template successfully saved</string>
-    <string name="time_template_updated">Time template successfully updated</string>
+    <string name="time_templates_deleted">Time offset successfully deleted</string>
+    <string name="time_template_delete">Time offset deleted</string>
+    <string name="time_template_saved">Time offset successfully saved</string>
+    <string name="time_template_updated">Time offset successfully updated</string>
     <string name="add_contact">Choose contact</string>
     <string name="choose_message">Choose message</string>
     <string name="choose_time_offset">Choose time offset</string>
@@ -106,12 +104,12 @@
     <string name="select_all">Select all</string>
 
     <string-array name="message_variable_descriptions">
-        <item>The name of the person for the treatment.</item>
-        <item>The minute from the scheduled treatment time.</item>
-        <item>The hour from the scheduled treatment time.</item>
-        <item>The number of the day in the month from the scheduled treatment time.</item>
-        <item>The number of the month from the scheduled treatment time.</item>
-        <item>The year from the scheduled treatment time.</item>
+        <item>The name of the person for the appointment.</item>
+        <item>The minute from the appointment time.</item>
+        <item>The hour from the appointment time.</item>
+        <item>The number of the day in the month from the appointment time.</item>
+        <item>The number of the month from the appointment time.</item>
+        <item>The year from the appointment time.</item>
     </string-array>
     
 </resources>

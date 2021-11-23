@@ -89,7 +89,7 @@
     <fragment
         android:id="@+id/timeTemplateListFragment"
         android:name="com.oscarcreator.sms_scheduler_v2.timetemplates.TimeTemplatesFragment"
-        android:label="@string/time_templates"
+        android:label="@string/time_offsets"
         tools:layout="@layout/fragment_timetemplate_list"
         >
         <action
@@ -172,7 +172,7 @@
     <fragment
         android:id="@+id/treatmentsFragment"
         android:name="com.oscarcreator.sms_scheduler_v2.treatments.TreatmentsFragment"
-        android:label="@string/treatments"
+        android:label="@string/services"
         >
         <action
             android:id="@+id/action_treatmentsFragment_to_addEditTreatment"
@@ -214,7 +214,7 @@
     <fragment
         android:id="@+id/scheduledTreatmentsFragment"
         android:name="com.oscarcreator.sms_scheduler_v2.scheduledtreatments.ScheduledTreatmentsFragment"
-        android:label="@string/scheduled_treatments"
+        android:label="@string/appointments"
         tools:layout="@layout/fragment_scheduledtreatments"
         >
         <action

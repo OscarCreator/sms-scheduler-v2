@@ -5,12 +5,12 @@
     <string name="upcoming">Kommande</string>
     <string name="today">Idag</string>
     <string name="tomorrow">Imorgon</string>
-    <string name="treatments">Behandlingar</string>
-    <string name="treatment">Behandling</string>
+    <string name="services">Services</string>
+    <string name="service">Service</string>
     <string name="to">Till</string>
     <string name="time">Tid</string>
-    <string name="time_template">Tidsmall</string>
-    <string name="time_templates">Tidsmallar</string>
+    <string name="time_template">Tidsförskjutning</string>
+    <string name="time_offsets">Tidsförskjutningar</string>
     <string name="message">Meddelande</string>
     <string name="clear_fields">Töm fält</string>
     <string name="complete">Färdigställ</string>
@@ -19,9 +19,9 @@
     <string name="addedit_treatment_title">Skapa/Redigera</string>
     <string name="before_time">Före vald tid</string>
     <string name="after_time">Efter vald tid</string>
-    <string name="time_template_missing_data">Tidsmall måste vara åtminstonde en minut.</string>
+    <string name="time_template_missing_data">Tidsförskjutning måste vara åtminstonde en minut.</string>
     <string name="view_contacts">Kontakter</string>
-    <string name="view_treatments">Behandlingar</string>
+    <string name="view_treatments">Services</string>
     <string name="money">Pengar</string>
     <string name="phone_number">Telefonnummer</string>
     <string name="name">Namn</string>
@@ -39,20 +39,20 @@
     <string name="empty_message">Meddelandet kan inte vara tomt</string>
     <string name="sms_error_channel">Sms error</string>
     <string name="sms_error_description">När ett schemalagt sms inte kunde bli skickat eller mottagit</string>
-    <string name="empty_treatment_message">Tom behandling text</string>
-    <string name="loading_treatment_error">Fel vid laddning av behandlingen</string>
+    <string name="empty_treatment_message">Tom service text</string>
+    <string name="loading_treatment_error">Fel vid laddning av servicen</string>
     <string name="delete">radera</string>
     <string name="empty_contact_message">Tom contact text</string>
     <string name="loading_contact_error">Fel vid laddning av kontakt</string>
     <string name="default_message">Förvalt meddelande</string>
-    <string name="default_timetemplate">Förvald tidsmall</string>
-    <string name="default_treatment">Förvald behadling</string>
+    <string name="default_timetemplate">Förvald tidsförskjutning</string>
+    <string name="default_treatment">Förvald service</string>
     <string name="none">ingen</string>
     <string name="messages">Meddelande</string>
     <string name="dashboard">Översikt</string>
     <string name="addedit_timetemplate_title">Skapa/Redigera</string>
     <string name="contacts">Kontakter</string>
-    <string name="scheduled_treatments">Planerade Behandlingar</string>
+    <string name="appointments">Bokningar</string>
     <string name="archived">Arkiverade</string>
     <string name="variables_info">Variablefakta</string>
     <string name="selected_count">%1$d Markerade</string>
@@ -60,12 +60,12 @@
     <string name="temp_delete_exception_text">Ej möjligt att radera för närvarande.</string>
 
     <string-array name="message_variable_descriptions">
-        <item>Namnet på personen för behandlingen.</item>
-        <item>Minuten tagen från den schemalagda behandlingens tid.</item>
-        <item>Timmen tagen från den schemalagda behandlingens tid.</item>
-        <item>Den schemalagda behandlingens dag.</item>
-        <item>Den schemalagda behandlingens månad.</item>
-        <item>Den schemalagda behandlingens år.</item>
+        <item>Namnet på personen för bokningen.</item>
+        <item>Minuten tagen från den schemalagda bokningens tid.</item>
+        <item>Timmen tagen från den schemalagda bokningens tid.</item>
+        <item>Den schemalagda bokningens dag.</item>
+        <item>Den schemalagda bokningens månad.</item>
+        <item>Den schemalagda bokningens år.</item>
     </string-array>
     <string name="treatment_time">%1$d min</string>
     <string name="treatment_price">%1$d SEK</string>
@@ -78,7 +78,7 @@
     <string name="mark_and_close">MARKERA OCH STÄNG</string>
     <string name="sent">Skickad</string>
     <string name="done">Färdig</string>
-    <string name="mark_treatment_as">Mark behandling som</string>
+    <string name="mark_treatment_as">Markera bokning som</string>
     <string name="sms_not_sent_title">Sms ej skickat till %1$s</string>
     <string name="sms_not_delivered_title">Sms ej mottaget till %1$s</string>
     <string name="permission_not_granted_title">Permission send sms not granted</string>
@@ -86,18 +86,18 @@
     <string name="contact_updated">Kontakt har uppdaterats</string>
     <string name="contact_saved">Kontakt har sparats</string>
     <string name="contact_deleted">Kontakt har raderats</string>
-    <string name="treatment_deleted">Behandling har raderats</string>
-    <string name="treatment_updated">Behandling har uppdaterats</string>
-    <string name="treatment_saved">Behandling har sparats</string>
+    <string name="treatment_deleted">Servicen har raderats</string>
+    <string name="treatment_updated">Servicen har uppdaterats</string>
+    <string name="treatment_saved">Servicen har sparats</string>
     <string name="loading_message_error">Fel vid inläsningar av meddelande</string>
     <string name="messages_deleted">Meddelandena har raderats</string>
     <string name="message_deleted">Meddelandet har raderats</string>
     <string name="message_saved">Meddelandet har sparats</string>
     <string name="message_updated">Meddelandet har uppdaterats</string>
-    <string name="time_templates_deleted">Tidsmallarna har raderats</string>
-    <string name="time_template_delete">Tidsmallen har raderats</string>
-    <string name="time_template_saved">Tidsmallen har sparats</string>
-    <string name="time_template_updated">Tidsmallen har uppdaterats</string>
+    <string name="time_templates_deleted">Tidsförskjutningen har raderats</string>
+    <string name="time_template_delete">Tidsförskjutningen har raderats</string>
+    <string name="time_template_saved">Tidsförskjutningen har sparats</string>
+    <string name="time_template_updated">Tidsförskjutningen har uppdaterats</string>
     <string name="add_contact">Välj kontakt</string>
     <string name="choose_message">Välj meddelande</string>
     <string name="choose_time_offset">Välj tidsförskjutning</string>
