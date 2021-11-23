@@ -24,6 +24,9 @@
         <action
             android:id="@+id/action_dashboardFragment_to_scheduledTreatmentsFragment"
             app:destination="@id/scheduledTreatmentsFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_scheduledTreatmentDetailFragment"
+            app:destination="@id/scheduledTreatmentDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/addEditScheduledTreatmentFragment"
