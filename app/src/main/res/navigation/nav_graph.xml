@@ -165,7 +165,7 @@
     </fragment>
     <fragment
         android:id="@+id/loadContactsFragment"
-        android:name="com.oscarcreator.sms_scheduler_v2.settings.LoadContactsFragment"
+        android:name="com.oscarcreator.sms_scheduler_v2.importcontacts.ImportContactsFragment"
         android:label="@string/import_contacts_title"
         tools:layout="@layout/fragment_load_contacts"
         />

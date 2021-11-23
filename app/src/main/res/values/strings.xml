@@ -101,6 +101,9 @@
     <string name="missing_data">Missing information</string>
     <string name="add">Add</string>
     <string name="search">Search</string>
+    <string name="as_name">as</string>
+    <string name="imported">Imported</string>
+    <string name="select_all">Select all</string>
 
     <string-array name="message_variable_descriptions">
         <item>The name of the person for the treatment.</item>

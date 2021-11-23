@@ -43,6 +43,12 @@ interface ContactDao {
     suspend fun getContact(customerId: Long): Contact?
 
     /**
+     * Return all [Contact]s
+     * */
+    @Query("SELECT * FROM contacts WHERE to_be_deleted = :bool")
+    suspend fun getContacts(bool: Boolean = false): List<Contact>
+
+    /**
      * Observes the [Contact] with the specified id
      *
      * @param id the id of the [Contact]

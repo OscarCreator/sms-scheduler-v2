@@ -58,4 +58,6 @@ class ContactsLocalDataSource internal constructor(
     override suspend fun updateScheduledTreatmentsWithNewContact(oldContactId: Long, newContactId: Long) =
         contactDao.updateScheduledTreatmentsWithNewContact(oldContactId, newContactId)
 
+    override suspend fun getContacts(): List<Contact> = contactDao.getContacts()
+
 }

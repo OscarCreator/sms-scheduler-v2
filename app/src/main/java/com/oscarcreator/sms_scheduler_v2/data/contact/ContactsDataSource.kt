@@ -28,4 +28,6 @@ interface ContactsDataSource {
     suspend fun updateToBeDeleted(contactId: Long)
 
     suspend fun updateScheduledTreatmentsWithNewContact(oldContactId: Long, newContactId: Long)
+
+    suspend fun getContacts(): List<Contact>
 }

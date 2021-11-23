@@ -104,5 +104,8 @@
     <string name="missing_data">Information saknas</string>
     <string name="add">Lägg till</string>
     <string name="search">Sök</string>
+    <string name="as_name">som</string>
+    <string name="imported">Importerad</string>
+    <string name="select_all">Markera alla</string>
 
 </resources>

@@ -37,4 +37,7 @@ class DefaultContactsRepository(
         oldContactId: Long,
         newContactId: Long
     ) = contactsDataSource.updateScheduledTreatmentsWithNewContact(oldContactId, newContactId)
+
+
+    override suspend fun getContacts(): List<Contact> = contactsDataSource.getContacts()
 }
