@@ -10,6 +10,22 @@
         android:layout_height="match_parent"
         />
 
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/time_template_tutorial"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/rv_timetemplate_list"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="@string/time_offset_tutorial"
+        style="@style/TextAppearance.MaterialComponents.Subtitle1"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintWidth_default="percent"
+        app:layout_constraintWidth_percent="0.7"
+        />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add_timetemplate"
         android:layout_width="wrap_content"

@@ -73,6 +73,11 @@ class TimeTemplatesFragment : Fragment(), ActionMode.Callback {
 
         viewModel.timeTemplates.observe(viewLifecycleOwner) {
             adapter.setTimeTemplates(it)
+            if (it.isEmpty()) {
+                binding.timeTemplateTutorial.visibility = View.VISIBLE
+            } else {
+                binding.timeTemplateTutorial.visibility = View.GONE
+            }
         }
 
         viewModel.deleteMessageEvent.observe(viewLifecycleOwner, EventObserver {
