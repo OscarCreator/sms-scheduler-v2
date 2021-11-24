@@ -54,6 +54,11 @@ class MessageDetailFragment : Fragment() {
 
                 return true
             }
+
+            R.id.delete -> {
+                viewModel.deleteMessage()
+                return true
+            }
         }
 
         return super.onOptionsItemSelected(item)
@@ -78,6 +83,10 @@ class MessageDetailFragment : Fragment() {
             findNavController().popBackStack(R.id.addEditScheduledTreatmentFragment, false)
             findNavController().getBackStackEntry(R.id.addEditScheduledTreatmentFragment).savedStateHandle.set("message_id", args.messageId)
         }
+
+        viewModel.deleteMessageEvent.observe(viewLifecycleOwner, EventObserver {
+            findNavController().navigateUp()
+        })
 
         return binding.root
     }

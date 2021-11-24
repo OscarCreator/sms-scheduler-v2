@@ -44,6 +44,11 @@ class TimeTemplateDetailFragment : Fragment() {
                 viewModel.editTimeTemplate()
                 return true
             }
+
+            R.id.delete -> {
+                viewModel.deleteTimeTemplate()
+                return true
+            }
         }
 
         return super.onOptionsItemSelected(item)
@@ -61,6 +66,11 @@ class TimeTemplateDetailFragment : Fragment() {
             val action = TimeTemplateDetailFragmentDirections
                 .actionTimeTemplateDetailFragmentToAddEditTimeTemplateFragment(args.timetemplateId)
             findNavController().navigate(action)
+        })
+
+
+        viewModel.deleteTimeTemplateEvent.observe(viewLifecycleOwner, EventObserver {
+            findNavController().navigateUp()
         })
 
         return ComposeView(requireContext()).apply {

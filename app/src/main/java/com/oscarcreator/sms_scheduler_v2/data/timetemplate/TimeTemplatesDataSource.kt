@@ -8,7 +8,7 @@ interface TimeTemplatesDataSource {
 
     fun observeAllTimeTemplates(): LiveData<List<TimeTemplate>>
 
-    fun observeTimeTemplate(id: Long): LiveData<TimeTemplate>
+    fun observeTimeTemplate(id: Long): LiveData<Result<TimeTemplate>>
 
     suspend fun getTimeTemplate(id: Long): Result<TimeTemplate>
 

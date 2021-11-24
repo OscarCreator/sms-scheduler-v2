@@ -40,7 +40,7 @@ class DefaultTimeTemplatesRepository(
     override fun observeAllTimeTemplates(): LiveData<List<TimeTemplate>> =
         timeTemplatesDataSource.observeAllTimeTemplates()
 
-    override fun observeTimeTemplate(id: Long): LiveData<TimeTemplate> =
+    override fun observeTimeTemplate(id: Long): LiveData<Result<TimeTemplate>> =
         timeTemplatesDataSource.observeTimeTemplate(id)
 
     override fun getScheduledTreatmentsWithTimeTemplateId(timeTemplateId: Long): List<ScheduledTreatmentWithMessageTimeTemplateAndContact> =

@@ -1,6 +1,7 @@
 package com.oscarcreator.sms_scheduler_v2.data.timetemplate.local
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.map
 import com.oscarcreator.sms_scheduler_v2.data.Result
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentWithMessageTimeTemplateAndContact
 import com.oscarcreator.sms_scheduler_v2.data.timetemplate.TimeTemplate
@@ -50,7 +51,11 @@ class TimeTemplatesLocalDataSource internal constructor(
     override fun observeAllTimeTemplates(): LiveData<List<TimeTemplate>> =
         timeTemplatesDao.observeAllTimeTemplates()
 
-    override fun observeTimeTemplate(id: Long): LiveData<TimeTemplate> = timeTemplatesDao.observeTimeTemplate(id)
+    override fun observeTimeTemplate(id: Long): LiveData<Result<TimeTemplate>> {
+        return timeTemplatesDao.observeTimeTemplate(id).map {
+            Result.Success(it)
+        }
+    }
 
     override fun getScheduledTreatmentsWithTimeTemplateId(timeTemplateId: Long): List<ScheduledTreatmentWithMessageTimeTemplateAndContact> =
         timeTemplatesDao.getScheduledTreatmentsWithTimeTemplateId(timeTemplateId)
