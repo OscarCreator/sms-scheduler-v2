@@ -13,6 +13,9 @@
         app:layout_constraintTop_toTopOf="parent"
         android:minLines="2"
         tools:text="Some random text"
+        android:hint="@string/message_hint"
+        android:textAlignment="gravity"
+        android:gravity="top"
         />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

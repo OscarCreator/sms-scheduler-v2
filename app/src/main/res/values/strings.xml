@@ -102,6 +102,8 @@
     <string name="as_name">as</string>
     <string name="imported">Imported</string>
     <string name="select_all">Select all</string>
+    <string name="loading_appointment_error">Error while loading appointment</string>
+    <string name="message_hint">Create personalized messages with variables. Ex: Hello [name] welcome to your appointment at [hour]:[min]. The variables (text wrapped in [ ]) will be replaced with corresponding text.</string>
 
     <string-array name="message_variable_descriptions">
         <item>The name of the person for the appointment.</item>
