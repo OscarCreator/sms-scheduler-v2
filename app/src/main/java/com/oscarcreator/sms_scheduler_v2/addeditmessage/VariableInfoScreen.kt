@@ -24,7 +24,7 @@ import java.util.*
 
 val VARIABLE_CALENDAR_VALUES = listOf(Calendar.MINUTE, Calendar.HOUR_OF_DAY, Calendar.DATE, Calendar.MONTH, Calendar.YEAR)
 
-val VARIABLE_VALUES = listOf("[name]", "[min]", "[hour]", "[day]", "[month]", "[year]")
+val VARIABLE_VALUES = listOf("[name]", "[min]", "[hour]", "[day]", "[month]", "[year]", "[service]")
 
 @Composable
 fun VariableInfoScreen() {
@@ -142,6 +142,9 @@ fun ScheduledTreatmentWithMessageTimeTemplateAndContact.replaceVariables(): Stri
                         text.replace(s, minutes)
                     }
                 }
+            }
+            s == "[service]" -> {
+                text.replace(s, treatment.name)
             }
             else -> {
                 text.replace(s, scheduledTreatment.treatmentTime.get(VARIABLE_CALENDAR_VALUES[index - 1]).toString())

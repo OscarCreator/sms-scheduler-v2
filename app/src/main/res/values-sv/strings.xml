@@ -66,6 +66,7 @@
         <item>Den schemalagda bokningens dag.</item>
         <item>Den schemalagda bokningens månad.</item>
         <item>Den schemalagda bokningens år.</item>
+        <item>Den valda servicens namn.</item>
     </string-array>
     <string name="treatment_time">%1$d min</string>
     <string name="treatment_price">%1$d SEK</string>

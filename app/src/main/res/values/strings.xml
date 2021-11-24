@@ -113,6 +113,7 @@
         <item>The number of the day in the month from the appointment time.</item>
         <item>The number of the month from the appointment time.</item>
         <item>The year from the appointment time.</item>
+        <item>The name of the used service.</item>
     </string-array>
     
 </resources>
