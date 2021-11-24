@@ -42,7 +42,7 @@ interface ScheduledTreatmentDao {
 
     @Transaction
     @Query("SELECT * FROM scheduled_treatment WHERE scheduled_treatment_id = :scheduledTreatmentId")
-    fun getScheduledTreatment(scheduledTreatmentId: Long): LiveData<ScheduledTreatmentWithMessageTimeTemplateAndContact>
+    fun observeScheduledTreatment(scheduledTreatmentId: Long): LiveData<ScheduledTreatmentWithMessageTimeTemplateAndContact>
 
     /**
      * Inserts a [ScheduledTreatment] into the database.

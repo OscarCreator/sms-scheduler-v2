@@ -1,9 +1,12 @@
 package com.oscarcreator.sms_scheduler_v2.data.scheduled.local
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.map
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.*
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import com.oscarcreator.sms_scheduler_v2.data.Result
 import java.util.*
 
 class ScheduledTreatmentsLocalDataSource internal constructor(
@@ -22,8 +25,13 @@ class ScheduledTreatmentsLocalDataSource internal constructor(
     override fun getOldScheduledTreatmentsWithData(currentDay: Calendar) =
         scheduledTreatmentsDao.getOldScheduledTreatmentsWithData(currentDay)
 
-    override fun getScheduledTreatment(scheduledTreatmentId: Long) =
-        scheduledTreatmentsDao.getScheduledTreatment(scheduledTreatmentId)
+    override fun observeScheduledTreatment(scheduledTreatmentId: Long): LiveData<Result<ScheduledTreatmentWithMessageTimeTemplateAndContact>> {
+        return scheduledTreatmentsDao.observeScheduledTreatment(scheduledTreatmentId).map {
+            Result.Success(it)
+        }
+    }
+
+
 
     override suspend fun getScheduledTreatmentWithData(scheduledTreatmentId: Long) =
         scheduledTreatmentsDao.getScheduledTreatmentWithData(scheduledTreatmentId)

@@ -21,8 +21,8 @@ class DefaultScheduledTreatmentsRepository(
     override fun getOldScheduledTreatmentsWithData(currentDay: Calendar) =
         scheduledTreatmentsDataSource.getOldScheduledTreatmentsWithData(currentDay)
 
-    override fun getScheduledTreatment(scheduledTreatmentId: Long) =
-        scheduledTreatmentsDataSource.getScheduledTreatment(scheduledTreatmentId)
+    override fun observeScheduledTreatment(scheduledTreatmentId: Long) =
+        scheduledTreatmentsDataSource.observeScheduledTreatment(scheduledTreatmentId)
 
     override suspend fun getScheduledTreatmentWithData(scheduledTreatmentId: Long) =
         scheduledTreatmentsDataSource.getScheduledTreatmentWithData(scheduledTreatmentId)

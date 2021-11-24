@@ -2,6 +2,8 @@ package com.oscarcreator.sms_scheduler_v2.scheduledtreatmentdetail
 
 import android.content.Context
 import androidx.lifecycle.*
+import com.oscarcreator.sms_scheduler_v2.R
+import com.oscarcreator.sms_scheduler_v2.data.Result
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentWithMessageTimeTemplateAndContact
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentsRepository
 import com.oscarcreator.sms_scheduler_v2.util.Event
@@ -9,17 +11,21 @@ import com.oscarcreator.sms_scheduler_v2.util.deleteAlarm
 import com.oscarcreator.sms_scheduler_v2.util.sendSmsNow
 import kotlinx.coroutines.launch
 
-class ScheduledTreatmentViewModel(
+class ScheduledTreatmentDetailViewModel(
     private val scheduledTreatmentsRepository: ScheduledTreatmentsRepository
 ) : ViewModel(){
 
     private val _scheduledTreatmentId = MutableLiveData<Long>()
 
+    private val _snackbarText = MutableLiveData<Event<Int>>()
+    val snackbarText: LiveData<Event<Int>> = _snackbarText
+
     private val _scheduledTreatment = _scheduledTreatmentId.switchMap {
-        scheduledTreatmentsRepository.getScheduledTreatment(it)
+        scheduledTreatmentsRepository.observeScheduledTreatment(it)
+            .map { scheduledTreatment -> computeResult(scheduledTreatment)}
     }
 
-    val scheduledTreatment: LiveData<ScheduledTreatmentWithMessageTimeTemplateAndContact> = _scheduledTreatment
+    val scheduledTreatment: LiveData<ScheduledTreatmentWithMessageTimeTemplateAndContact?> = _scheduledTreatment
 
     private val _editScheduledTreatmentEvent = MutableLiveData<Event<Unit>>()
     val editScheduledTreatmentEvent: LiveData<Event<Unit>> = _editScheduledTreatmentEvent
@@ -51,6 +57,15 @@ class ScheduledTreatmentViewModel(
             deleteAlarm(context, it)
             sendSmsNow(context, it)
             _smsSentEvent.value = Event(Unit)
+        }
+    }
+
+    private fun computeResult(scheduledTreatment: Result<ScheduledTreatmentWithMessageTimeTemplateAndContact>): ScheduledTreatmentWithMessageTimeTemplateAndContact? {
+        return if (scheduledTreatment is Result.Success) {
+            scheduledTreatment.data
+        } else {
+            _snackbarText.value = Event(R.string.loading_appointment_error)
+            null
         }
     }
 }

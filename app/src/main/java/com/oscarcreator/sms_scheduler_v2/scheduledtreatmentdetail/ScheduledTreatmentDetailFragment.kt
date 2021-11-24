@@ -23,7 +23,7 @@ class ScheduledTreatmentDetailFragment : Fragment() {
     private val binding: FragmentDetailScheduledtreatmentBinding
         get() = _binding!!
 
-    private val viewModel by viewModels<ScheduledTreatmentViewModel> {
+    private val viewModel by viewModels<ScheduledTreatmentDetailViewModel> {
         ScheduledTreatmentViewModelFactory((requireContext().applicationContext as SmsSchedulerApplication).scheduledTreatmentsRepository)
     }
 
@@ -68,19 +68,21 @@ class ScheduledTreatmentDetailFragment : Fragment() {
         })
 
         viewModel.scheduledTreatment.observe(viewLifecycleOwner) {
-            binding.tvContact.text = it.contact.name
+            if (it != null) {
+                binding.tvContact.text = it.contact.name
 
-            val c = Calendar.getInstance()
-            c.timeInMillis = it.scheduledTreatment.treatmentTime.timeInMillis
+                val c = Calendar.getInstance()
+                c.timeInMillis = it.scheduledTreatment.treatmentTime.timeInMillis
 
-            val simpleTimeFormat =  SimpleDateFormat("HH:mm dd/MM-yy", Locale.getDefault())
+                val simpleTimeFormat =  SimpleDateFormat("HH:mm dd/MM-yy", Locale.getDefault())
 
-            binding.tvTime.text = simpleTimeFormat.format(c.time)
-            binding.tvTreatment.text = it.treatment.name
-            binding.tvTimetemplate.text = it.timeTemplate.delay.toTimeTemplateText()
-            binding.tvMessagetemplate.text = it.message.message
+                binding.tvTime.text = simpleTimeFormat.format(c.time)
+                binding.tvTreatment.text = it.treatment.name
+                binding.tvTimetemplate.text = it.timeTemplate.delay.toTimeTemplateText()
+                binding.tvMessagetemplate.text = it.message.message
 
-            binding.fabEditScheduledTreatment.isEnabled = (it.scheduledTreatment.smsStatus == SmsStatus.SCHEDULED)
+                binding.fabEditScheduledTreatment.isEnabled = (it.scheduledTreatment.smsStatus == SmsStatus.SCHEDULED)
+            }
         }
 
         binding.fabEditScheduledTreatment.setOnClickListener {

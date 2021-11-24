@@ -10,6 +10,6 @@ class ScheduledTreatmentViewModelFactory(
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return ScheduledTreatmentViewModel(scheduledTreatmentsRepository) as T
+        return ScheduledTreatmentDetailViewModel(scheduledTreatmentsRepository) as T
     }
 }

@@ -1,6 +1,7 @@
 package com.oscarcreator.sms_scheduler_v2.data.scheduled
 
 import androidx.lifecycle.LiveData
+import com.oscarcreator.sms_scheduler_v2.data.Result
 import java.util.*
 
 interface ScheduledTreatmentsRepository {
@@ -13,7 +14,7 @@ interface ScheduledTreatmentsRepository {
 
     fun getOldScheduledTreatmentsWithData(currentDay: Calendar): LiveData<List<ScheduledTreatmentWithMessageTimeTemplateAndContact>>
 
-    fun getScheduledTreatment(scheduledTreatmentId: Long): LiveData<ScheduledTreatmentWithMessageTimeTemplateAndContact>
+    fun observeScheduledTreatment(scheduledTreatmentId: Long): LiveData<Result<ScheduledTreatmentWithMessageTimeTemplateAndContact>>
 
     suspend fun getScheduledTreatmentWithData(scheduledTreatmentId: Long): ScheduledTreatmentWithMessageTimeTemplateAndContact?
 
