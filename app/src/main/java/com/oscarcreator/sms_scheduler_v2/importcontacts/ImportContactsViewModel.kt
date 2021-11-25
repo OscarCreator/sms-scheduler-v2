@@ -58,9 +58,14 @@ class ImportContactsViewModel(
         return items.filter { it.name.contains(textLike, true) }.toMutableStateList()
     }
 
-    fun selectAll(selected: Boolean) {
+    fun selectAll(selected: Boolean, searchText: String?) {
+
         val allSelected = items.map {
-            ImportContact(it.name, it.phoneNumber, if (it.importedName != null) true else selected, it.importedName)
+            if (it.name.contains(searchText ?: "", true)) {
+                ImportContact(it.id, it.name, it.phoneNumber, if (it.importedName != null) true else selected, it.importedName)
+            } else {
+                it
+            }
         }
         items.clear()
         items.addAll(allSelected)

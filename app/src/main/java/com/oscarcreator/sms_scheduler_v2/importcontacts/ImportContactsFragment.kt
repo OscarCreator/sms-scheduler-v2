@@ -11,7 +11,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
@@ -154,7 +154,7 @@ class ImportContactsFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor>
         //TODO make it not skip frames by using the cursor in the adapter
         lifecycleScope.launch {
             val list = mutableListOf<ImportContact>()
-
+            var index = 0
             if (data != null) {
                 if (data.moveToFirst()) {
                     do {
@@ -163,7 +163,8 @@ class ImportContactsFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor>
                         val phoneNum =
                             data.getString(data.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
 
-                        list.add(ImportContact(name, phoneNum))
+                        list.add(ImportContact(index, name, phoneNum))
+                        index++
 
                     } while (data.moveToNext())
                 }
@@ -185,6 +186,7 @@ class ImportContactsFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor>
 }
 
 data class ImportContact(
+    val id: Int,
     val name: String,
     val phoneNumber: String,
     val selected: Boolean = false,
@@ -210,7 +212,7 @@ fun ImportContactsScreen(viewModel: ImportContactsViewModel) {
                         modifier = Modifier.padding(8.dp),
                         checked = list.all { it.selected },
                         onCheckedChange = {
-                            viewModel.selectAll(it)
+                            viewModel.selectAll(it, searchText)
                         }
                     )
 
@@ -233,10 +235,10 @@ fun ImportContactsScreen(viewModel: ImportContactsViewModel) {
 @Composable
 fun ImportContactsList(list: List<ImportContact>, onSelectItem: (index: Int) -> Unit) {
     LazyColumn {
-        itemsIndexed(list) { index, item ->
+        items(list) { item ->
             ListItem(
                 modifier = Modifier.clickable(enabled = item.importedName == null) {
-                    onSelectItem(index)
+                    onSelectItem(item.id)
                 },
                 text = {
                     if (item.importedName != null && item.name != item.importedName) {
@@ -270,7 +272,7 @@ fun ImportContactsList(list: List<ImportContact>, onSelectItem: (index: Int) -> 
                         modifier = Modifier.padding(8.dp),
                         checked = item.selected,
                         onCheckedChange = {
-                            onSelectItem(index)
+                            onSelectItem(item.id)
                         }
                     )
                 }
@@ -284,8 +286,8 @@ fun ImportContactsList(list: List<ImportContact>, onSelectItem: (index: Int) -> 
 @Composable
 fun PreviewImportContactsList() {
     val list = listOf(
-        ImportContact("First Last", "+384828945"),
-        ImportContact("Second Lastname", "+2389692348", selected = true, importedName = "Second")
+        ImportContact(0, "First Last", "+384828945"),
+        ImportContact(1, "Second Lastname", "+2389692348", selected = true, importedName = "Second")
     )
     MdcTheme {
         ImportContactsList(list = list, onSelectItem = {})
