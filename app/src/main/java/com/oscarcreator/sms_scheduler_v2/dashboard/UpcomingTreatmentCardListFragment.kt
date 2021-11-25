@@ -11,6 +11,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.composethemeadapter.MdcTheme
 import com.oscarcreator.sms_scheduler_v2.data.AppDatabase
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.DefaultScheduledTreatmentsRepository
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.local.ScheduledTreatmentsLocalDataSource
@@ -40,16 +41,19 @@ class UpcomingTreatmentCardListFragment : Fragment() {
         )
 
         binding.cvAppointments.setContent {
-            val scheduledTreatments by upcomingTreatmentCardListViewModel.upcomingTreatments.observeAsState()
-            LazyColumn {
-                scheduledTreatments?.let {
-                    items(it) { scheduledTreatment ->
-                        ScheduledTreatmentCard(scheduledTreatment) {
-                            val action = DashboardFragmentDirections
-                                .actionDashboardFragmentToScheduledTreatmentDetailFragment(
-                                    scheduledTreatment.scheduledTreatment.scheduledTreatmentId
-                                )
-                            findNavController().navigate(action)
+            MdcTheme {
+                val scheduledTreatments by upcomingTreatmentCardListViewModel.upcomingTreatments.observeAsState()
+
+                LazyColumn {
+                    scheduledTreatments?.let {
+                        items(it.take(3)) { scheduledTreatment ->
+                            ScheduledTreatmentCard(scheduledTreatment) {
+                                val action = DashboardFragmentDirections
+                                    .actionDashboardFragmentToScheduledTreatmentDetailFragment(
+                                        scheduledTreatment.scheduledTreatment.scheduledTreatmentId
+                                    )
+                                findNavController().navigate(action)
+                            }
                         }
                     }
                 }
