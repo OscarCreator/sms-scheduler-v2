@@ -55,7 +55,7 @@ class ScheduleSmsReceiver : BroadcastReceiver() {
 
                         when (database.scheduledTreatmentDao().update(scheduledTreatment.scheduledTreatment)) {
                             1 -> {
-                                Log.i(TAG,"Permisssion denied, Scheduled treatment updated (id = $id)")
+                                Log.i(TAG,"Permission denied, Scheduled treatment updated (id = $id)")
                                 sendNotification(context, intent,
                                     context.getString(R.string.permission_not_granted_title),
                                     context.getString(R.string.permission_not_granted_description))
@@ -151,38 +151,44 @@ private fun sendSms(context: Context, intent: Intent) {
 
     val smsManager = SmsManager.getDefault()
 
-    val sentPendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-        PendingIntent.getBroadcast(
-            context,
-            id.toInt() * 4 + 1,
-            Intent(context, SentSmsReceiver::class.java).apply { putExtras(intent.extras!!) },
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE)
-    } else {
-        PendingIntent.getBroadcast(
-            context,
-            id.toInt() * 4 + 1,
-            Intent(context, SentSmsReceiver::class.java).apply { putExtras(intent.extras!!) },
-            PendingIntent.FLAG_UPDATE_CURRENT)
+    val messageParts = smsManager.divideMessage(message)
+
+    val sentPendingIntents = arrayListOf<PendingIntent>()
+    val deliveredPendingIntents = arrayListOf<PendingIntent>()
+
+    for ((index, messagePart) in messageParts.withIndex()) {
+        sentPendingIntents.add(if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent.getBroadcast(
+                context,
+                id.toInt() * 4 + 1,
+                Intent(context, SentSmsReceiver::class.java).apply { putExtras(intent.extras!!) },
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE)
+        } else {
+            PendingIntent.getBroadcast(
+                context,
+                id.toInt() * 4 + 1,
+                Intent(context, SentSmsReceiver::class.java).apply { putExtras(intent.extras!!) },
+                PendingIntent.FLAG_UPDATE_CURRENT)
+        })
+
+        deliveredPendingIntents.add(if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent.getBroadcast(
+                context,
+                id.toInt() * 4 + 2,
+                Intent(context, DeliveredSmsReceiver::class.java).apply { putExtras(intent.extras!!) },
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
+            )
+        } else {
+            PendingIntent.getBroadcast(
+                context,
+                id.toInt() * 4 + 2,
+                Intent(context, DeliveredSmsReceiver::class.java).apply { putExtras(intent.extras!!) },
+                PendingIntent.FLAG_UPDATE_CURRENT
+            )
+        })
     }
 
-
-    val deliveredPendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-        PendingIntent.getBroadcast(
-            context,
-            id.toInt() * 4 + 2,
-            Intent(context, DeliveredSmsReceiver::class.java).apply { putExtras(intent.extras!!) },
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
-        )
-    } else {
-        PendingIntent.getBroadcast(
-            context,
-            id.toInt() * 4 + 2,
-            Intent(context, DeliveredSmsReceiver::class.java).apply { putExtras(intent.extras!!) },
-            PendingIntent.FLAG_UPDATE_CURRENT
-        )
-    }
-
-    smsManager.sendTextMessage(phoneNumber, null, message, sentPendingIntent, deliveredPendingIntent)
+    smsManager.sendMultipartTextMessage(phoneNumber, null, messageParts, sentPendingIntents, deliveredPendingIntents)
 }
 
 fun sendNotification(context: Context, intent: Intent, title: String, text: String) {
