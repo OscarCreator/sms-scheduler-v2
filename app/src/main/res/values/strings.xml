@@ -62,7 +62,7 @@
     <string name="send_now">Send now</string>
     <string name="temp_delete_exception_text">Not possible to delete currently.</string>
     <string name="treatment_time">%1$d min</string>
-    <string name="treatment_price">%1$d SEK</string>
+    <string name="treatment_price">%1$d %2$s</string>
     <string name="retry_send">RETRY SEND</string>
     <string name="view">VIEW</string>
     <string name="dismiss">DISMISS</string>
@@ -105,6 +105,11 @@
     <string name="loading_appointment_error">Error while loading appointment</string>
     <string name="message_hint">Create personalized messages with variables. Ex: Hello [name] welcome to your appointment at [hour]:[min]. The variables (text wrapped in [ ]) will be replaced with corresponding text.</string>
     <string name="time_offset_tutorial"><b>Time offsets</b> is used to offset the send time of the SMS. Time offsets can be positive or negative and describe when the SMS will be sent in relation to the appointment. They make it easy to always send your reminders Ex. 3 hour before the appointment.</string>
+    <string name="currency">Currency</string>
+    <string name="default_currency">EURO</string>
+    <string name="currency_text_hint">Currency</string>
+    <string name="ok">OK</string>
+    <string name="change_currency">Change currency</string>
 
     <string-array name="message_variable_descriptions">
         <item>The name of the person for the appointment.</item>

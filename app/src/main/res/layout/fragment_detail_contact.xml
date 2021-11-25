@@ -45,6 +45,7 @@
             app:layout_constraintTop_toBottomOf="@id/tv_phone_num"
             android:padding="16dp"
             tools:text="120kr"
+            android:visibility="gone"
             />
 
 

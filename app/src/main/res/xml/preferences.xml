@@ -22,4 +22,9 @@
         android:title="@string/default_treatment"
         />
 
+    <Preference
+        android:key="currency"
+        android:title="@string/currency"
+        />
+
 </PreferenceScreen>

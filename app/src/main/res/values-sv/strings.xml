@@ -69,7 +69,7 @@
         <item>Den valda servicens namn.</item>
     </string-array>
     <string name="treatment_time">%1$d min</string>
-    <string name="treatment_price">%1$d SEK</string>
+    <string name="treatment_price">%1$d %2$s</string>
     <string name="retry_send">FÖRSÖK IGEN</string>
     <string name="view">GRANSKA</string>
     <string name="dismiss">AVFÄRDA</string>
@@ -111,5 +111,10 @@
     <string name="loading_appointment_error">Fel vid inläsning av bokning</string>
     <string name="message_hint">Skapa personliga meddelande med variabler. Ex: Hej [name] välkommen på din bokade tid [hour]:[min]. Variablerna (text med [ ] runtom) blir utbyta mot motsvarande text.</string>
     <string name="time_offset_tutorial"><b>Tidsförskjutningar</b> används för att förskjuta tiden då SMS:et ska skickas. Tidsförskjutningar kan vara positiva eller negativa och beskriver när SMS:et ska skickas i relation till bokningen. De gör det enklet att alltid skicka påminnelser Ex. 3 timmar innan bokningen.</string>
+    <string name="currency">Valuta</string>
+    <string name="default_currency">SEK</string>
+    <string name="currency_text_hint">Valuta</string>
+    <string name="ok">OK</string>
+    <string name="change_currency">Ändra valuta</string>
 
 </resources>

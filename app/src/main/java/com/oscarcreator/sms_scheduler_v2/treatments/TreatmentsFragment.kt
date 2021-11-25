@@ -1,5 +1,6 @@
 package com.oscarcreator.sms_scheduler_v2.treatments
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -24,6 +25,7 @@ import com.oscarcreator.sms_scheduler_v2.R
 import com.oscarcreator.sms_scheduler_v2.SmsSchedulerApplication
 import com.oscarcreator.sms_scheduler_v2.data.treatment.Treatment
 import com.oscarcreator.sms_scheduler_v2.databinding.FragmentComposeViewBinding
+import com.oscarcreator.sms_scheduler_v2.settings.SettingsFragment
 import com.oscarcreator.sms_scheduler_v2.util.EventObserver
 
 class TreatmentsFragment : Fragment() {
@@ -91,13 +93,18 @@ fun TreatmentsScreen(treatmentsViewModel: TreatmentsViewModel) {
 fun TreatmentList(treatments: List<Treatment>, onClick: (treatmentId: Long) -> Unit) {
     LazyColumn {
         items(treatments) { treatment ->
+
             ListItem(
                 text = {
                     Text(treatment.name)
                 },
                 secondaryText = {
-                    Text(LocalContext.current
-                        .getString(R.string.treatment_price, treatment.price))
+                    Text(LocalContext.current.getString(
+                        R.string.treatment_price,
+                        treatment.price,
+                        LocalContext.current.getSharedPreferences(SettingsFragment.SETTINGS_SHARED_PREF, Context.MODE_PRIVATE)
+                            .getString(SettingsFragment.CURRENCY_TAG, LocalContext.current
+                                .getString(R.string.default_currency))))
 
                 },
                 trailing = {

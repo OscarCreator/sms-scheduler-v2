@@ -54,7 +54,7 @@ class AddEditScheduledTreatmentViewModel(
     private var _contactId = -1L
 
     val time = MutableLiveData<Long>()
-    val treatment = MutableLiveData<Treatment>()
+    val treatment = MutableLiveData<Treatment?>()
     val contact = MutableLiveData<Contact?>()
 
     private var scheduledTreatmentId: Long? = 1
@@ -95,6 +95,7 @@ class AddEditScheduledTreatmentViewModel(
             if (it is Result.Success && !it.data.toBeDeleted) {
                 onTreatmentLoaded(it.data)
             } else {
+                this.treatment.value = null
                 //onDataNotAvailable()
             }
         }

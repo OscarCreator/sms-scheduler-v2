@@ -1,5 +1,6 @@
 package com.oscarcreator.sms_scheduler_v2.addedittreatment
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,8 +11,10 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
+import com.oscarcreator.sms_scheduler_v2.R
 import com.oscarcreator.sms_scheduler_v2.SmsSchedulerApplication
 import com.oscarcreator.sms_scheduler_v2.databinding.FragmentAddeditTreatmentBinding
+import com.oscarcreator.sms_scheduler_v2.settings.SettingsFragment
 import com.oscarcreator.sms_scheduler_v2.util.EventObserver
 import com.oscarcreator.sms_scheduler_v2.util.IntInputFilter
 import com.oscarcreator.sms_scheduler_v2.util.setupSnackbar
@@ -64,6 +67,10 @@ class AddEditTreatmentFragment : Fragment() {
             }
             false
         }
+
+        binding.tilPrice.suffixText = requireContext().getSharedPreferences(SettingsFragment.SETTINGS_SHARED_PREF, Context.MODE_PRIVATE)
+            .getString(SettingsFragment.CURRENCY_TAG, requireContext()
+                .getString(R.string.default_currency))
 
         binding.etPrice.filters = arrayOf(IntInputFilter())
         binding.etDuration.filters = arrayOf(IntInputFilter())

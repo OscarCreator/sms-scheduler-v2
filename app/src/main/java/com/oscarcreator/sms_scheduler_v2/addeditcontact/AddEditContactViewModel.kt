@@ -21,7 +21,7 @@ class AddEditContactViewModel(
 
     val name = MutableLiveData<String>()
     val phoneNumber = MutableLiveData<String>()
-    val money = MutableLiveData<String>()
+    val money = MutableLiveData("0")
 
     private val _dataLoading = MutableLiveData<Boolean>()
     val dataLoading: LiveData<Boolean> = _dataLoading

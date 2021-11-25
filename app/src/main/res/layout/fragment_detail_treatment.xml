@@ -42,10 +42,10 @@
             android:id="@+id/tv_price"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{Integer.toString(viewmodel.treatment.price) + ` kr`}"
+            android:text="@{Integer.toString(viewmodel.treatment.price) + ' ' + viewmodel.currency}"
             app:layout_constraintTop_toBottomOf="@id/tv_duration"
             android:padding="16dp"
-            tools:text="150 kr"
+            tools:text="150 SEK"
             />
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton

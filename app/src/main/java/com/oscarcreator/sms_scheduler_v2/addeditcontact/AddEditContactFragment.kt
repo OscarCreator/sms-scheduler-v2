@@ -13,7 +13,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.oscarcreator.sms_scheduler_v2.SmsSchedulerApplication
 import com.oscarcreator.sms_scheduler_v2.databinding.FragmentAddeditContactBinding
 import com.oscarcreator.sms_scheduler_v2.util.EventObserver
-import com.oscarcreator.sms_scheduler_v2.util.IntInputFilter
 import com.oscarcreator.sms_scheduler_v2.util.setupSnackbar
 
 class AddEditContactFragment : Fragment() {
@@ -55,7 +54,7 @@ class AddEditContactFragment : Fragment() {
             viewModel.saveContact()
         }
 
-        binding.etMoney.setOnEditorActionListener { textView, i, keyEvent ->
+        binding.tvPhoneNum.setOnEditorActionListener { textView, i, keyEvent ->
             if (i == EditorInfo.IME_ACTION_DONE) {
                 viewModel.saveContact()
                 true
@@ -63,7 +62,7 @@ class AddEditContactFragment : Fragment() {
             false
         }
 
-        binding.etMoney.filters = arrayOf(IntInputFilter())
+//        binding.etMoney.filters = arrayOf(IntInputFilter())
 
         return binding.root
     }

@@ -195,7 +195,7 @@ class AddEditScheduledTreatmentFragment : Fragment() {
         })
 
         viewModel.treatment.observe(viewLifecycleOwner, {
-            binding.btnTreatment.text = it.name
+            binding.btnTreatment.text = it?.name
         })
 
         binding.btnTimetemplate.setOnClickListener(

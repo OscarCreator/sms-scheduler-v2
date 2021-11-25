@@ -8,12 +8,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.LinearLayout
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.view.updatePadding
 import androidx.navigation.fragment.findNavController
 import androidx.preference.DropDownPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.oscarcreator.sms_scheduler_v2.R
 import com.oscarcreator.sms_scheduler_v2.SmsSchedulerApplication
 import com.oscarcreator.sms_scheduler_v2.util.toTimeTemplateText
@@ -29,6 +33,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         const val MESSAGE_TEMPLATE_TAG = "message_template_tag"
         const val TIME_TEMPLATE_TAG = "time_template_tag"
         const val TREATMENT_TEMPLATE_TAG = "treatment_template_tag"
+        const val CURRENCY_TAG = "currency_tag"
     }
 
     private var messageMap: Map<Long, String> = emptyMap()
@@ -69,6 +74,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         setUpMessageTemplate()
         setUpTimeTemplate()
         setUpTreatmentTemplate()
+        setupCurrency()
 
         return super.onCreateView(inflater, container, savedInstanceState)
     }
@@ -242,6 +248,53 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 defaultTreatmentTemplate.summary = ""
             }
 
+
+            true
+        }
+
+
+    }
+
+    private fun setupCurrency() {
+        val currency: Preference? = findPreference("currency")
+
+        currency?.summary = requireContext().getSharedPreferences(SETTINGS_SHARED_PREF, Context.MODE_PRIVATE).getString(
+            CURRENCY_TAG, requireContext().getString(R.string.default_currency))
+
+        currency?.setOnPreferenceClickListener {
+
+            val currencyText = requireContext().getSharedPreferences(SETTINGS_SHARED_PREF, Context.MODE_PRIVATE).getString(
+                CURRENCY_TAG, requireContext().getString(R.string.default_currency))
+
+
+
+            val input = EditText(requireContext()).apply {
+                width = ViewGroup.LayoutParams.MATCH_PARENT
+                hint = requireContext().getString(R.string.currency_text_hint)
+                setText(currencyText)
+
+            }
+
+            val layout = LinearLayout(requireContext()).apply {
+                orientation = LinearLayout.VERTICAL
+                updatePadding(30, 30, 30, 30)
+                addView(input)
+            }
+
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(getString(R.string.change_currency))
+                .setView(layout)
+                .setPositiveButton(requireContext().getString(R.string.ok)) { _, _ ->
+                    if (input.text.isNotEmpty()) {
+                        requireContext().getSharedPreferences(SETTINGS_SHARED_PREF, Context.MODE_PRIVATE).edit()
+                            .putString(CURRENCY_TAG, input.text.toString())
+                            .apply()
+
+                        currency.summary = requireContext().getSharedPreferences(SETTINGS_SHARED_PREF, Context.MODE_PRIVATE).getString(
+                            CURRENCY_TAG, requireContext().getString(R.string.default_currency))
+                    }
+                }.setNeutralButton(requireContext().getString(R.string.cancel)) { _, _ -> }
+                .show()
 
             true
         }

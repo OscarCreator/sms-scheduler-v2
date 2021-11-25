@@ -20,8 +20,13 @@ class TreatmentsLocalDataSource internal constructor(
 
     override suspend fun getTreatment(id: Long): Result<Treatment> =
         withContext(ioDispatcher) {
-            return@withContext try {
-                Result.Success(treatmentsDao.getTreatment(id))
+            try {
+                val timeTemplate = treatmentsDao.getTreatment(id)
+                if (timeTemplate != null) {
+                    Result.Success(timeTemplate)
+                } else {
+                    Result.Error(Exception("Timetemplate not found!"))
+                }
             } catch (e: Exception) {
                 Result.Error(e)
             }

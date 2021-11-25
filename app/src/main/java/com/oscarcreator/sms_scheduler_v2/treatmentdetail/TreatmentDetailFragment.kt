@@ -59,7 +59,7 @@ class TreatmentDetailFragment : Fragment() {
         }
         binding.lifecycleOwner = this.viewLifecycleOwner
 
-        viewModel.start(args.treatmentId)
+        viewModel.start(args.treatmentId, requireContext())
 
         binding.efabChooseTreatment.setOnClickListener {
             findNavController().popBackStack(R.id.addEditScheduledTreatmentFragment, false)
@@ -76,6 +76,8 @@ class TreatmentDetailFragment : Fragment() {
         viewModel.deleteTreatmentEvent.observe(viewLifecycleOwner, EventObserver {
             findNavController().navigateUp()
         })
+
+
 
         setHasOptionsMenu(true)
 

@@ -31,7 +31,7 @@ interface TreatmentDao {
      * @return the treatment with the specified id
      * */
     @Query("SELECT * FROM treatments WHERE treatment_id = :id")
-    fun getTreatment(id: Long): Treatment
+    fun getTreatment(id: Long): Treatment?
 
     /**
      * Observes the [Treatment] with the specified id

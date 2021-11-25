@@ -1,10 +1,12 @@
 package com.oscarcreator.sms_scheduler_v2.treatmentdetail
 
+import android.content.Context
 import androidx.lifecycle.*
 import com.oscarcreator.sms_scheduler_v2.R
 import com.oscarcreator.sms_scheduler_v2.data.Result
 import com.oscarcreator.sms_scheduler_v2.data.treatment.Treatment
 import com.oscarcreator.sms_scheduler_v2.data.treatment.TreatmentsRepository
+import com.oscarcreator.sms_scheduler_v2.settings.SettingsFragment
 import com.oscarcreator.sms_scheduler_v2.util.Event
 import kotlinx.coroutines.launch
 
@@ -32,11 +34,19 @@ class TreatmentDetailViewModel(
     private val _deleteTreatmentEvent = MutableLiveData<Event<Unit>>()
     val deleteTreatmentEvent: LiveData<Event<Unit>> = _deleteTreatmentEvent
 
-    fun start(treatmentId: Long) {
+    var currency: String? = ""
+
+    fun start(treatmentId: Long, context: Context) {
         if (_dataLoading.value == true || treatmentId == _treatmentId.value){
             // already loaded
             return
         }
+
+        currency = context.getSharedPreferences(
+            SettingsFragment.SETTINGS_SHARED_PREF, Context.MODE_PRIVATE)
+            .getString(
+                SettingsFragment.CURRENCY_TAG, context
+                    .getString(R.string.default_currency))
 
         _treatmentId.value = treatmentId
     }
