@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">SMS Scheduler V2</string>
+    <string name="app_name" translatable="false">Pigeon</string>
 
     <string name="total_earning" translatable="false">%dkr</string>
     <string name="total_earning_exclusive" translatable="false">%dkr</string>
