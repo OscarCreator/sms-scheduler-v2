@@ -119,6 +119,8 @@
         <item>The number of the month from the appointment time.</item>
         <item>The year from the appointment time.</item>
         <item>The name of the used service.</item>
+        <item>Date formatted as following, year-month-day Ex. 2020–02–27</item>
+        <item>Time formatted as following, hour:minute Ex. 11:06</item>
     </string-array>
     
 </resources>

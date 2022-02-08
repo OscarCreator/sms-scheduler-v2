@@ -67,6 +67,8 @@
         <item>Den schemalagda bokningens månad.</item>
         <item>Den schemalagda bokningens år.</item>
         <item>Den valda servicens namn.</item>
+        <item>Datum formatterad som följande, år-månad-dag Ex. 2020–02–27</item>
+        <item>Tid formatterad som följande, timme:minut Ex. 11:06</item>
     </string-array>
     <string name="treatment_time">%1$d min</string>
     <string name="treatment_price">%1$d %2$s</string>

@@ -20,11 +20,12 @@ import androidx.constraintlayout.compose.Dimension
 import com.google.android.material.composethemeadapter.MdcTheme
 import com.oscarcreator.sms_scheduler_v2.R
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentWithMessageTimeTemplateAndContact
+import java.text.SimpleDateFormat
 import java.util.*
 
 val VARIABLE_CALENDAR_VALUES = listOf(Calendar.MINUTE, Calendar.HOUR_OF_DAY, Calendar.DATE, Calendar.MONTH, Calendar.YEAR)
 
-val VARIABLE_VALUES = listOf("[name]", "[min]", "[hour]", "[day]", "[month]", "[year]", "[service]")
+val VARIABLE_VALUES = listOf("[name]", "[min]", "[hour]", "[day]", "[month]", "[year]", "[service]", "[date1]", "[time1]")
 
 @Composable
 fun VariableInfoScreen() {
@@ -120,6 +121,9 @@ fun PreviewSystemUiVariableInfoScreen() {
 fun ScheduledTreatmentWithMessageTimeTemplateAndContact.replaceVariables(): String {
     var text = message.message
 
+    val date1Format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+    val time1Format = SimpleDateFormat("HH:mm", Locale.getDefault())
+
     VARIABLE_VALUES.forEachIndexed { index, s ->
         text = when {
             index == 0 -> {
@@ -145,6 +149,14 @@ fun ScheduledTreatmentWithMessageTimeTemplateAndContact.replaceVariables(): Stri
             }
             s == "[service]" -> {
                 text.replace(s, treatment.name)
+            }
+
+            s == "[date1]" -> {
+                text.replace(s, date1Format.format(scheduledTreatment.treatmentTime.time))
+            }
+
+            s == "[time1]" -> {
+                text.replace(s, time1Format.format(scheduledTreatment.treatmentTime.time))
             }
             else -> {
                 text.replace(s, scheduledTreatment.treatmentTime.get(VARIABLE_CALENDAR_VALUES[index - 1]).toString())
