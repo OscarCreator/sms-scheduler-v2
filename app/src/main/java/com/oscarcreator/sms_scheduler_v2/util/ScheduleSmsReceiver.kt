@@ -90,7 +90,7 @@ fun scheduleAlarm(context: Context, scheduledTreatment: ScheduledTreatmentWithMe
 
     val time = scheduledTreatment.scheduledTreatment.treatmentTime.timeInMillis + scheduledTreatment.timeTemplate.delay
     Log.d("ScheduleSmsReceiver", "scheduleAlarm")
-    alarmManager.setExact(AlarmManager.RTC_WAKEUP, time, pendingIntent)
+    alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time, pendingIntent)
 }
 
 fun deleteAlarm(context: Context, scheduledTreatment: ScheduledTreatmentWithMessageTimeTemplateAndContact) {
