@@ -23,3 +23,8 @@ jobs:
           target: google_apis
           arch: x86_64
           script: chmod +x ./gradlew && ./gradlew connectedCheck --no-parallel
+      - name: Upload test report
+        uses: actions/upload-artifact@v2
+        with:
+          name: index.html
+          path: app/build/reports/androidTests/connected/
