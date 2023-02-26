@@ -1,3 +1,6 @@
+name: Run Tests on PR
+on: [pull_request]
+
 jobs:
   connected-tests:
     runs-on: macos-latest
