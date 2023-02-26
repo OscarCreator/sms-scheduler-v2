@@ -105,6 +105,10 @@ class FakeContactsRepository : ContactsRepository {
         TODO("Not yet implemented")
     }
 
+    override suspend fun getContacts(): List<Contact> {
+        return contactsServiceData.map { (_, value) -> value }
+    }
+
     private fun refreshTreatments() {
         observableContacts.value = contactsServiceData.values.toList()
     }

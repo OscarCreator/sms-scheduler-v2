@@ -72,7 +72,7 @@ class StatisticsViewTest {
 
     @Test
     fun treatmentText_isDisplayed(){
-        val text = instrumentationContext.getString(R.string.treatments)
+        val text = instrumentationContext.getString(R.string.services)
         onView(withId(R.id.tv_treatment_text)).check(matches(withMaterialText(text)))
     }
 }

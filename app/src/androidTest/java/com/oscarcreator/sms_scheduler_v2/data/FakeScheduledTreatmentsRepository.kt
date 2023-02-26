@@ -8,7 +8,6 @@ import com.oscarcreator.sms_scheduler_v2.data.scheduled.*
 import com.oscarcreator.sms_scheduler_v2.data.timetemplate.TimeTemplate
 import com.oscarcreator.sms_scheduler_v2.data.treatment.Treatment
 import java.util.*
-import kotlin.collections.LinkedHashMap
 
 class FakeScheduledTreatmentsRepository : ScheduledTreatmentsRepository {
 
@@ -42,7 +41,7 @@ class FakeScheduledTreatmentsRepository : ScheduledTreatmentsRepository {
         TODO("Not yet implemented")
     }
 
-    override fun getScheduledTreatment(scheduledTreatmentId: Long): LiveData<ScheduledTreatmentWithMessageTimeTemplateAndContact> {
+    override fun observeScheduledTreatment(scheduledTreatmentId: Long): LiveData<Result<ScheduledTreatmentWithMessageTimeTemplateAndContact>> {
         TODO("Not yet implemented")
     }
 
@@ -69,8 +68,8 @@ class FakeScheduledTreatmentsRepository : ScheduledTreatmentsRepository {
         TODO("Not yet implemented")
     }
 
-    override fun getUpcomingFailedScheduledTreatmentsWithData(calendar: Calendar): LiveData<List<ScheduledTreatmentWithMessageTimeTemplateAndContact>> {
-        TODO("Not yet implemented")
+    override fun getUpcomingFailedScheduledTreatmentsWithData(): LiveData<List<ScheduledTreatmentWithMessageTimeTemplateAndContact>> {
+        return MutableLiveData()
     }
 
     override suspend fun setScheduledTreatmentTreatmentStatus(

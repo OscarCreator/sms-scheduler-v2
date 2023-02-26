@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
 import com.oscarcreator.sms_scheduler_v2.data.Result
+import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatmentWithMessageTimeTemplateAndContact
 import com.oscarcreator.sms_scheduler_v2.data.timetemplate.TimeTemplate
 import com.oscarcreator.sms_scheduler_v2.data.timetemplate.TimeTemplatesRepository
 import kotlinx.coroutines.runBlocking
@@ -19,10 +20,10 @@ class FakeTimeTemplateRepository : TimeTemplatesRepository {
         return observableTimeTemplates
     }
 
-    override fun observeTimeTemplate(id: Long): LiveData<TimeTemplate> {
+    override fun observeTimeTemplate(id: Long): LiveData<Result<TimeTemplate>> {
         runBlocking { observableTimeTemplates.value = timeTemplatesServiceData.values.toList() }
         return observableTimeTemplates.map { timetemplates ->
-            timetemplates.first { it.timeTemplateId == id }
+            Result.Success(timetemplates.first { it.timeTemplateId == id })
         }
     }
 
@@ -76,6 +77,10 @@ class FakeTimeTemplateRepository : TimeTemplatesRepository {
         oldTimeTemplateId: Long,
         newTimeTemplateId: Long
     ) {
+        TODO("Not yet implemented")
+    }
+
+    override fun getScheduledTreatmentsWithTimeTemplateId(timeTemplateId: Long): List<ScheduledTreatmentWithMessageTimeTemplateAndContact> {
         TODO("Not yet implemented")
     }
 }

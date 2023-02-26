@@ -54,7 +54,7 @@ class UpcomingTreatmentCardListFragmentTest {
 
     @Test
     fun recyclerview_isDisplayed(){
-        onView(withId(R.id.upcoming_treatment_recycler_view)).check(matches(isDisplayed()))
+        onView(withId(R.id.cv_appointments)).check(matches(isDisplayed()))
     }
 
 }
