@@ -9,7 +9,7 @@ class TimeTemplatesViewModelFactory(
 ): ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return TimeTemplatesViewModel(timeTemplatesRepository) as T
     }
 }

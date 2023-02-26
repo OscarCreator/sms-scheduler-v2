@@ -9,7 +9,7 @@ class DetailContactViewModelFactory(
 ): ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return DetailContactViewModel(
             contactsRepository
         ) as T

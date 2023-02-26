@@ -76,7 +76,7 @@ class FakeMessagesRepository : MessagesRepository {
     }
 
     override fun getScheduledTreatmentsWithMessageId(messageId: Long): List<ScheduledTreatmentWithMessageTimeTemplateAndContact> {
-        TODO("Not yet implemented")
+        return emptyList()
     }
 
     suspend fun refreshMessages() {
