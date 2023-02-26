@@ -22,4 +22,4 @@ jobs:
           api-level: 33
           target: google_apis
           arch: x86_64
-          script: chmod +x ./gradlew && ./gradlew connectedCheck
+          script: chmod +x ./gradlew && ./gradlew connectedCheck --no-parallel
