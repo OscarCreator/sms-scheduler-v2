@@ -15,7 +15,9 @@ jobs:
           java-version: 11
           distribution: 'adopt'
           cache: 'gradle'
-        
+      - name: Change wrapper permissions
+        run: chmod +x ./gradlew
+
       - name: Run connected tests
         uses: ReactiveCircus/android-emulator-runner@v2
         with:
