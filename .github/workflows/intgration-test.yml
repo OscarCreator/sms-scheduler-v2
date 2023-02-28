@@ -100,4 +100,4 @@ jobs:
       - name: Write job summary
         if: success() || failure()
         run: |
-          echo "app/build/reports/androidTests/connected/index.html" >> $GITHUB_STEP_SUMMARY
+          cat app/build/reports/androidTests/connected/index.html >> $GITHUB_STEP_SUMMARY
