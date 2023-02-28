@@ -35,15 +35,22 @@ jobs:
           force-avd-creation: false
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: false
+          target: google_apis
+          arch: x86_64
           script: echo "Generated AVD snapshot for caching."
 
       - name: Run connected tests
         uses: ReactiveCircus/android-emulator-runner@v2
         with:
           api-level: 33
+          force-avd-creation: false
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none          disable-animations: true
+          disable-animations: true
           target: google_apis
           arch: x86_64
-          script: chmod +x ./gradlew && ./gradlew connectedCheck --no-parallel
+          script: |
+            adb devices
+            chmod +x ./gradlew && ./gradlew connectedCheck
 
       - name: Upload test report
         if: success() || failure()
@@ -52,4 +59,4 @@ jobs:
           name: index.html
           path: app/build/reports/androidTests/connected/
       - name: Write job summary
-        run: cat app/build/reports/androidTests/connected/index.html > $GITHUB_STEP_SUMMARY
+        script: echo app/build/reports/androidTests/connected/index.html > $GITHUB_STEP_SUMMARY
