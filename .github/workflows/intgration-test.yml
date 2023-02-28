@@ -59,4 +59,5 @@ jobs:
           name: index.html
           path: app/build/reports/androidTests/connected/
       - name: Write job summary
-        script: echo app/build/reports/androidTests/connected/index.html > $GITHUB_STEP_SUMMARY
+        with:
+          script: echo app/build/reports/androidTests/connected/index.html > $GITHUB_STEP_SUMMARY
