@@ -1,5 +1,5 @@
 name: Run Tests on PR
-on: [pull_request,workflow_dispatch,push]
+on: [workflow_dispatch,push]
 
 jobs:
   connected-tests:
@@ -21,9 +21,7 @@ jobs:
       - name: Gradle cache
         uses: gradle/gradle-build-action@v2
         
-      - run: |
-          ls ~/.android/avd/
-          tree ~/.android/
+      
       - name: AVD cache
         uses: actions/cache@v3
         id: avd-cache
@@ -48,7 +46,9 @@ jobs:
           target: google_apis
           arch: x86_64
           script: echo "Generated AVD snapshot for caching."
-
+      - run: |
+          ls ~/.android/avd/
+          tree ~/.android/
       - name: Run connected tests
         uses: ReactiveCircus/android-emulator-runner@v2
         with:
