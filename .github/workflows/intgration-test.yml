@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - master
-    pull_request:
+  pull_request:
 
 jobs:
   unit-tests:
@@ -93,6 +93,7 @@ jobs:
           script: |
             adb devices
             chmod +x ./gradlew
+            adb shell am broadcast -a android.intent.action.CLOSE_SYSTEM_DIALOGS
             ./gradlew connectedDebugAndroidTest
 
       - name: Upload test report
