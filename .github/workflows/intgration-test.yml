@@ -24,7 +24,9 @@ jobs:
         uses: gradle/gradle-build-action@v2
 
       - name: Unit tests
-        run: ./gradlew testDebugUnitTest
+        run: |
+          chmod +x ./gradlew
+          ./gradlew testDebugUnitTest
 
       - name: Unit tests results
         uses: actions/upload-artifact@v1
@@ -91,6 +93,7 @@ jobs:
           arch: x86_64
           script: |
             adb devices
+            chmod +x ./gradlew
             ./gradlew connectedDebugAndroidTest
 
       - name: Upload test report
