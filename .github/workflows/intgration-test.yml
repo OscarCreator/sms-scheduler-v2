@@ -1,5 +1,5 @@
 name: Run Tests on PR
-on: [pull_request,workflow_dispatch]
+on: [pull_request,workflow_dispatch,push]
 
 jobs:
   connected-tests:
@@ -28,7 +28,6 @@ jobs:
           path: |
             ~/.android/avd/*
             ~/.android/adb*
-            ~/.android/debug.keystore
           key: avd-${{ matrix.api-level }}
 
       - name: create AVD and generate snapshot for caching
@@ -50,7 +49,7 @@ jobs:
       - name: Run connected tests
         uses: ReactiveCircus/android-emulator-runner@v2
         with:
-          api-level: $ {{ matrix.api-level }}
+          api-level: ${{ matrix.api-level }}
           profile: Galaxy Nexus
           cores: 2
           sdcard-path-or-size: 100M
