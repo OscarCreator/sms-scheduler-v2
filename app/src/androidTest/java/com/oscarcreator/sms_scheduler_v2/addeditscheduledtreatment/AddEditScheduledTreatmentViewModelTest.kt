@@ -1,8 +1,8 @@
 package com.oscarcreator.sms_scheduler_v2.addeditscheduledtreatment
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread
 import com.oscarcreator.sms_scheduler_v2.*
 import com.oscarcreator.sms_scheduler_v2.data.*
 import com.oscarcreator.sms_scheduler_v2.data.contact.Contact
@@ -10,14 +10,13 @@ import com.oscarcreator.sms_scheduler_v2.data.message.Message
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatment
 import com.oscarcreator.sms_scheduler_v2.data.timetemplate.TimeTemplate
 import com.oscarcreator.sms_scheduler_v2.data.treatment.Treatment
-import com.oscarcreator.sms_scheduler_v2.util.MainCoroutineRule
 import com.oscarcreator.sms_scheduler_v2.util.getOrAwaitValue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.util.*
@@ -27,14 +26,6 @@ import java.util.*
 class AddEditScheduledTreatmentViewModelTest {
 
     private lateinit var viewModel: AddEditScheduledTreatmentViewModel
-
-    @get:Rule
-    var instantTaskExecutorRule = InstantTaskExecutorRule()
-
-    @ExperimentalCoroutinesApi
-    @get:Rule
-    var mainCoroutineRule = MainCoroutineRule()
-
 
     private val timeTemplate = TimeTemplate(1000 * 60 * 60 * 23, timeTemplateId = 6)
     private val message = Message( "some old text", false, messageId = 5)
@@ -56,7 +47,9 @@ class AddEditScheduledTreatmentViewModelTest {
         timeTemplatesRepository = FakeTimeTemplateRepository()
         messagesRepository = FakeMessagesRepository()
 
-        viewModel = AddEditScheduledTreatmentViewModel(contactsRepository, treatmentsRepository, timeTemplatesRepository, messagesRepository, scheduledTreatmentsRepository)
+        runOnUiThread {
+            viewModel = AddEditScheduledTreatmentViewModel(contactsRepository, treatmentsRepository, timeTemplatesRepository, messagesRepository, scheduledTreatmentsRepository)
+        }
 
         assertThat(timeTemplatesRepository.insert(timeTemplate), `is`(timeTemplate.timeTemplateId))
         assertThat(messagesRepository.insert(message), `is`(message.messageId))
@@ -66,7 +59,7 @@ class AddEditScheduledTreatmentViewModelTest {
     }
 
     @Test
-    fun testDefaultValues() {
+    fun testDefaultValues() = runTest {
 
         assert(viewModel.time.value == null)
         assert(viewModel.message.value == null)
@@ -77,7 +70,7 @@ class AddEditScheduledTreatmentViewModelTest {
     }
 
     @Test
-    fun saveScheduledTreatmentToRepository_STSaved() {
+    fun saveScheduledTreatmentToRepository_STSaved() = runTest {
         val scheduledTreatment = ScheduledTreatment(
             treatmentId = treatment.treatmentId,
             timeTemplateId = timeTemplate.timeTemplateId,
@@ -95,19 +88,25 @@ class AddEditScheduledTreatmentViewModelTest {
 
         viewModel.start(context = ApplicationProvider.getApplicationContext())
 
-        viewModel.run {
-            runBlocking {
-                setContactById(contact1.contactId)
-                setMessageById(this@AddEditScheduledTreatmentViewModelTest.message.messageId)
-                setTimeTemplateById(timeTemplate.timeTemplateId)
-                setTreatmentById(this@AddEditScheduledTreatmentViewModelTest.treatment.treatmentId)
-                time.value = scheduledTreatment.treatmentTime.timeInMillis
+        runOnUiThread {
+            viewModel.run {
+
+                runBlocking {
+                    setContactById(contact1.contactId)
+                    setMessageById(this@AddEditScheduledTreatmentViewModelTest.message.messageId)
+                    setTimeTemplateById(timeTemplate.timeTemplateId)
+                    setTreatmentById(this@AddEditScheduledTreatmentViewModelTest.treatment.treatmentId)
+                    time.value = scheduledTreatment.treatmentTime.timeInMillis
+                }
             }
+
+            viewModel.saveScheduledTreatment(ApplicationProvider.getApplicationContext())
+
+            assertThat(
+                scheduledTreatmentsRepository.getScheduledTreatments().getOrAwaitValue().first(),
+                `is`(scheduledTreatment)
+            )
         }
-
-        viewModel.saveScheduledTreatment(ApplicationProvider.getApplicationContext())
-
-        assertThat(scheduledTreatmentsRepository.getScheduledTreatments().getOrAwaitValue().first(), `is`(scheduledTreatment))
 
     }
 //

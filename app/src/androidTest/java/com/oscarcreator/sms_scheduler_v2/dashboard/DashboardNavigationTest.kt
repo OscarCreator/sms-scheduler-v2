@@ -1,5 +1,6 @@
 package com.oscarcreator.sms_scheduler_v2.dashboard
 
+import android.Manifest
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.Toolbar
@@ -15,6 +16,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread
+import androidx.test.rule.GrantPermissionRule
 import com.oscarcreator.sms_scheduler_v2.MainActivity
 import com.oscarcreator.sms_scheduler_v2.R
 import org.hamcrest.CoreMatchers.`is`
@@ -27,6 +29,10 @@ import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class DashboardNavigationTest {
+
+    @Rule
+    @JvmField
+    val mRuntimePermissionRule: GrantPermissionRule = GrantPermissionRule.grant(Manifest.permission.SEND_SMS)
 
     @get: Rule
     val activityRule = ActivityScenarioRule(MainActivity::class.java)

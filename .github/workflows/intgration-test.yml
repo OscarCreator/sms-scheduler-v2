@@ -1,8 +1,38 @@
-name: Run Tests on PR
-on: [pull_request,workflow_dispatch,push]
+name: CI
+on:
+  push:
+    branches:
+      - master
+    pull_request:
 
 jobs:
-  connected-tests:
+  unit-tests:
+    name: Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: 11
+          distribution: 'adopt'
+          cache: 'gradle'
+
+      - name: Gradle cache
+        uses: gradle/gradle-build-action@v2
+
+      - name: Unit tests
+        run: ./gradlew testDebugUnitTest
+
+      - name: Unit tests results
+        uses: actions/upload-artifact@v1
+        with:
+          name: unit-tests-results
+          path: app/build/reports/tests/testDebugUnitTest/index.html
+
+  instrumentation-tests:
     runs-on: macos-latest
     strategy:
       matrix:
@@ -38,7 +68,7 @@ jobs:
           profile: Galaxy Nexus
           cores: 2
           sdcard-path-or-size: 100M
-          avd-name: test
+          ram-size: 4096M
           force-avd-creation: false
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: false
@@ -53,7 +83,7 @@ jobs:
           profile: Galaxy Nexus
           cores: 2
           sdcard-path-or-size: 100M
-          avd-name: test
+          ram-size: 4096M
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
@@ -61,13 +91,13 @@ jobs:
           arch: x86_64
           script: |
             adb devices
-            chmod +x ./gradlew && ./gradlew connectedCheck
+            ./gradlew connectedDebugAndroidTest
 
       - name: Upload test report
         if: success() || failure()
         uses: actions/upload-artifact@v2
         with:
-          name: index.html
+          name: index-${{ matrix.api-level }}
           path: app/build/reports/androidTests/connected/
       - name: Write job summary
         if: success() || failure()

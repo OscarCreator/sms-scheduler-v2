@@ -48,6 +48,7 @@ class FakeTreatmentsRepository: TreatmentsRepository {
 
     override suspend fun insert(treatment: Treatment): Long {
         treatmentsServiceData[treatment.treatmentId] = treatment
+        refreshTreatments()
         return treatment.treatmentId
     }
 
@@ -56,11 +57,13 @@ class FakeTreatmentsRepository: TreatmentsRepository {
         for (treatment in treatments) {
             treatmentsServiceData.remove(treatment.treatmentId)
         }
+        refreshTreatments()
         return treatments.size
     }
 
     override suspend fun deleteById(id: Long): Int {
         treatmentsServiceData.remove(id)
+        refreshTreatments()
         return 1
     }
 
@@ -70,10 +73,15 @@ class FakeTreatmentsRepository: TreatmentsRepository {
             val newTreatment = Treatment(treatment.name, treatment.price, treatment.duration, toBeDeleted = true)
             treatmentsServiceData[id] = newTreatment
         }
+        refreshTreatments()
 
     }
 
     override suspend fun updateScheduledTreatmentsWithNewTreatment(oldId: Long, newId: Long) {
         TODO("Not yet implemented")
+    }
+
+    fun refreshTreatments() {
+        observableTreatments.postValue(treatmentsServiceData.values.toList())
     }
 }

@@ -2,6 +2,7 @@ package com.oscarcreator.sms_scheduler_v2.message
 
 import androidx.navigation.findNavController
 import androidx.test.core.app.ActivityScenario
+import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -59,7 +60,9 @@ class MessageFlowTest {
         //write the data
         onView(withId(R.id.et_message))
             .perform(typeText(messageText))
-            .perform(pressBack())
+
+        Espresso.closeSoftKeyboard()
+
         //save the message
         onView(withId(R.id.fab_save_message)).perform(click())
 

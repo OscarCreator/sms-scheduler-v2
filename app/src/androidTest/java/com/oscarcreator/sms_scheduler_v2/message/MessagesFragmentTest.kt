@@ -4,21 +4,25 @@ import android.os.Bundle
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
+import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso
+import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread
+import com.oscarcreator.sms_scheduler_v2.MainActivity
 import com.oscarcreator.sms_scheduler_v2.R
 import com.oscarcreator.sms_scheduler_v2.data.FakeMessagesRepository
 import com.oscarcreator.sms_scheduler_v2.data.message.Message
 import com.oscarcreator.sms_scheduler_v2.messages.MessagesFragment
 import com.oscarcreator.sms_scheduler_v2.util.ServiceLocator
+import com.oscarcreator.sms_scheduler_v2.util.getOrAwaitValue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.Matchers
 import org.junit.After
@@ -42,77 +46,84 @@ class MessagesFragmentTest {
     }
 
     @After
-    fun cleanUpDb() = runBlockingTest {
+    fun cleanUpDb() = runTest {
         ServiceLocator.resetRepositories()
     }
 
     @Test
-    fun messageItem_isClicked_returnsToAddEditScheduledTreatment() = runBlockingTest {
+    fun messageItem_isClicked_returnsToAddEditScheduledTreatment() = runTest {
         val message = Message( "Test string", messageId = 1)
         repository.insert(message)
 
         val navController = TestNavHostController(ApplicationProvider.getApplicationContext())
         launchFragment(navController)
 
-        Espresso.onView(ViewMatchers.withText(message.message))
+        onView(ViewMatchers.withText(message.message))
             .perform(ViewActions.click())
 
         assertThat(navController.currentDestination?.id, `is`(R.id.messageDetailFragment))
     }
 
+    // TODO launch activity instead
+    //  because action bar is not displayed by the fragment
     @Test
-    fun messageItem_isLongPressed_showsActionMenu_And_returnsWhenXisClicked() = runBlockingTest {
+    fun messageItem_isLongPressed_showsActionMenu_And_returnsWhenXisClicked() = runTest {
         val message = Message( "Test string", messageId = 1)
         repository.insert(message)
 
-        val navController = TestNavHostController(ApplicationProvider.getApplicationContext())
-        launchFragment(navController)
+        // navigate to messages
+        ActivityScenario.launch(MainActivity::class.java)
+        onView(ViewMatchers.withId(R.id.fab_add_treatment)).perform(ViewActions.click())
+        onView(ViewMatchers.withId(R.id.btn_message))
+            .perform(ViewActions.click())
 
-        Espresso.onView(ViewMatchers.withText(message.message))
+        onView(ViewMatchers.withText(message.message))
             .perform(ViewActions.longClick())
 
         //Action mode is displayed
-        Espresso.onView(ViewMatchers.withResourceName("action_mode_bar"))
+        onView(ViewMatchers.withResourceName("action_mode_close_button"))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         //Close action mode
-        Espresso.onView(ViewMatchers.withResourceName("action_mode_close_button"))
             .perform(ViewActions.click())
         //Action mode is not displayed
-        Espresso.onView(ViewMatchers.withResourceName("action_mode_bar"))
+        onView(ViewMatchers.withResourceName("action_mode_close_button"))
             .check(ViewAssertions.matches(Matchers.not(ViewMatchers.isDisplayed())))
 
     }
 
     //This is an E2E test because it depends on the activity
-//    @Test
-//    fun addButton_isClicked_showsAddEditMessage() = runBlockingTest {
-//
-//        val navController = TestNavHostController(
-//            ApplicationProvider.getApplicationContext())
-//        launchFragment(navController)
-//
-//        Espresso.onView(ViewMatchers.withId(R.id.new_message))
-//            .perform(ViewActions.click())
-//
-//        assertThat(navController.currentDestination?.id, `is`(R.id.addEditMessageFragment))
-//
-//        val actualMessage = Message(message = "Some text 2567")
-//
-//        Espresso.onView(ViewMatchers.withId(R.id.et_message))
-//            .perform(ViewActions.typeText(actualMessage.message))
-//
-//        Espresso.onView(ViewMatchers.withId(R.id.complete))
-//            .perform(ViewActions.click())
-//
-//        Espresso.onView(ViewMatchers.withText(actualMessage.message))
-//            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-//
-//        assertThat(repository.getMessages().value?.get(0)?.message, `is`(actualMessage.message))
-//
-//    }
+    @Test
+    fun addButton_isClicked_showsAddEditMessage() = runTest {
+
+        // navigate to messages
+        ActivityScenario.launch(MainActivity::class.java)
+        onView(ViewMatchers.withId(R.id.fab_add_treatment)).perform(ViewActions.click())
+        onView(ViewMatchers.withId(R.id.btn_message))
+            .perform(ViewActions.click())
+
+        onView(ViewMatchers.withId(R.id.fab_add_message))
+            .perform(ViewActions.click())
+
+        val actualMessage = Message(message = "Some text 2567")
+
+        onView(ViewMatchers.withId(R.id.et_message))
+            .perform(ViewActions.typeText(actualMessage.message))
+
+        Espresso.closeSoftKeyboard()
+
+        onView(ViewMatchers.withId(R.id.fab_save_message))
+            .perform(ViewActions.click())
+
+        onView(ViewMatchers.withText(actualMessage.message))
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+
+        runOnUiThread {
+            assertThat(repository.observeAllMessages().getOrAwaitValue()[0].message, `is`(actualMessage.message))
+        }
+    }
 
     @Test
-    fun actionMode_messageItem_isSelected_deleteButtonClicked_removesSelectedMessage() = runBlockingTest {
+    fun actionMode_messageItem_isSelected_deleteButtonClicked_removesSelectedMessage() = runTest {
         val message = Message( "Test string", messageId = 1)
         repository.insert(message)
 
@@ -120,17 +131,17 @@ class MessagesFragmentTest {
             ApplicationProvider.getApplicationContext())
         launchFragment(navController)
 
-        Espresso.onView(ViewMatchers.withText(message.message))
+        onView(ViewMatchers.withText(message.message))
             .perform(ViewActions.longClick())
 
-        Espresso.onView(ViewMatchers.withId(R.id.delete))
+        onView(ViewMatchers.withId(R.id.delete))
             .perform(ViewActions.click())
 
         //message is deleted
 
         assertThat(repository.messagesServiceData.size, `is`(0))
         //and not displayed
-        Espresso.onView(ViewMatchers.withId(R.id.rv_message_list))
+        onView(ViewMatchers.withId(R.id.rv_message_list))
             .check(ViewAssertions.matches(ViewMatchers.hasChildCount(0)))
     }
 

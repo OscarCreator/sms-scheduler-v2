@@ -7,16 +7,19 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.navigation.findNavController
 import androidx.test.core.app.ActivityScenario
+import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread
 import com.oscarcreator.sms_scheduler_v2.MainActivity
 import com.oscarcreator.sms_scheduler_v2.R
 import com.oscarcreator.sms_scheduler_v2.data.FakeTreatmentsRepository
 import com.oscarcreator.sms_scheduler_v2.data.treatment.Treatment
 import com.oscarcreator.sms_scheduler_v2.util.ServiceLocator
+import com.oscarcreator.sms_scheduler_v2.util.getOrAwaitValue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
@@ -121,16 +124,19 @@ class TreatmentFlowTest {
         onView(withId(R.id.et_price))
             .check(matches(isDisplayed()))
             .perform(typeText(treatment.price.toString()))
-            .perform(pressImeActionButton())
+
+        Espresso.closeSoftKeyboard()
 
         onView(withId(R.id.fab_save_treatment))
             .check(matches(isDisplayed()))
             .perform(click())
 
-        repository.treatmentsServiceData.values.first().apply {
-            assertThat(name, `is`(treatment.name))
-            assertThat(price, `is`(treatment.price))
-            assertThat(duration, `is`(treatment.duration))
+        runOnUiThread {
+            repository.observeTreatments().getOrAwaitValue().first().apply {
+                assertThat(name, `is`(treatment.name))
+                assertThat(price, `is`(treatment.price))
+                assertThat(duration, `is`(treatment.duration))
+            }
         }
 
         activityScenario.onActivity {
@@ -138,7 +144,6 @@ class TreatmentFlowTest {
         }
 
         activityScenario.close()
-
     }
 
     @Test

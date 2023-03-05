@@ -16,7 +16,6 @@ import com.oscarcreator.sms_scheduler_v2.data.message.Message
 import com.oscarcreator.sms_scheduler_v2.data.message.MessagesRepository
 import com.oscarcreator.sms_scheduler_v2.util.ServiceLocator
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.Matchers.allOf
 import org.junit.After
@@ -37,7 +36,7 @@ class MessageDetailFragmentTest {
     }
 
     @After
-    fun cleanUpDb() = runBlockingTest {
+    fun cleanUpDb() = runTest {
         ServiceLocator.resetRepositories()
     }
 
