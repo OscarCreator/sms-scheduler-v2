@@ -7,7 +7,6 @@ on:
 
 jobs:
   unit-tests:
-    name: Check
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -32,7 +31,7 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: unit-tests-results
-          path: app/build/reports/tests/testDebugUnitTest/index.html
+          path: app/build/reports/tests/testDebugUnitTest/
 
   instrumentation-tests:
     runs-on: macos-latest
@@ -100,7 +99,7 @@ jobs:
         if: success() || failure()
         uses: actions/upload-artifact@v2
         with:
-          name: index-${{ matrix.api-level }}
+          name: instrumented-tests-results ${{ matrix.api-level }}
           path: app/build/reports/androidTests/connected/
       - name: Write job summary
         if: success() || failure()
