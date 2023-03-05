@@ -4,6 +4,9 @@ on: [pull_request,workflow_dispatch]
 jobs:
   connected-tests:
     runs-on: macos-latest
+    strategy:
+      matrix:
+        api-level: [24, 30, 33]
             
     steps:
       - name: Checkout
@@ -26,13 +29,13 @@ jobs:
             ~/.android/avd/*
             ~/.android/adb*
             ~/.android/debug.keystore
-          key: avd-macos-latest-33
+          key: avd-${{ matrix.api-level }}
 
       - name: create AVD and generate snapshot for caching
         if: steps.avd-cache.outputs.cache-hit != 'true'
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 33
+          api-level: ${{ matrix.api-level }}
           profile: Galaxy Nexus
           cores: 2
           sdcard-path-or-size: 100M
@@ -47,7 +50,7 @@ jobs:
       - name: Run connected tests
         uses: ReactiveCircus/android-emulator-runner@v2
         with:
-          api-level: 33
+          api-level: $ {{ matrix.api-level }}
           profile: Galaxy Nexus
           cores: 2
           sdcard-path-or-size: 100M
