@@ -135,7 +135,7 @@ class TimeTemplateFlowTest {
         onView(withId(R.id.np_hours)).perform(swipeUp())
         onView(withId(R.id.np_minutes)).perform(swipeUp())
 
-        onView(withId(R.id.complete)).perform(click())
+        onView(withId(R.id.fab_save_time_template)).perform(click())
 
         assertThat(repository.timeTemplatesServiceData.size, `is`(1))
 
@@ -153,7 +153,7 @@ class TimeTemplateFlowTest {
         onView(withId(R.id.fab_add_timetemplate))
             .perform(click())
 
-        onView(withId(R.id.complete)).perform(click())
+        onView(withId(R.id.fab_save_time_template)).perform(click())
 
         assertThat(repository.timeTemplatesServiceData.size, `is`(0))
 

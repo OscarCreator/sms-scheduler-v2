@@ -44,7 +44,8 @@ class FakeMessagesRepository : MessagesRepository {
 
     override suspend fun update(message: Message): Int {
         messagesServiceData[message.messageId] = message
-        return 1;
+        refreshMessages()
+        return 1
     }
 
     override suspend fun delete(vararg messages: Message): Int {
@@ -57,6 +58,7 @@ class FakeMessagesRepository : MessagesRepository {
 
     override suspend fun deleteById(messageId: Long): Int {
         messagesServiceData.remove(messageId)
+        refreshMessages()
         return 1
     }
 
@@ -66,20 +68,22 @@ class FakeMessagesRepository : MessagesRepository {
             val newMessage = Message(message.message, true, messageId = message.messageId, messageGroupId = message.messageGroupId, messageVersion = message.messageVersion)
             messagesServiceData[messageId] = newMessage
         }
+        refreshMessages()
     }
 
     override suspend fun updateScheduledTreatmentsWithNewMessage(
         oldMessageId: Long,
         newMessageId: Long
     ) {
-
+        updateToBeDeleted(oldMessageId)
     }
 
+    // TODO may not work always
     override fun getScheduledTreatmentsWithMessageId(messageId: Long): List<ScheduledTreatmentWithMessageTimeTemplateAndContact> {
         return emptyList()
     }
 
-    suspend fun refreshMessages() {
+    fun refreshMessages() {
         observableMessages.postValue(messagesServiceData.values.toList())
     }
 

@@ -26,8 +26,10 @@ class CalendarToReadableStringConverterTest {
         calendar.set(Calendar.YEAR, 2020)
         calendar.set(Calendar.DAY_OF_MONTH, 1)
         calendar.set(Calendar.MONTH, 0)
+        calendar.set(Calendar.HOUR_OF_DAY, 15)
+        calendar.set(Calendar.MINUTE, 22)
 
-        assertThat(calendar.dateToText(context, currentTime, Locale.ENGLISH), `is`("Wed, 1/1"))
+        assertThat(calendar.dateToText(context, currentTime, Locale.ENGLISH), `is`("15:22 1/1"))
     }
 
     @Test
@@ -38,8 +40,11 @@ class CalendarToReadableStringConverterTest {
         calendar.set(Calendar.YEAR, 2020)
         calendar.set(Calendar.DAY_OF_MONTH, 1)
         calendar.set(Calendar.MONTH, 0)
+        calendar.set(Calendar.HOUR_OF_DAY, 13)
+        calendar.set(Calendar.MINUTE, 24)
 
-        assertThat(calendar.dateToText(context, currentTime, Locale.forLanguageTag("sv")), `is`("ons, 1/1"))
+        assertThat(calendar.dateToText(context, currentTime, Locale.forLanguageTag("sv")),
+            `is`("13:24 1/1"))
     }
 
     @Test
@@ -53,10 +58,12 @@ class CalendarToReadableStringConverterTest {
         calendar.set(Calendar.YEAR, 2020)
         calendar.set(Calendar.DAY_OF_MONTH, 2)
         calendar.set(Calendar.MONTH, 0)
+        calendar.set(Calendar.HOUR_OF_DAY, 3)
+        calendar.set(Calendar.MINUTE, 33)
 
         val tomorrowString = context.resources.getString(R.string.tomorrow)
 
-        assertThat(calendar.dateToText(context, currentTime, Locale.ENGLISH), `is`(tomorrowString))
+        assertThat(calendar.dateToText(context, currentTime, Locale.ENGLISH), `is`("3:33 $tomorrowString"))
     }
 
 
@@ -71,10 +78,12 @@ class CalendarToReadableStringConverterTest {
         calendar.set(Calendar.YEAR, 2020)
         calendar.set(Calendar.DAY_OF_MONTH, 2)
         calendar.set(Calendar.MONTH, 0)
+        calendar.set(Calendar.HOUR_OF_DAY, 19)
+        calendar.set(Calendar.MINUTE, 1)
 
         val tomorrowString = context.resources.getString(R.string.today)
 
-        assertThat(calendar.dateToText(context, currentTime, Locale.ENGLISH), `is`(tomorrowString))
+        assertThat(calendar.dateToText(context, currentTime, Locale.ENGLISH), `is`("19:01 $tomorrowString"))
     }
 
     @Test
@@ -88,10 +97,12 @@ class CalendarToReadableStringConverterTest {
         calendar.set(Calendar.YEAR, 2020)
         calendar.set(Calendar.DAY_OF_MONTH, 1)
         calendar.set(Calendar.MONTH, 1)
+        calendar.set(Calendar.HOUR_OF_DAY, 8)
+        calendar.set(Calendar.MINUTE, 28)
 
         val tomorrowString = context.resources.getString(R.string.tomorrow)
 
-        assertThat(calendar.dateToText(context, currentTime, Locale.ENGLISH), `is`(tomorrowString))
+        assertThat(calendar.dateToText(context, currentTime, Locale.ENGLISH), `is`("8:28 $tomorrowString"))
     }
 
 }

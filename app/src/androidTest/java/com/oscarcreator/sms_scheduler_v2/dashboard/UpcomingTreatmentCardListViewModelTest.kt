@@ -9,9 +9,12 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.oscarcreator.sms_scheduler_v2.data.AppDatabase
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.DefaultScheduledTreatmentsRepository
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.local.ScheduledTreatmentsLocalDataSource
+import com.oscarcreator.sms_scheduler_v2.util.getOrAwaitValue
+import org.hamcrest.MatcherAssert.assertThat
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
+import org.junit.Test
 import org.junit.runner.RunWith
 import java.util.concurrent.TimeUnit
 
@@ -34,6 +37,11 @@ class UpcomingTreatmentCardListViewModelTest {
         viewModel = UpcomingTreatmentCardListViewModel(
             DefaultScheduledTreatmentsRepository(ScheduledTreatmentsLocalDataSource(
                 database.scheduledTreatmentDao())))
+    }
+
+    @Test
+    fun test_defaultValue() {
+        assertThat("Treatment are not empty", viewModel.upcomingTreatments.getOrAwaitValue().isEmpty())
     }
 
     @After

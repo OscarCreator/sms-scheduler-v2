@@ -1,11 +1,13 @@
 package com.oscarcreator.sms_scheduler_v2.addeditscheduledtreatment
 
+import android.Manifest
 import androidx.navigation.findNavController
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.rule.GrantPermissionRule
 import com.oscarcreator.sms_scheduler_v2.MainActivity
 import com.oscarcreator.sms_scheduler_v2.R
 import com.oscarcreator.sms_scheduler_v2.dashboard.DashboardFragmentDirections
@@ -17,6 +19,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -25,6 +28,10 @@ import org.junit.runner.RunWith
 class AddEditScheduledTreatmentTest {
 
     //TODO redo with activityScenario
+
+    @Rule
+    @JvmField
+    val mRuntimePermissionRule: GrantPermissionRule = GrantPermissionRule.grant(Manifest.permission.SEND_SMS)
 
     private lateinit var repository: ScheduledTreatmentsRepository
     private lateinit var contactsRepository: FakeContactsRepository

@@ -19,7 +19,7 @@ import com.oscarcreator.sms_scheduler_v2.data.treatment.Treatment
 import com.oscarcreator.sms_scheduler_v2.util.ServiceLocator
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.hamcrest.Matchers.`is`
 import org.junit.After
 import org.junit.Before
@@ -43,7 +43,7 @@ class TreatmentFlowTest {
 
     @ExperimentalCoroutinesApi
     @After
-    fun cleanupDb() = runBlockingTest {
+    fun cleanupDb() = runTest {
         ServiceLocator.resetRepositories()
     }
 

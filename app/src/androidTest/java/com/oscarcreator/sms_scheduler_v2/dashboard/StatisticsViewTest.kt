@@ -1,22 +1,7 @@
 package com.oscarcreator.sms_scheduler_v2.dashboard
 
-import android.content.Context
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.ext.junit.rules.ActivityScenarioRule
-import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.platform.app.InstrumentationRegistry
-import com.oscarcreator.sms_scheduler_v2.MainActivity
-import com.oscarcreator.sms_scheduler_v2.R
-import com.oscarcreator.sms_scheduler_v2.data.TreatmentsStatsRepository
-import com.oscarcreator.sms_scheduler_v2.util.withMaterialText
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
-import org.junit.runner.RunWith
-
+/*
+TODO not used yet
 @RunWith(AndroidJUnit4::class)
 class StatisticsViewTest {
 
@@ -76,3 +61,5 @@ class StatisticsViewTest {
         onView(withId(R.id.tv_treatment_text)).check(matches(withMaterialText(text)))
     }
 }
+
+ */

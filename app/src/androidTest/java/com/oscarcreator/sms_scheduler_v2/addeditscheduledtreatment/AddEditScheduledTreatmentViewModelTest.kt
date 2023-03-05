@@ -5,10 +5,6 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.oscarcreator.sms_scheduler_v2.*
 import com.oscarcreator.sms_scheduler_v2.data.*
-import com.oscarcreator.sms_scheduler_v2.data.FakeContactsRepository
-import com.oscarcreator.sms_scheduler_v2.data.FakeMessagesRepository
-import com.oscarcreator.sms_scheduler_v2.data.FakeTimeTemplateRepository
-import com.oscarcreator.sms_scheduler_v2.data.FakeTreatmentsRepository
 import com.oscarcreator.sms_scheduler_v2.data.contact.Contact
 import com.oscarcreator.sms_scheduler_v2.data.message.Message
 import com.oscarcreator.sms_scheduler_v2.data.scheduled.ScheduledTreatment
@@ -41,7 +37,7 @@ class AddEditScheduledTreatmentViewModelTest {
 
 
     private val timeTemplate = TimeTemplate(1000 * 60 * 60 * 23, timeTemplateId = 6)
-    private val message = Message( "some old text", true, messageId = 5)
+    private val message = Message( "some old text", false, messageId = 5)
     private val contact1 = Contact( "Bosse", "40602380", contactId = 4)
     private val contact2 = Contact("Bergit", "0720934592", 4000, contactId = 2)
     private val treatment = Treatment("Treatment 4", 400, 90, treatmentId = 9)

@@ -8,6 +8,7 @@ import androidx.compose.ui.test.performClick
 import androidx.navigation.findNavController
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ActivityScenario.launch
+import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.pressBack
 import androidx.test.espresso.action.ViewActions.*
@@ -127,10 +128,12 @@ class ContactFlowTest {
             .check(matches(isDisplayed()))
             .perform(typeText(contact.phoneNumber))
 
-        onView(withId(R.id.et_money))
-            .check(matches(isDisplayed()))
-            .perform(typeText(contact.money.toString()))
-            .perform(pressImeActionButton())
+        // Not used yet
+        //onView(withId(R.id.et_money))
+        //    .check(matches(isDisplayed()))
+        //    .perform(typeText(contact.money.toString()))
+        //    .perform(pressImeActionButton())
+        Espresso.closeSoftKeyboard()
 
         onView(withId(R.id.fab_save_contact))
             .check(matches(isDisplayed()))
@@ -138,8 +141,7 @@ class ContactFlowTest {
 
         assertThat(repository.contactsServiceData.filter {
             it.value.name == contact.name &&
-            it.value.phoneNumber == contact.phoneNumber &&
-            it.value.money == contact.money
+            it.value.phoneNumber == contact.phoneNumber
         }.size, `is`(1))
 
         activityScenario.onActivity {

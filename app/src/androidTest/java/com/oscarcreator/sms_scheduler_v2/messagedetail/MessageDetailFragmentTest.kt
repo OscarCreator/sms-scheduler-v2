@@ -17,6 +17,7 @@ import com.oscarcreator.sms_scheduler_v2.data.message.MessagesRepository
 import com.oscarcreator.sms_scheduler_v2.util.ServiceLocator
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.hamcrest.Matchers.allOf
 import org.junit.After
 import org.junit.Before
@@ -41,7 +42,7 @@ class MessageDetailFragmentTest {
     }
 
     @Test
-    fun message_displayedInUi() = runBlockingTest {
+    fun message_displayedInUi() = runTest {
         val message = Message( "A Unique message", messageId = 2)
         repository.insert(message)
 
