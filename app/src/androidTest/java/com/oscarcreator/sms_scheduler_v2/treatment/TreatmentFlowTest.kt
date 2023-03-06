@@ -159,8 +159,9 @@ class TreatmentFlowTest {
         onView(withId(R.id.tv_treatment_name))
             .check(matches(isDisplayed()))
             .perform(typeText(treatment.name))
-            .perform(pressBack())
-
+        
+        Espresso.closeSoftKeyboard()
+        
         onView(withId(R.id.fab_save_treatment))
             .check(matches(isDisplayed()))
             .perform(click())
