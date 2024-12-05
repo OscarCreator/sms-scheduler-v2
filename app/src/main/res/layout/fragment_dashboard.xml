@@ -15,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent"
         />
 
-    <com.oscarcreator.sms_scheduler_v2.dashboard.StatisticsView
+    <com.oscarcreator.pigeon.dashboard.StatisticsView
         android:id="@+id/statistics_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

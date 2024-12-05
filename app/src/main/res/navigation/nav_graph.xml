@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/dashboardFragment"
-        android:name="com.oscarcreator.sms_scheduler_v2.dashboard.DashboardFragment"
+        android:name="com.oscarcreator.pigeon.dashboard.DashboardFragment"
         android:label="@string/dashboard"
         tools:layout="@layout/fragment_dashboard"
         >
@@ -30,7 +30,7 @@
     </fragment>
     <fragment
         android:id="@+id/addEditScheduledTreatmentFragment"
-        android:name="com.oscarcreator.sms_scheduler_v2.addeditscheduledtreatment.AddEditScheduledTreatmentFragment"
+        android:name="com.oscarcreator.pigeon.addeditscheduledtreatment.AddEditScheduledTreatmentFragment"
         android:label="{title}"
         tools:layout="@layout/fragment_addedit_scheduled_treatment"
         >
@@ -56,7 +56,7 @@
     </fragment>
     <fragment
         android:id="@+id/messageListFragment"
-        android:name="com.oscarcreator.sms_scheduler_v2.messages.MessagesFragment"
+        android:name="com.oscarcreator.pigeon.messages.MessagesFragment"
         android:label="@string/messages"
         tools:layout="@layout/fragment_messages" >
         <action
@@ -68,7 +68,7 @@
     </fragment>
     <fragment
         android:id="@+id/addEditMessageFragment"
-        android:name="com.oscarcreator.sms_scheduler_v2.addeditmessage.AddEditMessageFragment"
+        android:name="com.oscarcreator.pigeon.addeditmessage.AddEditMessageFragment"
         android:label="@string/message_title"
         tools:layout="@layout/fragment_addedit_message"
         >
@@ -91,7 +91,7 @@
     </fragment>
     <fragment
         android:id="@+id/timeTemplateListFragment"
-        android:name="com.oscarcreator.sms_scheduler_v2.timetemplates.TimeTemplatesFragment"
+        android:name="com.oscarcreator.pigeon.timetemplates.TimeTemplatesFragment"
         android:label="@string/time_offsets"
         tools:layout="@layout/fragment_timetemplate_list"
         >
@@ -104,7 +104,7 @@
     </fragment>
     <fragment
         android:id="@+id/addEditTimeTemplateFragment"
-        android:name="com.oscarcreator.sms_scheduler_v2.addedittimetemplate.AddEditTimeTemplateFragment"
+        android:name="com.oscarcreator.pigeon.addedittimetemplate.AddEditTimeTemplateFragment"
         android:label="@string/addedit_timetemplate_title"
         tools:layout="@layout/fragment_addedit_timetemplate"
         >
@@ -124,7 +124,7 @@
     </fragment>
     <fragment
         android:id="@+id/contactListFragment"
-        android:name="com.oscarcreator.sms_scheduler_v2.contacts.ContactsFragment"
+        android:name="com.oscarcreator.pigeon.contacts.ContactsFragment"
         android:label="@string/contacts"
         tools:layout="@layout/fragment_compose_view"
         >
@@ -140,7 +140,7 @@
     </fragment>
     <fragment
         android:id="@+id/addEditContactFragment"
-        android:name="com.oscarcreator.sms_scheduler_v2.addeditcontact.AddEditContactFragment"
+        android:name="com.oscarcreator.pigeon.addeditcontact.AddEditContactFragment"
         android:label="@string/addedit_contact_title"
         tools:layout="@layout/fragment_addedit_contact"
         >
@@ -160,7 +160,7 @@
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.oscarcreator.sms_scheduler_v2.settings.SettingsFragment"
+        android:name="com.oscarcreator.pigeon.settings.SettingsFragment"
         android:label="@string/settings_title" >
         <action
             android:id="@+id/action_settingsFragment_to_loadContactsFragment"
@@ -168,13 +168,13 @@
     </fragment>
     <fragment
         android:id="@+id/loadContactsFragment"
-        android:name="com.oscarcreator.sms_scheduler_v2.importcontacts.ImportContactsFragment"
+        android:name="com.oscarcreator.pigeon.importcontacts.ImportContactsFragment"
         android:label="@string/import_contacts_title"
         tools:layout="@layout/fragment_load_contacts"
         />
     <fragment
         android:id="@+id/treatmentsFragment"
-        android:name="com.oscarcreator.sms_scheduler_v2.treatments.TreatmentsFragment"
+        android:name="com.oscarcreator.pigeon.treatments.TreatmentsFragment"
         android:label="@string/services"
         >
         <action
@@ -186,7 +186,7 @@
     </fragment>
     <fragment
         android:id="@+id/addEditTreatment"
-        android:name="com.oscarcreator.sms_scheduler_v2.addedittreatment.AddEditTreatmentFragment"
+        android:name="com.oscarcreator.pigeon.addedittreatment.AddEditTreatmentFragment"
         android:label="@string/addedit_treatment_title"
         tools:layout="@layout/fragment_addedit_treatment"
         >
@@ -202,7 +202,7 @@
     </fragment>
     <fragment
         android:id="@+id/messageDetailFragment"
-        android:name="com.oscarcreator.sms_scheduler_v2.messagedetail.MessageDetailFragment"
+        android:name="com.oscarcreator.pigeon.messagedetail.MessageDetailFragment"
         android:label="" >
         <action
             android:id="@+id/action_messageDetailFragment_to_addEditMessageFragment"
@@ -216,7 +216,7 @@
     </fragment>
     <fragment
         android:id="@+id/scheduledTreatmentsFragment"
-        android:name="com.oscarcreator.sms_scheduler_v2.scheduledtreatments.ScheduledTreatmentsFragment"
+        android:name="com.oscarcreator.pigeon.scheduledtreatments.ScheduledTreatmentsFragment"
         android:label="@string/appointments"
         tools:layout="@layout/fragment_scheduledtreatments"
         >
@@ -226,7 +226,7 @@
     </fragment>
     <fragment
         android:id="@+id/treatmentDetailFragment"
-        android:name="com.oscarcreator.sms_scheduler_v2.treatmentdetail.TreatmentDetailFragment"
+        android:name="com.oscarcreator.pigeon.treatmentdetail.TreatmentDetailFragment"
         android:label=""
         tools:layout="@layout/fragment_detail_treatment"
         >
@@ -240,7 +240,7 @@
     </fragment>
     <fragment
         android:id="@+id/detailContactFragment"
-        android:name="com.oscarcreator.sms_scheduler_v2.contactdetail.DetailContactFragment"
+        android:name="com.oscarcreator.pigeon.contactdetail.DetailContactFragment"
         android:label=""
         tools:layout="@layout/fragment_detail_contact"
         >
@@ -254,7 +254,7 @@
     </fragment>
     <fragment
         android:id="@+id/scheduledTreatmentDetailFragment"
-        android:name="com.oscarcreator.sms_scheduler_v2.scheduledtreatmentdetail.ScheduledTreatmentDetailFragment"
+        android:name="com.oscarcreator.pigeon.scheduledtreatmentdetail.ScheduledTreatmentDetailFragment"
         android:label="" >
         <action
             android:id="@+id/action_scheduledTreatmentDetailFragment_to_addEditScheduledTreatmentFragment"
@@ -266,12 +266,12 @@
     </fragment>
     <fragment
         android:id="@+id/variableInfoFragment"
-        android:name="com.oscarcreator.sms_scheduler_v2.addeditmessage.VariableInfoFragment"
+        android:name="com.oscarcreator.pigeon.addeditmessage.VariableInfoFragment"
         android:label="@string/variables_info"
         />
     <fragment
         android:id="@+id/timeTemplateDetailFragment"
-        android:name="com.oscarcreator.sms_scheduler_v2.timetemplatedetail.TimeTemplateDetailFragment"
+        android:name="com.oscarcreator.pigeon.timetemplatedetail.TimeTemplateDetailFragment"
         android:label="" >
         <action
             android:id="@+id/action_timeTemplateDetailFragment_to_addEditTimeTemplateFragment"

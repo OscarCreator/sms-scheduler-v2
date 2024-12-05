@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.oscarcreator.sms_scheduler_v2",
+  "applicationId": "com.oscarcreator.pigeon",
   "variantName": "release",
   "elements": [
     {

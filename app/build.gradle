@@ -7,7 +7,7 @@ android {
     compileSdkVersion 33
 
     defaultConfig {
-        applicationId "com.oscarcreator.sms_scheduler_v2"
+        applicationId "com.oscarcreator.pigeon"
         minSdkVersion 24
         targetSdkVersion 33
         versionCode 4
@@ -48,7 +48,7 @@ android {
         }
     }
 
-    namespace 'com.oscarcreator.sms_scheduler_v2'
+    namespace 'com.oscarcreator.pigeon'
 }
 
 dependencies {

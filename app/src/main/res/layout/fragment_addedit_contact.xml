@@ -9,7 +9,7 @@
 
         <variable
             name="viewmodel"
-            type="com.oscarcreator.sms_scheduler_v2.addeditcontact.AddEditContactViewModel" />
+            type="com.oscarcreator.pigeon.addeditcontact.AddEditContactViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

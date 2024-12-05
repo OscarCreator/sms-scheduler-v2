@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewmodel"
-            type="com.oscarcreator.sms_scheduler_v2.addedittreatment.AddEditTreatmentViewModel"
+            type="com.oscarcreator.pigeon.addedittreatment.AddEditTreatmentViewModel"
             />
         
     </data>
